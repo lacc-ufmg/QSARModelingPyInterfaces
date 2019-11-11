@@ -1,0 +1,15 @@
+Input directory,/home/jpam/Dropbox/UFMG/projeto_novo_lqta_qsar/LQTAgridPyHull/Notebooks
+X matrix,Xsel2.csv
+y matrix,atividades.txt
+Test set,"6, 13, 19, 23, 25, 30, 39, 43, 47, 48"
+Number of latent variables for the model,
+Output directory,/home/jpam/Dropbox/UFMG/projeto_novo_lqta_qsar/LQTAgridPyHull/Notebooks
+Output external validation file,ext_val2.csv
+Output cross validation training set file,cv_ext_val2.csv
+Output training set X matrix,Xtrain2.csv
+Output training set y matrix,ytrain2.csv
+Output test set X matrix,Xtest2.csv
+Output test set y matrix,ytest2.csv
+Autoscale,yes
+Lennard-Jones data transformation,no
+Type of external validation,1

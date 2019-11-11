@@ -13,8 +13,8 @@ import os
 import sys
 import argparse
 
-#yr_crit = float(dfConf[1][11])
-#lno_crit = float(dfConf[1][12])
+# TODO: Following lines consists of an emergency engineering due to an error in 
+# the visibility of the variables.
 global out_directory
 global out_matrix
 global out_cv
@@ -124,7 +124,7 @@ if __name__ == '__main__':
 						help='Config OPS file.')
 	parser.add_argument('--type', '-t', required=True, type=str,
                         metavar='<r>',
-                        help='Type of OPS run (s for single and f for feed.'
+                        help='Type of OPS run (s for single and f for feed).'
                         )
 
 	args = parser.parse_args()
@@ -136,4 +136,4 @@ if __name__ == '__main__':
 	elif typeOPS == 'f':
 		runFeedOPS(ops)
 	else:
-		print("Invalid option for type OPS. Type s for single run or f for feedOPS")
+		print("Invalid option for type OPS. Type s for single run or f for feedOPS.")

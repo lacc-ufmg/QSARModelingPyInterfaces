@@ -1,0 +1,15 @@
+Input directory,/home/jpam/google_drive/IC/heliton/carboxamidas_HIV1integrase
+X matrix,Xsel2a.csv
+y matrix,atividades.txt
+Test set,"1, 3, 13, 17, 27"
+Number of latent variables for the model,
+Output directory,/home/jpam/google_drive/IC/heliton/carboxamidas_HIV1integrase
+Output external validation file,ext_val2.csv
+Output cross validation training set file,cv_ext_val2.csv
+Output training set X matrix,Xtrain2.csv
+Output training set y matrix,ytrain2.csv
+Output test set X matrix,Xtest2.csv
+Output test set y matrix,ytest2.csv
+Autoscale,yes
+Lennard-Jones data transformation,no
+Type of external validation,1

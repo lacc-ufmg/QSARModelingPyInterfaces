@@ -1,2 +1,0 @@
-# QSARModelingPy
-QSAR Modeling - Python

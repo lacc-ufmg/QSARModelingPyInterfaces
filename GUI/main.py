@@ -8,7 +8,7 @@ import pandas
 import random
 
 builder: Gtk.Builder = Gtk.Builder()
-builder.add_from_file('qsarmodeling.glade')
+builder.add_from_file('qsarmodeling.ui')
 
 
 class Handler(object):
@@ -74,7 +74,7 @@ class Handler(object):
                 'models_to_save': builder.get_object('ops_models_to_save').get_value(),
                 'yrand': builder.get_object('ops_yrand').get_value(),
                 'lno': builder.get_object('ops_lno').get_value(),
-                'ops_type': 'f'
+                'ops_type': 'f' if builder.get_object('ops_feed_ops').get_active() else 's'
             }
 
             rand = random.randint(10000, 99999)

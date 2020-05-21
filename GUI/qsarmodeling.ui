@@ -17,7 +17,7 @@
   <object class="GtkAdjustment" id="adj_crossover_GA">
     <property name="lower">0.01</property>
     <property name="upper">999999999</property>
-    <property name="value">0.5</property>
+    <property name="value">0.50000000000000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.1</property>
   </object>
@@ -51,7 +51,7 @@
   <object class="GtkAdjustment" id="adj_migration_GA">
     <property name="lower">0.01</property>
     <property name="upper">1</property>
-    <property name="value">0.2</property>
+    <property name="value">0.20000000000000001110</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.1</property>
   </object>
@@ -65,7 +65,7 @@
   <object class="GtkAdjustment" id="adj_mutation_GA">
     <property name="lower">0.01</property>
     <property name="upper">1</property>
-    <property name="value">0.2</property>
+    <property name="value">0.20000000000000001110</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.1</property>
   </object>
@@ -455,7 +455,7 @@
                   <object class="GtkSpinButton" id="ga_varcut">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">0,00</property>
+                    <property name="text" translatable="yes">0.00</property>
                     <property name="adjustment">adj_varcut_GA</property>
                     <property name="digits">2</property>
                     <property name="numeric">True</property>
@@ -469,7 +469,7 @@
                   <object class="GtkSpinButton" id="ga_corrcut">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">0,00</property>
+                    <property name="text" translatable="yes">0.00</property>
                     <property name="adjustment">adj_corrcut_OPS</property>
                     <property name="digits">2</property>
                     <property name="numeric">True</property>
@@ -483,7 +483,7 @@
                   <object class="GtkSpinButton" id="ga_autocorrcut">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">0,00</property>
+                    <property name="text" translatable="yes">0.00</property>
                     <property name="adjustment">adj_autocorrcut_OPS</property>
                     <property name="digits">2</property>
                     <property name="numeric">True</property>
@@ -587,6 +587,7 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="spacing">10</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -604,7 +605,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="valign">center</property>
-                        <property name="margin_left">5</property>
                         <property name="margin_start">5</property>
                         <property name="active">True</property>
                         <signal name="state-set" handler="on_auto_state_set" object="ga_max_latent_model" swapped="no"/>
@@ -695,7 +695,7 @@
                   <object class="GtkSpinButton" id="ga_migration_rate">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">1,00</property>
+                    <property name="text" translatable="yes">1.00</property>
                     <property name="input_purpose">number</property>
                     <property name="adjustment">adj_migration_GA</property>
                     <property name="digits">2</property>
@@ -715,7 +715,7 @@
                     <property name="adjustment">adj_crossover_GA</property>
                     <property name="digits">2</property>
                     <property name="numeric">True</property>
-                    <property name="value">0.5</property>
+                    <property name="value">0.50000000000000000000</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -924,6 +924,7 @@
     </child>
   </object>
   <object class="GtkAdjustment" id="adj_yrand_OPS">
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.1</property>
@@ -1331,6 +1332,7 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="spacing">10</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -1368,6 +1370,7 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="spacing">10</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -1498,6 +1501,57 @@
                     <property name="width">2</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="spacing">10</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Single OPS</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSwitch" id="ops_feed_ops">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="active">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Feed OPS</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">6</property>
+                    <property name="width">3</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -1549,9 +1603,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="adjustment">adj_yrand_OPS</property>
-                    <property name="climb_rate">1</property>
                     <property name="digits">2</property>
                     <property name="numeric">True</property>
+                    <property name="value">0.01</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -1563,7 +1617,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="adjustment">adj_lno_OPS</property>
-                    <property name="climb_rate">1</property>
                     <property name="digits">2</property>
                     <property name="numeric">True</property>
                   </object>

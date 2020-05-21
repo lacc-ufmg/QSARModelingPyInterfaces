@@ -4,22 +4,22 @@
   <requires lib="gtk+" version="3.22"/>
   <object class="GtkAdjustment" id="adj_autocorrcut_OPS">
     <property name="upper">1</property>
-    <property name="value">0,90000000000000002220</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="value">0.9</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_corrcut_OPS">
     <property name="upper">1</property>
-    <property name="value">0,29999999999999998890</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="value">0.3</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_crossover_GA">
-    <property name="lower">0,01000000000000000021</property>
+    <property name="lower">0.01</property>
     <property name="upper">999999999</property>
-    <property name="value">0,50000000000000000000</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="value">0.5</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_increment_OPS">
     <property name="lower">1</property>
@@ -29,17 +29,17 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adj_lno_GA">
-    <property name="lower">0,01000000000000000021</property>
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
-    <property name="value">0,10000000000000000555</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="value">0.1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_lno_OPS">
     <property name="upper">1</property>
-    <property name="value">0,10000000000000000555</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="value">0.1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_max_var_model_GA">
     <property name="lower">1</property>
@@ -49,11 +49,11 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adj_migration_GA">
-    <property name="lower">0,01000000000000000021</property>
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
-    <property name="value">0,20000000000000001110</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="value">0.2</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_min_var_model_GA">
     <property name="lower">1</property>
@@ -63,11 +63,11 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adj_mutation_GA">
-    <property name="lower">0,01000000000000000021</property>
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
-    <property name="value">0,20000000000000001110</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="value">0.2</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_number_generations_GA">
     <property name="lower">1</property>
@@ -101,11 +101,11 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adj_percent_var_OPS">
-    <property name="lower">0,01000000000000000021</property>
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
     <property name="value">1</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_size_pop_GA">
     <property name="lower">1</property>
@@ -116,21 +116,21 @@
   </object>
   <object class="GtkAdjustment" id="adj_varcut_GA">
     <property name="upper">1</property>
-    <property name="value">0,10000000000000000555</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="value">0.1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_varcut_OPS">
     <property name="upper">1</property>
-    <property name="value">0,10000000000000000555</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="value">0.1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_yrand_GA">
-    <property name="lower">0,01000000000000000021</property>
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkWindow" id="config_GA_window">
     <property name="can_focus">False</property>
@@ -587,7 +587,6 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">10</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -605,6 +604,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="valign">center</property>
+                        <property name="margin_left">5</property>
                         <property name="margin_start">5</property>
                         <property name="active">True</property>
                         <signal name="state-set" handler="on_auto_state_set" object="ga_max_latent_model" swapped="no"/>
@@ -715,7 +715,7 @@
                     <property name="adjustment">adj_crossover_GA</property>
                     <property name="digits">2</property>
                     <property name="numeric">True</property>
-                    <property name="value">0,50000000000000000000</property>
+                    <property name="value">0.5</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -924,10 +924,9 @@
     </child>
   </object>
   <object class="GtkAdjustment" id="adj_yrand_OPS">
-    <property name="lower">0,01000000000000000021</property>
     <property name="upper">1</property>
-    <property name="step_increment">0,01000000000000000021</property>
-    <property name="page_increment">0,10000000000000000555</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkWindow" id="config_OPS_window">
     <property name="can_focus">False</property>
@@ -1332,7 +1331,6 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">10</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -1370,7 +1368,6 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">10</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -1501,57 +1498,6 @@
                     <property name="width">2</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">center</property>
-                    <property name="spacing">10</property>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Single OPS</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSwitch" id="ops_feed_ops">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="halign">center</property>
-                        <property name="valign">center</property>
-                        <property name="active">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Feed OPS</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">6</property>
-                    <property name="width">3</property>
-                  </packing>
-                </child>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -1603,9 +1549,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="adjustment">adj_yrand_OPS</property>
+                    <property name="climb_rate">1</property>
                     <property name="digits">2</property>
                     <property name="numeric">True</property>
-                    <property name="value">0,01000000000000000021</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>

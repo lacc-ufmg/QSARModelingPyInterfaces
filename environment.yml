@@ -1,4 +1,4 @@
-name: gtktest
+name: QSARModelingPy
 channels:
   - conda-forge
   - defaults

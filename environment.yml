@@ -1,4 +1,4 @@
-name: gtktest
+name: QSARModelingPy
 channels:
   - conda-forge
   - defaults
@@ -66,5 +66,4 @@ dependencies:
     - pyqt5==5.14.2
     - pyqt5-sip==12.7.2
     - pyqtwebengine==5.14.0
-prefix: C:\Users\Usuario\.conda\envs\gtktest
 

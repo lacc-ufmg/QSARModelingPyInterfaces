@@ -4,9 +4,10 @@ import numpy as np
 from sklearn.preprocessing import scale
 from sklearn import linear_model
 
+
 class YRandomization(object):
 	"""docstring for YRandomization"""
-	def __init__(self, X,y,nLV,nrd = 50):
+	def __init__(self, X, y, nLV, nrd=50):
 		self.X = X
 		self.y = y
 		self.nLV = nLV

@@ -4,12 +4,22 @@
   <requires lib="gtk+" version="3.22"/>
   <object class="GtkAdjustment" id="adj_autocorrcut_OPS">
     <property name="upper">1</property>
+    <property name="value">0.9</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_corrcut_OPS">
     <property name="upper">1</property>
+    <property name="value">0.3</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_crossover_GA">
+    <property name="lower">0.01</property>
     <property name="upper">999999999</property>
+    <property name="value">0.5</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_increment_OPS">
     <property name="lower">1</property>
@@ -19,10 +29,17 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adj_lno_GA">
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
+    <property name="value">0.1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_lno_OPS">
     <property name="upper">1</property>
+    <property name="value">0.1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_max_var_model_GA">
     <property name="lower">1</property>
@@ -32,7 +49,11 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adj_migration_GA">
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
+    <property name="value">0.2</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_min_var_model_GA">
     <property name="lower">1</property>
@@ -42,7 +63,11 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adj_mutation_GA">
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
+    <property name="value">0.2</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_number_generations_GA">
     <property name="lower">1</property>
@@ -76,8 +101,11 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adj_percent_var_OPS">
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
     <property name="value">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_size_pop_GA">
     <property name="lower">1</property>
@@ -88,12 +116,21 @@
   </object>
   <object class="GtkAdjustment" id="adj_varcut_GA">
     <property name="upper">1</property>
+    <property name="value">0.1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_varcut_OPS">
     <property name="upper">1</property>
+    <property name="value">0.1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkAdjustment" id="adj_yrand_GA">
+    <property name="lower">0.01</property>
     <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkWindow" id="config_GA_window">
     <property name="can_focus">False</property>
@@ -124,7 +161,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">X matrix</property>
+                    <property name="label" translatable="yes">Output matrix file</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -136,46 +173,11 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">y vector</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
-                    <property name="width">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">Output matrix file</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Output cross validation file</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -187,7 +189,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -199,7 +201,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">6</property>
+                    <property name="top_attach">3</property>
                   </packing>
                 </child>
                 <child>
@@ -210,7 +212,8 @@
                       <object class="GtkEntry" id="GA_output_matrix">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">File destination</property>
+                        <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the filtered matrix. If blank, it will use the same directory as matrix and a default filename.</property>
+                        <property name="placeholder_text" translatable="yes">(optional)</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -235,7 +238,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -246,7 +249,8 @@
                       <object class="GtkEntry" id="GA_output_cv">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">File destination</property>
+                        <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the cross validation results. If blank, it will use the same directory as matrix and a default filename.</property>
+                        <property name="placeholder_text" translatable="yes">(optional)</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -271,7 +275,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -282,7 +286,8 @@
                       <object class="GtkEntry" id="GA_output_q2">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">File destination</property>
+                        <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the file of Q² values. If blank, it will use the same directory as matrix and a default filename.</property>
+                        <property name="placeholder_text" translatable="yes">(optional)</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -307,7 +312,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -318,7 +323,8 @@
                       <object class="GtkEntry" id="GA_output_selected_variables">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">File destination</property>
+                        <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the file of selected variables. If blank, it will use the same directory as matrix and a default filename.</property>
+                        <property name="placeholder_text" translatable="yes">(optional)</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -343,79 +349,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">6</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkEntry" id="GA_input_Xmatrix">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">X matrix path</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <property name="label" translatable="yes">Browse</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_open_file" object="GA_input_Xmatrix" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkEntry" id="GA_input_yvector">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">y vector path</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <property name="label" translatable="yes">Browse</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_open_file" object="GA_input_yvector" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
+                    <property name="top_attach">3</property>
                   </packing>
                 </child>
               </object>
@@ -779,8 +713,9 @@
                     <property name="can_focus">True</property>
                     <property name="input_purpose">number</property>
                     <property name="adjustment">adj_crossover_GA</property>
-                    <property name="digits">4</property>
+                    <property name="digits">2</property>
                     <property name="numeric">True</property>
+                    <property name="value">0.5</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -990,6 +925,8 @@
   </object>
   <object class="GtkAdjustment" id="adj_yrand_OPS">
     <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.1</property>
   </object>
   <object class="GtkWindow" id="config_OPS_window">
     <property name="can_focus">False</property>
@@ -1020,7 +957,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">X matrix</property>
+                    <property name="label" translatable="yes">Output matrix file</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1032,46 +969,11 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">y vector</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
-                    <property name="width">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="label" translatable="yes">Output matrix file</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
                     <property name="label" translatable="yes">Output cross validation file</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1083,7 +985,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -1094,7 +996,8 @@
                       <object class="GtkEntry" id="OPS_output_matrix">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">File destination</property>
+                        <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the file of selected variables. If blank, it will use the same directory as matrix and a default filename.</property>
+                        <property name="placeholder_text" translatable="yes">(optional)</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1119,7 +1022,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -1130,7 +1033,8 @@
                       <object class="GtkEntry" id="OPS_output_cv">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">File destination</property>
+                        <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the cross validation results. If blank, it will use the same directory as matrix and a default filename.</property>
+                        <property name="placeholder_text" translatable="yes">(optional)</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1155,7 +1059,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1166,7 +1070,8 @@
                       <object class="GtkEntry" id="OPS_output_models">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">File destination</property>
+                        <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the file with models. If blank, it will use the same directory as matrix and a default filename.</property>
+                        <property name="placeholder_text" translatable="yes">(optional)</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1191,79 +1096,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkEntry" id="OPS_input_yvector">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">y vector path</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <property name="label" translatable="yes">Browse</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_open_file" object="OPS_input_yvector" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkEntry" id="OPS_input_Xmatrix">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">X matrix path</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
-                        <property name="label" translatable="yes">Browse</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_open_file" object="OPS_input_Xmatrix" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
               </object>
@@ -1848,7 +1681,6 @@
                     <child>
                       <object class="GtkMenuItem" id="menu_open">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Open...</property>
                         <child type="submenu">
@@ -1861,6 +1693,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="tooltip_text" translatable="yes">Open descriptor matrix</property>
                                 <property name="label" translatable="yes">Open matrix</property>
+                                <signal name="activate" handler="on_menu_open_matrix_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1868,6 +1701,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Open vector</property>
+                                <signal name="activate" handler="on_menu_open_vector_activate" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -1895,6 +1729,7 @@
             <child>
               <object class="GtkMenuItem" id="menu_generate">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Generates a complete model.</property>
                 <property name="label" translatable="yes">Generate</property>
@@ -1925,6 +1760,7 @@
             <child>
               <object class="GtkMenuItem" id="menu_validate">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Validate</property>
                 <child type="submenu">
@@ -1970,6 +1806,7 @@
             <child>
               <object class="GtkMenuItem" id="menu_filter">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Filter</property>
                 <child type="submenu">
@@ -2007,6 +1844,7 @@
             <child>
               <object class="GtkMenuItem" id="menu_predict">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Predict</property>
                 <child type="submenu">
@@ -2049,12 +1887,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkStack">
+          <object class="GtkStack" id="main_window_stack">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="transition_duration">0</property>
             <child>
-              <object class="GtkBox" id="main_window_wellcome">
+              <object class="GtkBox" id="main_window_welcome">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
@@ -2066,11 +1904,13 @@
                     <property name="margin_end">20</property>
                     <property name="margin_top">20</property>
                     <property name="margin_bottom">20</property>
-                    <property name="label" translatable="yes">Wellcome to QSARModelingPy Alpha
+                    <property name="label" translatable="yes">Welcome to QSARModelingPy Alpha
+
+To begin, go to File &gt; Open... and open both matrix and vector.
 
 To generate a model using either OPS or GA, go to Generate and choose the method.
 
-To perform validation, filter or prediction, please go to File &gt; Open..., then use the corresponding menu.</property>
+To perform validation, filter or prediction, use the corresponding menu.</property>
                     <property name="justify">center</property>
                   </object>
                   <packing>
@@ -2080,7 +1920,7 @@ To perform validation, filter or prediction, please go to File &gt; Open..., the
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label_footer_wellcome">
+                  <object class="GtkLabel" id="label_footer_welcome">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">QSARModelingPyAlpha</property>
@@ -2103,7 +1943,63 @@ To perform validation, filter or prediction, please go to File &gt; Open..., the
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <placeholder/>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <property name="propagate_natural_width">True</property>
+                        <child>
+                          <object class="GtkTreeView" id="treeview_X">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="hexpand">True</property>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection"/>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">never</property>
+                        <property name="shadow_type">in</property>
+                        <property name="max_content_width">100</property>
+                        <child>
+                          <object class="GtkTreeView" id="treeview_y">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection"/>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="label_footer_tables">

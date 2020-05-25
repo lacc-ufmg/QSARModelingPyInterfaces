@@ -8,7 +8,7 @@ import pandas
 import random
 
 builder: Gtk.Builder = Gtk.Builder()
-builder.add_from_file('qsarmodeling.ui')
+builder.add_from_file('qsarmodeling.glade')
 
 
 class Handler(object):
@@ -16,23 +16,27 @@ class Handler(object):
     ops_config = {}
 
     def __init__(self):
+        # Saving windows
         self.main_window = builder.get_object('main_window')
         self.config_OPS_window = builder.get_object('config_OPS_window')
         self.config_GA_window = builder.get_object('config_GA_window')
         self.about_window = builder.get_object('about_window')
         self.csv_file_filter = builder.get_object('open_filter')
         self.main_window_stack = builder.get_object('main_window_stack')
+        self.config_varcut_window = builder.get_object('config_varcut_window')
 
+        # Saving elements
         self.main_window_pages = [builder.get_object('main_window_welcome'), builder.get_object('main_window_tables')]
         self.treeview_X = builder.get_object('treeview_X')
         self.treeview_y = builder.get_object('treeview_y')
 
-        # connect destroy signal to hide
+        # connect destroy signal
         self.main_window.connect('destroy', Gtk.main_quit)
         self.config_OPS_window.connect('delete-event', lambda w, e: w.hide() or True)
         self.config_GA_window.connect('delete-event', lambda w, e: w.hide() or True)
         self.about_window.connect('delete-event', lambda w, e: w.hide() or True)
 
+        # Setting file filters
         self.csv_file_filter.set_name('CSV Files (*.csv)')
 
         # Handling files
@@ -47,6 +51,9 @@ class Handler(object):
     def on_menu_ga_model_activate(self, _):
         self.config_GA_window.show_all()
 
+    def on_menu_varcut_activate(self, _):
+        self.config_varcut_window.show()
+
     def on_OPS_cancel_button_clicked(self, _):
         self.config_OPS_window.hide()
 
@@ -54,7 +61,7 @@ class Handler(object):
         self.config_GA_window.hide()
 
     def on_OPS_run_button_clicked(self, _):
-        if os.path.isfile(self.X_matrix) and os.path.isfile(self.y_vector):
+        if self.files_ok():
             self.ops_config = {
                 'XMatrix': self.X_matrix,
                 'yvector': self.y_vector,
@@ -98,7 +105,7 @@ class Handler(object):
             print("Please, go to File > Open... before run a calculation.")
 
     def on_GA_run_button_clicked(self, _):
-        if os.path.isfile(self.X_matrix) and os.path.isfile(self.y_vector):
+        if self.files_ok():
             self.ga_config = {
                 'XMatrix': self.X_matrix,
                 'yvector': self.y_vector,
@@ -148,16 +155,6 @@ class Handler(object):
 
     def on_menu_about_activate(self, _):
         self.about_window.run()
-
-    def on_auto_state_set(self, obj, active: bool):
-        """Set an object as active (editable) or not. Usually called by switchers."""
-        if active:
-            obj.set_value(0)
-            obj.set_editable(False)
-            obj.set_sensitive(False)
-        else:
-            obj.set_editable(True)
-            obj.set_sensitive(True)
 
     def open_file(self, use_last_path=True):
         file_chooser = Gtk.FileChooserDialog(title="Open...", action=Gtk.FileChooserAction.OPEN)
@@ -299,6 +296,46 @@ class Handler(object):
         renderer_text = Gtk.CellRendererText()
         column_text = Gtk.TreeViewColumn('Vector', renderer_text, text=0)
         treeview.append_column(column_text)
+
+    def on_varcut_run_button_clicked(self, _):
+        if self.files_ok():
+            value = float(builder.get_object('varcut_varcut').get_value())
+
+            """In the future, the user will be able to cut the matrix without 
+            saving it, leaving it temporarily available within the program to
+            perform another calculation in the sequence."""
+            save = True  # builder.get_object('varcut_save').get_active()
+            output = builder.get_object('varcut_output').get_text() if save else ""
+            new_matrix = RunCalculations.runVarCut(self.X_matrix, value, save, output)
+            if os.path.isfile(new_matrix):
+                self.X_matrix = new_matrix
+                self.draw_matrices('matrix')
+            self.config_varcut_window.hide()
+
+    @staticmethod
+    def on_auto_state_set(obj, active: bool):
+        """Set an object as active (editable) or not. Usually called by switchers."""
+        if active:
+            obj.set_value(0)
+            obj.set_editable(False)
+            obj.set_sensitive(False)
+        else:
+            obj.set_editable(True)
+            obj.set_sensitive(True)
+
+    def on_varcut_save_toggled(self, this):
+        box = builder.get_object('varcut_filename_box')
+        if this.get_active():
+            box.show()
+        else:
+            box.hide()
+
+    def files_ok(self):
+        return os.path.isfile(self.X_matrix) and os.path.isfile(self.y_vector)
+
+    @staticmethod
+    def on_close_modal(modal):
+        modal.hide()
 
     @staticmethod
     def clear_treeview(treeview):

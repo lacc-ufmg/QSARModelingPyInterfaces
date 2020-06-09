@@ -1,0 +1,263 @@
+import gi
+
+gi.require_version('Gtk', '3.0')
+import os
+from gi.repository import Gtk
+import pandas
+import random
+
+from runCalculations import RunCalculations
+
+
+class Handler(object):
+
+    def __init__(self, builder):
+        self.builder = builder
+        # Saving windows
+        self.main_window = builder.get_object('main_window')
+        self.config_OPS_window = builder.get_object('config_OPS_window')
+        self.config_GA_window = builder.get_object('config_GA_window')
+        self.about_window = builder.get_object('about_window')
+        self.csv_file_filter = builder.get_object('open_filter')
+        self.main_window_stack = builder.get_object('main_window_stack')
+        self.config_varcut_window = builder.get_object('config_varcut_window')
+
+        # Saving elements
+        self.main_window_pages = [builder.get_object('main_window_welcome'), builder.get_object('main_window_tables')]
+        self.treeview_X = builder.get_object('treeview_X')
+        self.treeview_y = builder.get_object('treeview_y')
+
+        # connect destroy signal
+        self.main_window.connect('destroy', Gtk.main_quit)
+        self.about_window.connect('delete-event', lambda w, e: w.hide() or True)
+
+        # Setting file filters
+        self.csv_file_filter.set_name('CSV Files (*.csv)')
+
+        # Handling files
+        # TODO: remove hardcoded filenames
+        self.X_matrix = "/home/helitonmrf/Documents/QSAR_Tests/Set1.csv"
+        self.y_vector = "/home/helitonmrf/Documents/QSAR_Tests/y_set1.txt"
+        self.last_opened_path = ""
+        self.last_saved_path = ""
+
+    def on_menu_ops_model_activate(self, _):
+        """ Handle menu Generate > OPS """
+        self.config_OPS_window.show_all()
+
+    def on_menu_ga_model_activate(self, _):
+        """ Handle menu Generate > GA """
+        self.config_GA_window.show_all()
+
+    def on_menu_varcut_activate(self, _):
+        """ Handle menu Filter > Variance cut """
+        self.config_varcut_window.show()
+
+    def open_file(self, use_last_path=True):
+        file_chooser = Gtk.FileChooserDialog(title="Open...", action=Gtk.FileChooserAction.OPEN)
+        file_chooser.add_buttons("Cancel", Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.OK)
+        file_chooser.set_default_response(Gtk.ResponseType.OK)
+        file_chooser.add_filter(self.csv_file_filter)
+        if self.last_opened_path and use_last_path:
+            file_chooser.set_current_folder(self.last_opened_path)
+        response = file_chooser.run()
+        filename = None
+        if response == Gtk.ResponseType.OK:
+            filename = file_chooser.get_filename()
+            self.last_opened_path = os.path.dirname(os.path.abspath(filename))
+            # entry.set_text(filename)
+        file_chooser.destroy()
+        return filename
+
+    def on_save_file(self, entry):
+        file_chooser = Gtk.FileChooserDialog(title="Save...", action=Gtk.FileChooserAction.SAVE)
+        file_chooser.add_buttons("Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.OK)
+        file_chooser.set_default_response(Gtk.ResponseType.OK)
+        file_chooser.add_filter(self.csv_file_filter)
+        if self.last_saved_path:
+            file_chooser.set_current_folder(self.last_saved_path)
+        elif self.last_opened_path:
+            file_chooser.set_current_folder(self.last_opened_path)
+        response = file_chooser.run()
+        if response == Gtk.ResponseType.OK:
+            filename = file_chooser.get_filename()
+            self.last_saved_path = filename
+            entry.set_text(filename)
+        file_chooser.destroy()
+
+    def block_menus_until_file_load(self):
+        """ Block menus while files is not properly loaded """
+        menus = [
+            self.builder.get_object('menu_generate'),
+            self.builder.get_object('menu_validate'),
+            self.builder.get_object('menu_filter'),
+            self.builder.get_object('menu_predict'),
+        ]
+        if self.X_matrix and self.y_vector:
+            for elem in menus:
+                elem.set_sensitive(True)
+        else:
+            for elem in menus:
+                elem.set_sensitive(False)
+
+    def on_menu_open_matrix_activate(self, _):
+        """ Handle menu File > Open... > Open matrix """
+        filename = self.open_file()
+        if filename:
+            self.X_matrix = filename
+            self.draw_matrices('matrix')
+
+    def on_menu_open_vector_activate(self, _):
+        """ Handle menu File > Open... > Open vector """
+        filename = self.open_file()
+        if filename:
+            self.y_vector = filename
+            self.draw_matrices('vector')
+
+    def draw_matrices(self, what_to_draw):
+        """ Draw a pandas matrix or vector in the main screen.
+            Works like a Factory to draw_pandas_matrix() and draw_pandas_vector(). """
+        show = False
+        if what_to_draw == 'matrix' and self.X_matrix and os.path.isfile(self.X_matrix):
+            # Draw matrix
+            self.draw_pandas_matrix(self.treeview_X, self.X_matrix)
+            show = True
+        if what_to_draw == 'vector' and self.y_vector and os.path.isfile(self.y_vector):
+            # Draw vector
+            self.draw_pandas_vector(self.treeview_y, self.y_vector)
+            show = True
+
+        if show:
+            self.main_window_stack.set_visible_child(self.main_window_pages[1])
+        else:
+            self.main_window_stack.set_visible_child(self.main_window_pages[0])
+
+        self.block_menus_until_file_load()
+
+    def draw_pandas_matrix(self, treeview, path, print_index=True):
+        """ Draws in treeview a pandas matrix from path (csv) """
+        df = pandas.read_csv(path, index_col=0)
+        print_etc = False
+        if df.shape[1] > 10:
+            df = df.iloc[:, 0:10]
+            print_etc = True
+        liststore_args = [str] if print_index else []
+        liststore_args += [float] * int(df.shape[1])
+        if print_etc:
+            liststore_args += [str]
+        liststore = Gtk.ListStore(*liststore_args)
+        df_indexes = df.index.values
+        for i in range(df.shape[0]):
+            appendix = [str(df_indexes[i])] if print_index else []
+            appendix += list(df.iloc[i, :])
+            if print_etc:
+                appendix += ["..."]
+
+            liststore.append(appendix)
+        self.clear_treeview(treeview)
+        current_model = treeview.get_model()
+        if current_model is not None:
+            current_model.clear()
+        treeview.set_model(liststore)
+
+        # Draw index column
+        if print_index:
+            renderer_text = Gtk.CellRendererText()
+            column_text = Gtk.TreeViewColumn('Molecule', renderer_text, text=0)
+            treeview.append_column(column_text)
+
+        # Draw data columns
+        for i in range(df.shape[1]):
+            renderer_text = Gtk.CellRendererText()
+            text = i + 1 if print_index else i
+            column_text = Gtk.TreeViewColumn(df.columns[i], renderer_text, text=text)
+            treeview.append_column(column_text)
+
+        # Draw et cetera column
+        if print_etc:
+            renderer_text = Gtk.CellRendererText()
+            text = df.shape[1] + 1 if print_index else df.shape[1]
+            column_text = Gtk.TreeViewColumn('...', renderer_text, text=df.shape[1] + 1)
+            treeview.append_column(column_text)
+
+    def draw_pandas_vector(self, treeview, path):
+        """ Draws in treeview a pandas vector from path (csv/txt) """
+        df = pandas.read_csv(path)
+
+        self.clear_treeview(treeview)
+
+        liststore = Gtk.ListStore(float)
+
+        # df should be a vector
+        data = list(df.iloc[0, :]) if df.shape[0] == 1 else list(df.iloc[:, 0])
+
+        for i in range(max(df.shape[0], df.shape[1])):
+            liststore.append([data[i]])
+
+        treeview.set_model(liststore)
+
+        # Draw data column
+        renderer_text = Gtk.CellRendererText()
+        column_text = Gtk.TreeViewColumn('Vector', renderer_text, text=0)
+        treeview.append_column(column_text)
+
+    def on_varcut_run_button_clicked(self, _):
+        """ Handle Run button from Variance cut screen """
+        if self.files_ok():
+            value = float(self.builder.get_object('varcut_varcut').get_value())
+
+            """In the future, the user will be able to cut the matrix without 
+            saving it, leaving it temporarily available within the program to
+            perform another calculation in the sequence."""
+            save = True  # self.builder.get_object('varcut_save').get_active()
+            output = self.builder.get_object('varcut_output').get_text() if save else ""
+            new_matrix = RunCalculations.runVarCut(self.X_matrix, value, save, output)
+            if os.path.isfile(new_matrix):
+                self.X_matrix = new_matrix
+                self.draw_matrices('matrix')
+            self.config_varcut_window.hide()
+
+    def on_menu_about_activate(self, _):
+        """ Handle menu About """
+
+        self.about_window.run()
+
+    @staticmethod
+    def on_auto_state_set(obj, active: bool):
+        """Set an object as active (editable) or not. Usually called by switchers."""
+        if active:
+            obj.set_value(0)
+            obj.set_editable(False)
+            obj.set_sensitive(False)
+        else:
+            obj.set_editable(True)
+            obj.set_sensitive(True)
+
+    def on_varcut_save_toggled(self, this):
+        """ Handle the toggle of Variance Cut screen save Option """
+        box = self.builder.get_object('varcut_filename_box')
+        if this.get_active():
+            box.show()
+        else:
+            box.hide()
+
+    def files_ok(self):
+        return os.path.isfile(self.X_matrix) and os.path.isfile(self.y_vector)
+
+    @staticmethod
+    def on_close_modal(modal):
+        modal.hide()
+
+    @staticmethod
+    def clear_treeview(treeview):
+        columns = treeview.get_columns()
+        for col in columns:
+            treeview.remove_column(col)
+
+    @staticmethod
+    def on_about_window_destroy(_):
+        return True
+
+    @staticmethod
+    def gtk_main_quit(_):
+        Gtk.main_quit()

@@ -4,7 +4,6 @@ gi.require_version('Gtk', '3.0')
 import os
 from gi.repository import Gtk
 import pandas
-import random
 
 from runCalculations import RunCalculations
 
@@ -21,6 +20,8 @@ class Handler(object):
         self.csv_file_filter = builder.get_object('open_filter')
         self.main_window_stack = builder.get_object('main_window_stack')
         self.config_varcut_window = builder.get_object('config_varcut_window')
+        self.config_corrcut_window = builder.get_object('config_corrcut_window')
+        self.config_autocorrcut_window = builder.get_object('config_autocorrcut_window')
 
         # Saving elements
         self.main_window_pages = [builder.get_object('main_window_welcome'), builder.get_object('main_window_tables')]
@@ -52,6 +53,14 @@ class Handler(object):
     def on_menu_varcut_activate(self, _):
         """ Handle menu Filter > Variance cut """
         self.config_varcut_window.show()
+
+    def on_menu_corrcut_activate(self, _):
+        """ Handle menu Filter > Correlation cut """
+        self.config_corrcut_window.show()
+
+    def on_menu_autocorrcut_activate(self, _):
+        """ Handle menu Filter > Autocorrelation cut """
+        self.config_autocorrcut_window.show()
 
     def open_file(self, use_last_path=True):
         file_chooser = Gtk.FileChooserDialog(title="Open...", action=Gtk.FileChooserAction.OPEN)
@@ -201,22 +210,6 @@ class Handler(object):
         column_text = Gtk.TreeViewColumn('Vector', renderer_text, text=0)
         treeview.append_column(column_text)
 
-    def on_varcut_run_button_clicked(self, _):
-        """ Handle Run button from Variance cut screen """
-        if self.files_ok():
-            value = float(self.builder.get_object('varcut_varcut').get_value())
-
-            """In the future, the user will be able to cut the matrix without 
-            saving it, leaving it temporarily available within the program to
-            perform another calculation in the sequence."""
-            save = True  # self.builder.get_object('varcut_save').get_active()
-            output = self.builder.get_object('varcut_output').get_text() if save else ""
-            new_matrix = RunCalculations.runVarCut(self.X_matrix, value, save, output)
-            if os.path.isfile(new_matrix):
-                self.X_matrix = new_matrix
-                self.draw_matrices('matrix')
-            self.config_varcut_window.hide()
-
     def on_menu_about_activate(self, _):
         """ Handle menu About """
 
@@ -232,14 +225,6 @@ class Handler(object):
         else:
             obj.set_editable(True)
             obj.set_sensitive(True)
-
-    def on_varcut_save_toggled(self, this):
-        """ Handle the toggle of Variance Cut screen save Option """
-        box = self.builder.get_object('varcut_filename_box')
-        if this.get_active():
-            box.show()
-        else:
-            box.hide()
 
     def files_ok(self):
         return os.path.isfile(self.X_matrix) and os.path.isfile(self.y_vector)

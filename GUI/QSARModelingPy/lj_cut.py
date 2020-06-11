@@ -9,9 +9,9 @@ def ljCut(value,cut):
     return calValue
 
 def transform(dfLj):
-	m,n = dfLj.shape
-	for i in range(m):
-		# for j in range(int(n/2)+1,n):
-		for j in range(n):
-			dfLj.values[i,j] = ljCut(dfLj.values[i,j],30)
-	return dfLj
+    m,n = dfLj.shape
+    for i in range(m):
+        # for j in range(int(n/2)+1,n):
+        for j in range(n):
+            dfLj.values[i,j] = ljCut(dfLj.values[i,j],30)
+    return dfLj

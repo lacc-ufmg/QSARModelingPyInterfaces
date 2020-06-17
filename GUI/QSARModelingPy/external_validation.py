@@ -35,7 +35,7 @@ if __name__=='__main__':
     directory = dfConf[1][0]
     Xfile = dfConf[1][1]
     yfile = dfConf[1][2]
-    test_set = dfConf[1][3]    
+    test_set = dfConf[1][3]
     nLV = None if dfConf.isnull()[1][4] else int(dfConf[1][4])
     out_directory = dfConf[1][5]
     ext_val_file = dfConf[1][6]

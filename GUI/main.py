@@ -10,6 +10,7 @@ from MainHandler import Handler
 from GAHandler import GAHandler
 from OPSHandler import OPSHandler
 from FilterHandler import FilterHandler
+from ValidationHandler import ValidationHandler
 
 builder: Gtk.Builder = Gtk.Builder()
 builder.add_from_file('./Views/main.glade')
@@ -19,6 +20,7 @@ builder.add_from_file('./Views/about.glade')
 builder.add_from_file('./Views/varcut.glade')
 builder.add_from_file('./Views/corrcut.glade')
 builder.add_from_file('./Views/autocorrcut.glade')
+builder.add_from_file('./Views/cross_validation.glade')
 
 handler = Handler(builder)
 
@@ -27,7 +29,8 @@ handlers = [
     Handler(builder),
     GAHandler(builder, handler),
     OPSHandler(builder, handler),
-    FilterHandler(builder, handler)
+    FilterHandler(builder, handler),
+    ValidationHandler(builder, handler),
 ]
 
 

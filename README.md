@@ -44,13 +44,14 @@ Enter `jupyter` directory and run jupyter notebook:
 $ cd ./jupyter
 $ jupyter notebook
 ```
-You're ready. 
+
+Execute `QSARModelingNotebook.ipynb` and you're ready. 
 
 ### Using with the Graphical User Interface
 
 First of all, you'll need to install adwaita icons. For linux, run:
 
-```bash
+```sh
 $ sudo apt install adwaita-icon-theme-full
 ```
 

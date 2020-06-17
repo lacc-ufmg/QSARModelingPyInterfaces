@@ -22,6 +22,7 @@ class Handler(object):
         self.config_varcut_window = builder.get_object('config_varcut_window')
         self.config_corrcut_window = builder.get_object('config_corrcut_window')
         self.config_autocorrcut_window = builder.get_object('config_autocorrcut_window')
+        self.config_cv_window = builder.get_object('config_cv_window')
 
         # Saving elements
         self.main_window_pages = [builder.get_object('main_window_welcome'), builder.get_object('main_window_tables')]
@@ -61,6 +62,10 @@ class Handler(object):
     def on_menu_autocorrcut_activate(self, _):
         """ Handle menu Filter > Autocorrelation cut """
         self.config_autocorrcut_window.show()
+
+    def on_menu_cv_activate(self, _):
+        """ Handle menu Validation > Cross Validation """
+        self.config_cv_window.show()
 
     def open_file(self, use_last_path=True):
         file_chooser = Gtk.FileChooserDialog(title="Open...", action=Gtk.FileChooserAction.OPEN)

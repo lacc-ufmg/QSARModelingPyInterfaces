@@ -119,7 +119,6 @@
             <child>
               <object class="GtkMenuItem" id="menu_validate">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Validate</property>
                 <child type="submenu">
@@ -129,9 +128,9 @@
                     <child>
                       <object class="GtkMenuItem" id="menu_cv">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Cross-Validation</property>
+                        <signal name="activate" handler="on_menu_cv_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>

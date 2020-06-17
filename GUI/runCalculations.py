@@ -2,6 +2,7 @@ import pandas, os
 from QSARModelingPy.runGa import run as runGA
 from QSARModelingPy.runOPS import run as runOPS
 from QSARModelingPy.filter import variance_cut, correlation_cut, autocorrelation_cut
+from QSARModelingPy.cross_validation_class import CrossValidation
 
 
 class RunCalculations:
@@ -58,3 +59,15 @@ class RunCalculations:
     @staticmethod
     def runAutoCorrCut(X_path: str, y_path: str, autocorrcut: float, save: bool = True, output: str = ""):
         RunCalculations.runCorrelationFilter(True, X_path, y_path, autocorrcut, save, output)
+
+    @staticmethod
+    def runCrossValidation(X_path: str, y_path: str, filename: str = "", nLV=None):
+        if filename == "":
+            X_name = os.path.splitext(os.path.basename(X_path))[0]
+            filename = os.path.join(os.path.dirname(X_path),
+                                    f'{X_name}_CV_output.csv')
+        dfX = pandas.read_csv(X_path, index_col=0).values
+        dfy = pandas.read_csv(y_path, header=None).values
+        print(dfX.shape, dfy.shape)
+        cv = CrossValidation(dfX, dfy)
+        #cv.saveParameters(filename)

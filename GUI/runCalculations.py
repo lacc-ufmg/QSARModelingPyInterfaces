@@ -70,4 +70,4 @@ class RunCalculations:
         dfy = pandas.read_csv(y_path, header=None).values
         print(dfX.shape, dfy.shape)
         cv = CrossValidation(dfX, dfy)
-        #cv.saveParameters(filename)
+        cv.saveParameters(filename)

@@ -3,16 +3,17 @@ from QSARModelingPy.runGa import run as runGA
 from QSARModelingPy.runOPS import run as runOPS
 from QSARModelingPy.filter import variance_cut, correlation_cut, autocorrelation_cut
 from QSARModelingPy.cross_validation_class import CrossValidation
+from Interfaces import ConfigGAInterface, ConfigOPSInterface
 
 
 class RunCalculations:
 
     @staticmethod
-    def runGA(config) -> bool:
+    def runGA(config: ConfigGAInterface) -> bool:
         return runGA(config)
 
     @staticmethod
-    def runOPS(config) -> None:
+    def runOPS(config: ConfigOPSInterface) -> None:
         return runOPS(config)
 
     @staticmethod
@@ -53,12 +54,12 @@ class RunCalculations:
             pass
 
     @staticmethod
-    def runCorrCut(X_path: str, y_path: str, corrcut: float, save: bool = True, output: str = "") -> None:
-        RunCalculations.runCorrelationFilter(False, X_path, y_path, corrcut, save, output)
+    def runCorrCut(X_path: str, y_path: str, corrcut: float, save: bool = True, output: str = "") -> str:
+        return RunCalculations.runCorrelationFilter(False, X_path, y_path, corrcut, save, output)
 
     @staticmethod
-    def runAutoCorrCut(X_path: str, y_path: str, autocorrcut: float, save: bool = True, output: str = "") -> None:
-        RunCalculations.runCorrelationFilter(True, X_path, y_path, autocorrcut, save, output)
+    def runAutoCorrCut(X_path: str, y_path: str, autocorrcut: float, save: bool = True, output: str = "") -> str:
+        return RunCalculations.runCorrelationFilter(True, X_path, y_path, autocorrcut, save, output)
 
     @staticmethod
     def runCrossValidation(X_path: str, y_path: str, filename: str = "", nLV=None) -> None:

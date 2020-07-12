@@ -22,7 +22,7 @@ class FilterHandler(Handler):
         self.config_corrcut_window = builder.get_object('config_corrcut_window')
         self.config_autocorrcut_window = builder.get_object('config_autocorrcut_window')
 
-    def run_corrfilter(self, prefix, value):
+    def run_corrfilter(self, prefix, value) -> bool:
         runMethod = {
             'corrcut': RunCalculations.runCorrCut,
             'autocorrcut': RunCalculations.runAutoCorrCut
@@ -49,7 +49,7 @@ class FilterHandler(Handler):
             self.handler.draw_matrices('matrix')
         window[prefix].hide()
 
-    def on_varcut_run_button_clicked(self, _):
+    def on_varcut_run_button_clicked(self, _) -> None:
         """ Handle Run button from Variance cut screen """
         if self.files_ok():
             value = float(self.builder.get_object('varcut_varcut').get_value())
@@ -67,28 +67,28 @@ class FilterHandler(Handler):
                 self.handler.draw_matrices('matrix')
             self.config_varcut_window.hide()
 
-    def on_corrcut_run_button_clicked(self, _):
+    def on_corrcut_run_button_clicked(self, _) -> None:
         """ Handle Run button from Correlation cut screen """
         if self.files_ok():
             value = float(self.builder.get_object('corrcut_corrcut').get_value())
             self.run_corrfilter('corrcut', value)
 
-    def on_autocorrcut_run_button_clicked(self, _):
+    def on_autocorrcut_run_button_clicked(self, _) -> None:
         """ Handle Run button from Autocorrelation cut screen """
         if self.files_ok():
             value = float(self.builder.get_object('autocorrcut_autocorrcut').get_value())
             self.run_corrfilter('autocorrcut', value)
 
-    def on_varcut_save_toggled(self, this):
+    def on_varcut_save_toggled(self, this) -> None:
         self.on_save_toggled(this, 'varcut')
 
-    def on_corrcut_save_toggled(self, this):
+    def on_corrcut_save_toggled(self, this) -> None:
         self.on_save_toggled(this, 'corrcut')
 
-    def on_autocorrcut_save_toggled(self, this):
+    def on_autocorrcut_save_toggled(self, this) -> None:
         self.on_save_toggled(this, 'autocorrcut')
 
-    def on_save_toggled(self, this, prefix):
+    def on_save_toggled(self, this, prefix) -> None:
         """ Handle the toggle of Variance Cut screen save Option """
         box = self.builder.get_object(f'{prefix}_filename_box')
         if this.get_active():

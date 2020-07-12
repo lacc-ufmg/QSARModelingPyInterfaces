@@ -19,7 +19,7 @@ class ValidationHandler(Handler):
         self.X_matrix = self.handler.X_matrix
         self.y_vector = self.handler.y_vector
 
-    def on_cv_run_button_clicked(self, _):
+    def on_cv_run_button_clicked(self, _) -> None:
         if not self.X_matrix or not self.y_vector:
             return
 
@@ -29,24 +29,18 @@ class ValidationHandler(Handler):
 
         RunCalculations.runCrossValidation(self.X_matrix, self.y_vector, filename, nLV)
 
-    def on_yrlno_run_button_clicked(self, _):
+    def on_yrlno_run_button_clicked(self, _) -> None:
         if not self.X_matrix or not self.y_vector:
             return
 
-        # Running parameters:
-        population_file = self.builder.get_object("yrlno_input_pop").get_text()
-        q2_file = self.builder.get_object("yrlno_input_q2").get_text()
-        output_vars = self.builder.get_object("yrlno_output_vars").get_text() or None
-        output_params = self.builder.get_object("yrlno_output_params").get_text() or None
-
-        yrand_criteria = self.builder.get_object("yrlno_yrand").get_value()
-        lno_criteria = self.builder.get_object("yrlno_lno").get_value()
-
         RunCalculations.run_yrlno(
-            self.X_matrix,
-            self.y_vector,
-            population_file,
-            q2_file,
-            yrand_criteria,
-            lno_criteria
+            X_path=self.X_matrix,
+            y_path=self.y_vector,
+            pop_path=self.builder.get_object("yrlno_input_pop").get_text(),
+            Q2_path=self.builder.get_object("yrlno_input_q2").get_text(),
+            output_vars=self.builder.get_object("yrlno_output_vars").get_text() or None,
+            output_params=self.builder.get_object("yrlno_output_params").get_text() or None,
+            yr_cut=self.builder.get_object("yrlno_yrand").get_value(),
+            Q2_cut=self.builder.get_object("yrlno_lno").get_value(),
+            lno_cut=self.builder.get_object("yrlno_q2_crit").get_value()
         )

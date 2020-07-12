@@ -7,6 +7,7 @@ import random
 
 from runCalculations import RunCalculations
 from MainHandler import Handler
+from Interfaces import ConfigGAInterface
 
 
 class GAHandler(Handler):
@@ -17,13 +18,13 @@ class GAHandler(Handler):
         self.y_vector = handler.y_vector
         self.config_GA_window = self.builder.get_object('config_GA_window')
         self.config_GA_window.connect('delete-event', lambda w, e: w.hide() or True)
-        self.ga_config = {}
+        self.ga_config: ConfigGAInterface
 
-    def on_GA_cancel_button_clicked(self, _):
+    def on_GA_cancel_button_clicked(self, _) -> None:
         """ Handle OPS cancel button """
         self.config_GA_window.hide()
 
-    def on_GA_run_button_clicked(self, _):
+    def on_GA_run_button_clicked(self, _) -> None:
         if self.files_ok():
             self.ga_config = {
                 'XMatrix': self.X_matrix,

@@ -3,10 +3,11 @@ gi.require_version('Gtk', '3.0')
 import os
 # from gi.repository import Gtk
 import random
-#from concurrent.futures import ThreadPoolExecutor
+# from concurrent.futures import ThreadPoolExecutor
 
 from runCalculations import RunCalculations
 from MainHandler import Handler
+from Interfaces import ConfigOPSInterface
 
 
 class OPSHandler(Handler):
@@ -18,13 +19,13 @@ class OPSHandler(Handler):
         #self._thread = ThreadPoolExecutor()
         self.config_OPS_window = builder.get_object('config_OPS_window')
         self.config_OPS_window.connect('delete-event', lambda w, e: w.hide() or True)
-        self.ops_config = {}
+        self.ops_config: ConfigOPSInterface
 
-    def on_OPS_cancel_button_clicked(self, _):
+    def on_OPS_cancel_button_clicked(self, _) -> None:
         """ Handle OPS cancel button """
         self.config_OPS_window.hide()
 
-    def on_OPS_run_button_clicked(self, _):
+    def on_OPS_run_button_clicked(self, _) -> None:
         if self.files_ok():
             self.ops_config = {
                 'XMatrix': self.X_matrix,

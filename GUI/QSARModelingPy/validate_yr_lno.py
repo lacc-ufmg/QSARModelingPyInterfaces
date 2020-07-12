@@ -9,7 +9,7 @@ import QSARModelingPy.lj_cut as lj
 from QSARModelingPy.filter import variance_cut, correlation_cut
 
 
-def validate(X, y, pop, Q2, Q2_cut=0.5, yr_cut=0.3, lno_cut=0.1):
+def validate(X, y, pop, Q2, Q2_cut=0.5, yr_cut=0.3, lno_cut=0.1) -> list:
     # y-randomization
     # Q2 = [Q2[i][0] for i,_ in enumerate(Q2)]
     lpass = []

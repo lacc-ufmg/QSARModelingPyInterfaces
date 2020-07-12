@@ -53,8 +53,8 @@ class FilterHandler(Handler):
         """ Handle Run button from Variance cut screen """
         if self.files_ok():
             value = float(self.builder.get_object('varcut_varcut').get_value())
-            """ TODO:
-                In the future, the user will be able to cut the matrix without
+            # TODO
+            """ In the future, the user will be able to cut the matrix without
                 saving it, leaving it temporarily available within the program to
                 perform another calculation in the sequence. """
             save = True  # self.builder.get_object('varcut_save').get_active()

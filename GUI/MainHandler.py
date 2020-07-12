@@ -23,6 +23,7 @@ class Handler(object):
         self.config_corrcut_window = builder.get_object('config_corrcut_window')
         self.config_autocorrcut_window = builder.get_object('config_autocorrcut_window')
         self.config_cv_window = builder.get_object('config_cv_window')
+        self.config_yrlno_window = builder.get_object('config_yrlno_window')
 
         # Saving elements
         self.main_window_pages = [builder.get_object('main_window_welcome'), builder.get_object('main_window_tables')]
@@ -43,31 +44,41 @@ class Handler(object):
         self.last_opened_path = ""
         self.last_saved_path = ""
 
-    def on_menu_ops_model_activate(self, _):
+    def on_menu_ops_model_activate(self, _) -> None:
         """ Handle menu Generate > OPS """
         self.config_OPS_window.show_all()
 
-    def on_menu_ga_model_activate(self, _):
+    def on_menu_ga_model_activate(self, _) -> None:
         """ Handle menu Generate > GA """
         self.config_GA_window.show_all()
 
-    def on_menu_varcut_activate(self, _):
+    def on_menu_varcut_activate(self, _) -> None:
         """ Handle menu Filter > Variance cut """
         self.config_varcut_window.show()
 
-    def on_menu_corrcut_activate(self, _):
+    def on_menu_corrcut_activate(self, _) -> None:
         """ Handle menu Filter > Correlation cut """
         self.config_corrcut_window.show()
 
-    def on_menu_autocorrcut_activate(self, _):
+    def on_menu_autocorrcut_activate(self, _) -> None:
         """ Handle menu Filter > Autocorrelation cut """
         self.config_autocorrcut_window.show()
 
-    def on_menu_cv_activate(self, _):
+    def on_menu_cv_activate(self, _) -> None:
         """ Handle menu Validation > Cross Validation """
         self.config_cv_window.show()
 
-    def open_file(self, use_last_path=True):
+    def on_menu_yrlno_activate(self, _) -> None:
+        """ Handle menu Validation > Y-Randomization / Leave-N-Out """
+        self.config_yrlno_window.show()
+
+    def open_file(self, use_last_path=True) -> str:
+        """
+        Show an Open File dialog
+
+        :param use_last_path: Whether or not to start at the last folder opened
+        :return: the selected filename
+        """
         file_chooser = Gtk.FileChooserDialog(title="Open...", action=Gtk.FileChooserAction.OPEN)
         file_chooser.add_buttons("Cancel", Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.OK)
         file_chooser.set_default_response(Gtk.ResponseType.OK)
@@ -83,7 +94,7 @@ class Handler(object):
         file_chooser.destroy()
         return filename
 
-    def on_save_file(self, entry):
+    def on_save_file(self, entry) -> None:
         file_chooser = Gtk.FileChooserDialog(title="Save...", action=Gtk.FileChooserAction.SAVE)
         file_chooser.add_buttons("Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.OK)
         file_chooser.set_default_response(Gtk.ResponseType.OK)
@@ -99,7 +110,12 @@ class Handler(object):
             entry.set_text(filename)
         file_chooser.destroy()
 
-    def block_menus_until_file_load(self):
+    def on_open_file(self, entry) -> None:
+        filename = self.open_file()
+        if filename:
+            entry.set_text(filename)
+
+    def block_menus_until_file_load(self) -> None:
         """ Block menus while files is not properly loaded """
         menus = [
             self.builder.get_object('menu_generate'),
@@ -114,21 +130,21 @@ class Handler(object):
             for elem in menus:
                 elem.set_sensitive(False)
 
-    def on_menu_open_matrix_activate(self, _):
+    def on_menu_open_matrix_activate(self, _) -> None:
         """ Handle menu File > Open... > Open matrix """
         filename = self.open_file()
         if filename:
             self.X_matrix = filename
             self.draw_matrices('matrix')
 
-    def on_menu_open_vector_activate(self, _):
+    def on_menu_open_vector_activate(self, _) -> None:
         """ Handle menu File > Open... > Open vector """
         filename = self.open_file()
         if filename:
             self.y_vector = filename
             self.draw_matrices('vector')
 
-    def draw_matrices(self, what_to_draw):
+    def draw_matrices(self, what_to_draw) -> None:
         """ Draw a pandas matrix or vector in the main screen.
             Works like a Factory to draw_pandas_matrix() and draw_pandas_vector(). """
         show = False
@@ -148,7 +164,7 @@ class Handler(object):
 
         self.block_menus_until_file_load()
 
-    def draw_pandas_matrix(self, treeview, path, print_index=True):
+    def draw_pandas_matrix(self, treeview, path, print_index=True) -> None:
         """ Draws in treeview a pandas matrix from path (csv) """
         df = pandas.read_csv(path, index_col=0)
         print_etc = False
@@ -194,7 +210,7 @@ class Handler(object):
             column_text = Gtk.TreeViewColumn('...', renderer_text, text=df.shape[1] + 1)
             treeview.append_column(column_text)
 
-    def draw_pandas_vector(self, treeview, path):
+    def draw_pandas_vector(self, treeview, path: str) -> None:
         """ Draws in treeview a pandas vector from path (csv/txt) """
         df = pandas.read_csv(path)
 
@@ -215,13 +231,13 @@ class Handler(object):
         column_text = Gtk.TreeViewColumn('Vector', renderer_text, text=0)
         treeview.append_column(column_text)
 
-    def on_menu_about_activate(self, _):
+    def on_menu_about_activate(self, _) -> None:
         """ Handle menu About """
 
         self.about_window.run()
 
     @staticmethod
-    def on_auto_state_set(obj, active: bool):
+    def on_auto_state_set(obj, active: bool) -> None:
         """Set an object as active (editable) or not. Usually called by switchers."""
         if active:
             obj.set_value(0)
@@ -231,23 +247,23 @@ class Handler(object):
             obj.set_editable(True)
             obj.set_sensitive(True)
 
-    def files_ok(self):
+    def files_ok(self) -> bool:
         return os.path.isfile(self.X_matrix) and os.path.isfile(self.y_vector)
 
     @staticmethod
-    def on_close_modal(modal):
+    def on_close_modal(modal) -> None:
         modal.hide()
 
     @staticmethod
-    def clear_treeview(treeview):
+    def clear_treeview(treeview) -> None:
         columns = treeview.get_columns()
         for col in columns:
             treeview.remove_column(col)
 
     @staticmethod
-    def on_about_window_destroy(_):
+    def on_about_window_destroy(_) -> bool:
         return True
 
     @staticmethod
-    def gtk_main_quit(_):
+    def gtk_main_quit(_) -> None:
         Gtk.main_quit()

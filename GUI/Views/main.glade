@@ -142,19 +142,11 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="menu_yrand">
+                      <object class="GtkMenuItem" id="menu_yrlno">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">y-randomization</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="menu_lno">
-                        <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Leave-N-Out</property>
+                        <property name="label" translatable="yes">y-randomization / Leave-N-Out</property>
+                        <signal name="activate" handler="on_menu_yrlno_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>

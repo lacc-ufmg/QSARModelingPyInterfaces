@@ -8,15 +8,15 @@ from QSARModelingPy.cross_validation_class import CrossValidation
 class RunCalculations:
 
     @staticmethod
-    def runGA(config):
+    def runGA(config) -> bool:
         return runGA(config)
 
     @staticmethod
-    def runOPS(config):
+    def runOPS(config) -> None:
         return runOPS(config)
 
     @staticmethod
-    def runVarCut(filename: str, value: float, save: bool = True, output: str = ""):
+    def runVarCut(filename: str, value: float, save: bool = True, output: str = "") -> str:
         df = pandas.read_csv(filename, index_col=0)
         indVar = variance_cut(df.values, value)
         dfCut = df.loc[:, df.columns[indVar]]
@@ -34,7 +34,7 @@ class RunCalculations:
             pass
 
     @staticmethod
-    def runCorrelationFilter(auto: bool, X_path: str, y_path: str, value: float, save: bool = True, output: str = ""):
+    def runCorrelationFilter(auto: bool, X_path: str, y_path: str, value: float, save: bool = True, output: str = "") -> str:
         dfX = pandas.read_csv(X_path, index_col=0)
         dfy = pandas.read_csv(y_path, header=None)
         indVar = autocorrelation_cut(dfX.values, dfy, value) if auto else correlation_cut(dfX.values, dfy.values, value)
@@ -53,15 +53,15 @@ class RunCalculations:
             pass
 
     @staticmethod
-    def runCorrCut(X_path: str, y_path: str, corrcut: float, save: bool = True, output: str = ""):
+    def runCorrCut(X_path: str, y_path: str, corrcut: float, save: bool = True, output: str = "") -> None:
         RunCalculations.runCorrelationFilter(False, X_path, y_path, corrcut, save, output)
 
     @staticmethod
-    def runAutoCorrCut(X_path: str, y_path: str, autocorrcut: float, save: bool = True, output: str = ""):
+    def runAutoCorrCut(X_path: str, y_path: str, autocorrcut: float, save: bool = True, output: str = "") -> None:
         RunCalculations.runCorrelationFilter(True, X_path, y_path, autocorrcut, save, output)
 
     @staticmethod
-    def runCrossValidation(X_path: str, y_path: str, filename: str = "", nLV=None):
+    def runCrossValidation(X_path: str, y_path: str, filename: str = "", nLV=None) -> None:
         if filename == "":
             X_name = os.path.splitext(os.path.basename(X_path))[0]
             filename = os.path.join(os.path.dirname(X_path),
@@ -71,3 +71,7 @@ class RunCalculations:
         print(dfX.shape, dfy.shape)
         cv = CrossValidation(dfX, dfy)
         cv.saveParameters(filename)
+
+    @staticmethod
+    def run_yrlno(X_path: str, y_path: str, pop_path: str, Q2_path: str, output_vars: str, output_params: str, yr_cut: float = 0.3, Q2_cut: float = 0.5, lno_cut: float = 0.1):
+        pass

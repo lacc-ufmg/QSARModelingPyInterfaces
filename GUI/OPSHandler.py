@@ -1,9 +1,9 @@
 import gi
-
 gi.require_version('Gtk', '3.0')
 import os
 # from gi.repository import Gtk
 import random
+#from concurrent.futures import ThreadPoolExecutor
 
 from runCalculations import RunCalculations
 from MainHandler import Handler
@@ -15,6 +15,7 @@ class OPSHandler(Handler):
         # self.handler = handler
         self.X_matrix = handler.X_matrix
         self.y_vector = handler.y_vector
+        #self._thread = ThreadPoolExecutor()
         self.config_OPS_window = builder.get_object('config_OPS_window')
         self.config_OPS_window.connect('delete-event', lambda w, e: w.hide() or True)
         self.ops_config = {}
@@ -58,7 +59,9 @@ class OPSHandler(Handler):
                 self.ops_config['output_models'] = os.path.join(os.path.dirname(self.X_matrix),
                                                                 "OPS_output_models_{}.csv".format(rand))
 
+            # TODO: implement multithreading
             RunCalculations.runOPS(self.ops_config)
+            # self._thread.submit(RunCalculations.runOPS, self.ops_config)
 
             # If everything is ok, current matrix will be the filtered one.
             if os.path.isfile(self.ops_config['output_matrix']):

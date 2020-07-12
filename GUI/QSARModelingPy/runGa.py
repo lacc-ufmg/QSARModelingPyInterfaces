@@ -1,17 +1,24 @@
 import sys
 import numpy as np
 import pandas as pd
+import os
+import argparse
 from QSARModelingPy.ga import Ga
 from QSARModelingPy.cross_validation_class import CrossValidation
 from QSARModelingPy.yrandomization import YRandomization
 from QSARModelingPy.lno import LNO
-from QSARModelingPy.filter import variance_cut,correlation_cut,autocorrelation_cut
+from QSARModelingPy.filter import variance_cut, correlation_cut, autocorrelation_cut
 import QSARModelingPy.lj_cut as lj
 from QSARModelingPy.validate_yr_lno import validate
-import os
-import argparse
 
-def run(config):
+
+def run(config: dict) -> bool:
+    """
+    Run Genetic Algorithm
+    :param config:
+    :return: True if validation pass, False otherwise
+    :rtype: bool
+    """
     xFile = config['XMatrix']
     yFile = config['yvector']
     var_cut = float(config['varcut'])
@@ -67,4 +74,4 @@ def run(config):
         cv.saveParameters(out_cv)
         return True
     else:
-        return "y-randomization or LNO failed!"
+        return False

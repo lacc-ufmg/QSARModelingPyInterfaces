@@ -21,6 +21,7 @@ builder.add_from_file('./Views/varcut.glade')
 builder.add_from_file('./Views/corrcut.glade')
 builder.add_from_file('./Views/autocorrcut.glade')
 builder.add_from_file('./Views/cross_validation.glade')
+builder.add_from_file('./Views/yrlno.glade')
 
 handler = Handler(builder)
 

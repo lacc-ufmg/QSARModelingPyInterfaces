@@ -12,7 +12,7 @@ from QSARModelingPy.validate_yr_lno import validate
 def run(config: ConfigGAInterface) -> bool:
     """
     Run Genetic Algorithm
-    :param config:
+    :param config: the configuration dictionary for GA
     :return: True if validation pass, False otherwise
     :rtype: bool
     """
@@ -59,4 +59,5 @@ def run(config: ConfigGAInterface) -> bool:
         cv.saveParameters(out_cv)
         return True
     else:
+        logging.error("y-randomization or Leave-N-Out failed!")
         return False

@@ -4,17 +4,14 @@ import json
 from deap import base
 from deap import creator
 from deap import tools
-from numpy import zeros,shape,argmax
+from numpy import zeros, shape, argmax
 from pandas import read_csv
 from QSARModelingPy.cross_validation_class import CrossValidation
-from QSARModelingPy.yrandomization import YRandomization
 
-# df = read_csv('Xfiltered2.csv',sep=';')
-# X = df.values
-# y = read_csv('atividades.txt',sep=';',header=None).values
 
 def returnIndices(individual):
     return [i for i,v in enumerate(individual) if v == 1]
+
 
 def checkLen(min, max):
     def decorator(func):
@@ -34,6 +31,7 @@ def checkLen(min, max):
         return wrapper
     return decorator
 
+
 def initIndividual(icls,imin, imax,size):
     indices = random.sample(range(size),random.randint(imin, imax))
     l = zeros(size)
@@ -41,6 +39,7 @@ def initIndividual(icls,imin, imax,size):
     l = [int(i) for i in l.tolist()]
     ind = icls(l)
     return ind
+
 
 class Ga(object):
     """docstring for Ga"""

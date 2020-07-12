@@ -9,6 +9,7 @@ import sys
 import json
 import os
 
+
 class ExternalValidation(object):
     """docstring for ValidacaoExterna"""
     def __init__(self, X, y, nLV=None):

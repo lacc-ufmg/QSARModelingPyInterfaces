@@ -4,11 +4,9 @@ gi.require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 
-import logging
-# Uncomment the following line to see all console logs.
-# logging.basicConfig(level=logging.DEBUG)
-
-from runCalculations import RunCalculations
+# Uncomment the following lines to see all console logs.
+# import logging
+# logging.basicConfig(level=logging.INFO)
 
 from HandlerFinder import HandlerFinder
 from MainHandler import Handler

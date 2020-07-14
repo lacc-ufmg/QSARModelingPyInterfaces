@@ -1,3 +1,4 @@
+import logging
 from ValidationHandler import ValidationHandler
 from FilterHandler import FilterHandler
 from OPSHandler import OPSHandler
@@ -11,8 +12,7 @@ gi.require_version('Gtk', '3.0')
 
 
 # Uncomment the following lines to see all console logs.
-# import logging
-# logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 builder: Gtk.Builder = Gtk.Builder()

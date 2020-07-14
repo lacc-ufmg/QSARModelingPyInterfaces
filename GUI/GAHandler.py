@@ -1,3 +1,4 @@
+from gi.repository import Gtk
 from Interfaces import ConfigGAInterface
 from MainHandler import Handler
 from runCalculations import RunCalculations
@@ -6,13 +7,12 @@ import os
 import gi
 
 gi.require_version('Gtk', '3.0')
-# from gi.repository import Gtk
 
 
 class GAHandler(Handler):
     def __init__(self, builder, handler):
         self.builder = builder
-        # self.handler = handler
+        self.handler = handler
         self.X_matrix = handler.X_matrix
         self.y_vector = handler.y_vector
         self.config_GA_window = self.builder.get_object('config_GA_window')
@@ -72,3 +72,28 @@ class GAHandler(Handler):
                 self.draw_matrices('matrix')
         else:
             print("Please, open the files in File > Open...")
+
+    def on_GA_save_matrix(self, _):
+        entry: Gtk.Entry = self.builder.get_object('GA_output_matrix')
+        filename = self.handler.save_file()
+        if filename:
+            entry.set_text(filename)
+
+    def on_GA_save_cv(self, _):
+        entry: Gtk.Entry = self.builder.get_object('GA_output_cv')
+        filename = self.handler.save_file()
+        if filename:
+            entry.set_text(filename)
+
+    def on_GA_save_q2(self, _):
+        entry: Gtk.Entry = self.builder.get_object('GA_output_q2')
+        filename = self.handler.save_file()
+        if filename:
+            entry.set_text(filename)
+
+    def on_GA_save_sel(self, _):
+        entry: Gtk.Entry = self.builder.get_object(
+            'GA_output_selected_variables')
+        filename = self.handler.save_file()
+        if filename:
+            entry.set_text(filename)

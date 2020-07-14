@@ -164,11 +164,11 @@
                     </child>
                     <child>
                       <object class="GtkButton">
-                        <property name="label" translatable="yes">Browse</property>
+                        <property name="label" translatable="yes">Browse...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_save_file" object="GA_output_matrix" swapped="no"/>
+                        <signal name="clicked" handler="on_GA_save_matrix" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -201,11 +201,11 @@
                     </child>
                     <child>
                       <object class="GtkButton">
-                        <property name="label" translatable="yes">Browse</property>
+                        <property name="label" translatable="yes">Browse...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_save_file" object="GA_output_cv" swapped="no"/>
+                        <signal name="clicked" handler="on_GA_save_cv" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -238,11 +238,11 @@
                     </child>
                     <child>
                       <object class="GtkButton">
-                        <property name="label" translatable="yes">Browse</property>
+                        <property name="label" translatable="yes">Browse...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_save_file" object="GA_output_q2" swapped="no"/>
+                        <signal name="clicked" handler="on_GA_save_q2" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -275,11 +275,11 @@
                     </child>
                     <child>
                       <object class="GtkButton">
-                        <property name="label" translatable="yes">Browse</property>
+                        <property name="label" translatable="yes">Browse...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_save_file" object="GA_output_selected_variables" swapped="no"/>
+                        <signal name="clicked" handler="on_GA_save_sel" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>

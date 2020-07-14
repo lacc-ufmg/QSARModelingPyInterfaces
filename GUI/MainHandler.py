@@ -1,3 +1,4 @@
+import logging
 from runCalculations import RunCalculations
 import pandas
 from gi.repository import Gtk
@@ -99,7 +100,7 @@ class Handler(object):
         file_chooser.destroy()
         return filename
 
-    def on_save_file(self, entry) -> None:
+    def save_file(self) -> str:
         file_chooser = Gtk.FileChooserDialog(
             title="Save...", action=Gtk.FileChooserAction.SAVE)
         file_chooser.add_buttons(
@@ -114,10 +115,17 @@ class Handler(object):
         if response == Gtk.ResponseType.OK:
             filename = file_chooser.get_filename()
             self.last_saved_path = filename
-            entry.set_text(filename)
         file_chooser.destroy()
+        return filename
 
-    def on_open_file(self, entry) -> None:
+    def on_save_file(self, entry: Gtk.Entry) -> None:
+        logging.error("Call to PAUSED function :MainHandler:on_save_file()")
+        return
+        filename = self.save_file()
+        if filename:
+            entry.set_text(filename)
+
+    def on_open_file(self, entry: Gtk.Entry) -> None:
         filename = self.open_file()
         if filename:
             entry.set_text(filename)

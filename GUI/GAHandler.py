@@ -1,13 +1,12 @@
+from Interfaces import ConfigGAInterface
+from MainHandler import Handler
+from runCalculations import RunCalculations
+import random
+import os
 import gi
 
 gi.require_version('Gtk', '3.0')
-import os
 # from gi.repository import Gtk
-import random
-
-from runCalculations import RunCalculations
-from MainHandler import Handler
-from Interfaces import ConfigGAInterface
 
 
 class GAHandler(Handler):
@@ -17,7 +16,8 @@ class GAHandler(Handler):
         self.X_matrix = handler.X_matrix
         self.y_vector = handler.y_vector
         self.config_GA_window = self.builder.get_object('config_GA_window')
-        self.config_GA_window.connect('delete-event', lambda w, e: w.hide() or True)
+        self.config_GA_window.connect(
+            'delete-event', lambda w, e: w.hide() or True)
         self.ga_config: ConfigGAInterface
 
     def on_GA_cancel_button_clicked(self, _) -> None:

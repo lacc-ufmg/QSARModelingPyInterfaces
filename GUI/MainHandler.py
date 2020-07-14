@@ -1,11 +1,10 @@
+from runCalculations import RunCalculations
+import pandas
+from gi.repository import Gtk
+import os
 import gi
 
 gi.require_version('Gtk', '3.0')
-import os
-from gi.repository import Gtk
-import pandas
-
-from runCalculations import RunCalculations
 
 
 class Handler(object):
@@ -20,19 +19,23 @@ class Handler(object):
         self.csv_file_filter = builder.get_object('open_filter')
         self.main_window_stack = builder.get_object('main_window_stack')
         self.config_varcut_window = builder.get_object('config_varcut_window')
-        self.config_corrcut_window = builder.get_object('config_corrcut_window')
-        self.config_autocorrcut_window = builder.get_object('config_autocorrcut_window')
+        self.config_corrcut_window = builder.get_object(
+            'config_corrcut_window')
+        self.config_autocorrcut_window = builder.get_object(
+            'config_autocorrcut_window')
         self.config_cv_window = builder.get_object('config_cv_window')
         self.config_yrlno_window = builder.get_object('config_yrlno_window')
 
         # Saving elements
-        self.main_window_pages = [builder.get_object('main_window_welcome'), builder.get_object('main_window_tables')]
+        self.main_window_pages = [builder.get_object(
+            'main_window_welcome'), builder.get_object('main_window_tables')]
         self.treeview_X = builder.get_object('treeview_X')
         self.treeview_y = builder.get_object('treeview_y')
 
         # connect destroy signal
         self.main_window.connect('destroy', Gtk.main_quit)
-        self.about_window.connect('delete-event', lambda w, e: w.hide() or True)
+        self.about_window.connect(
+            'delete-event', lambda w, e: w.hide() or True)
 
         # Setting file filters
         self.csv_file_filter.set_name('CSV Files (*.csv)')
@@ -79,8 +82,10 @@ class Handler(object):
         :param use_last_path: Whether or not to start at the last folder opened
         :return: the selected filename
         """
-        file_chooser = Gtk.FileChooserDialog(title="Open...", action=Gtk.FileChooserAction.OPEN)
-        file_chooser.add_buttons("Cancel", Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.OK)
+        file_chooser = Gtk.FileChooserDialog(
+            title="Open...", action=Gtk.FileChooserAction.OPEN)
+        file_chooser.add_buttons(
+            "Cancel", Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.OK)
         file_chooser.set_default_response(Gtk.ResponseType.OK)
         file_chooser.add_filter(self.csv_file_filter)
         if self.last_opened_path and use_last_path:
@@ -95,8 +100,10 @@ class Handler(object):
         return filename
 
     def on_save_file(self, entry) -> None:
-        file_chooser = Gtk.FileChooserDialog(title="Save...", action=Gtk.FileChooserAction.SAVE)
-        file_chooser.add_buttons("Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.OK)
+        file_chooser = Gtk.FileChooserDialog(
+            title="Save...", action=Gtk.FileChooserAction.SAVE)
+        file_chooser.add_buttons(
+            "Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.OK)
         file_chooser.set_default_response(Gtk.ResponseType.OK)
         file_chooser.add_filter(self.csv_file_filter)
         if self.last_saved_path:
@@ -200,14 +207,16 @@ class Handler(object):
         for i in range(df.shape[1]):
             renderer_text = Gtk.CellRendererText()
             text = i + 1 if print_index else i
-            column_text = Gtk.TreeViewColumn(df.columns[i], renderer_text, text=text)
+            column_text = Gtk.TreeViewColumn(
+                df.columns[i], renderer_text, text=text)
             treeview.append_column(column_text)
 
         # Draw et cetera column
         if print_etc:
             renderer_text = Gtk.CellRendererText()
             text = df.shape[1] + 1 if print_index else df.shape[1]
-            column_text = Gtk.TreeViewColumn('...', renderer_text, text=df.shape[1] + 1)
+            column_text = Gtk.TreeViewColumn(
+                '...', renderer_text, text=df.shape[1] + 1)
             treeview.append_column(column_text)
 
     def draw_pandas_vector(self, treeview, path: str) -> None:

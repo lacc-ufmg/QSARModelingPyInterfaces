@@ -1,4 +1,5 @@
-import pandas, os
+import pandas
+import os
 from QSARModelingPy.runGa import run as runGA
 from QSARModelingPy.runOPS import run as runOPS
 from QSARModelingPy.filter import variance_cut, correlation_cut, autocorrelation_cut
@@ -38,7 +39,8 @@ class RunCalculations:
     def runCorrelationFilter(auto: bool, X_path: str, y_path: str, value: float, save: bool = True, output: str = "") -> str:
         dfX = pandas.read_csv(X_path, index_col=0)
         dfy = pandas.read_csv(y_path, header=None)
-        indVar = autocorrelation_cut(dfX.values, dfy, value) if auto else correlation_cut(dfX.values, dfy.values, value)
+        indVar = autocorrelation_cut(dfX.values, dfy, value) if auto else correlation_cut(
+            dfX.values, dfy.values, value)
         dfCut = dfX.loc[:, dfX.columns[indVar]]
         if save:
             if not output:

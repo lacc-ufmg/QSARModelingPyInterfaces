@@ -1,19 +1,19 @@
+from ValidationHandler import ValidationHandler
+from FilterHandler import FilterHandler
+from OPSHandler import OPSHandler
+from GAHandler import GAHandler
+from MainHandler import Handler
+from HandlerFinder import HandlerFinder
+from gi.repository import Gtk
 import gi
 
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import Gtk
 
 # Uncomment the following lines to see all console logs.
 # import logging
 # logging.basicConfig(level=logging.INFO)
 
-from HandlerFinder import HandlerFinder
-from MainHandler import Handler
-from GAHandler import GAHandler
-from OPSHandler import OPSHandler
-from FilterHandler import FilterHandler
-from ValidationHandler import ValidationHandler
 
 builder: Gtk.Builder = Gtk.Builder()
 builder.add_from_file('./Views/main.glade')

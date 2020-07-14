@@ -14,7 +14,7 @@ class ConfigGAInterface(TypedDict):
     crossover_rate: float
     mutation_rate: float
     generations: int
-    yrand:float
+    yrand: float
     lno: float
     output_matrix: str
     output_cv: str

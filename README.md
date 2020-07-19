@@ -1,9 +1,10 @@
 # QSARModelingPy
+
 QSAR Modeling is an open source computational package to generate and validate QSAR models.
 
 ## Using
 
-QSARModelingPy is divided in three differents approaches: you can execute it headless (in command line), in a Jupyter Notebook or in a Graphical User Interface. 
+QSARModelingPy is divided in three differents approaches: you can execute it headless (in command line), in a Jupyter Notebook or in a Graphical User Interface.
 
 Whatever method of your choice, start installing [Anaconda](https://www.anaconda.com/products/individual) (or [Minicoda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/)).
 
@@ -18,6 +19,7 @@ $ cd ./QSARModelingPy
 ```
 
 3. Create a new environment using `environment.yml`:
+
 ```sh
 $ conda env create -f environment.yml
 ```
@@ -33,7 +35,7 @@ $ conda activate QSARModelingPy
 You're ready. Enter the right directory and do what you need.
 
 ```sh
-$ cd ./command_line
+(QSARModelingPy) $ cd ./command_line
 ```
 
 ### Using in Jupyter Notebook
@@ -41,25 +43,26 @@ $ cd ./command_line
 Enter `jupyter` directory and run jupyter notebook:
 
 ```sh
-$ cd ./jupyter
-$ jupyter notebook
+(QSARModelingPy) $ cd ./jupyter
+(QSARModelingPy) $ jupyter notebook
 ```
 
-Execute `QSARModelingNotebook.ipynb` and you're ready. 
+Execute `QSARModelingNotebook.ipynb` and you're ready.
 
 ### Using with the Graphical User Interface
 
 First of all, you'll need to install adwaita icons. For linux, run:
 
 ```sh
-$ sudo apt install adwaita-icon-theme-full
+(QSARModelingPy) $ sudo apt install adwaita-icon-theme-full
 ```
 
 See [this](https://stackoverflow.com/questions/26738025/gtk-icon-missing-when-running-in-ms-windows) for Windows.
 
 Enter `GUI` directory and run the following:.
-```sh
-$ cd ./GUI
 
-$ python main.py
+```sh
+(QSARModelingPy) $ cd ./GUI
+
+(QSARModelingPy) $ python main.py
 ```

@@ -50,27 +50,3 @@ class ValidationHandler(Handler):
             Q2_cut=self.builder.get_object("yrlno_lno").get_value(),
             lno_cut=self.builder.get_object("yrlno_q2_crit").get_value()
         )
-
-    def on_open_pop_clicked(self, _) -> None:
-        entry: Gtk.Entry = self.builder.get_object('yrlno_input_pop')
-        filename = self.handler.open_file()
-        if filename:
-            entry.set_text(filename)
-
-    def on_open_q2_clicked(self, _) -> None:
-        entry: Gtk.Entry = self.builder.get_object('yrlno_input_q2')
-        filename = self.handler.open_file()
-        if filename:
-            entry.set_text(filename)
-
-    def on_save_sel(self, _) -> None:
-        entry: Gtk.Entry = self.builder.get_object('yrlno_output_vars')
-        filename = self.handler.save_file()
-        if filename:
-            entry.set_text(filename)
-
-    def on_save_param(self, _) -> None:
-        entry: Gtk.Entry = self.builder.get_object('yrlno_output_params')
-        filename = self.handler.save_file()
-        if filename:
-            entry.set_text(filename)

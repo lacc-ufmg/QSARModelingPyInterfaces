@@ -72,28 +72,3 @@ class GAHandler(Handler):
                 self.draw_matrices('matrix')
         else:
             print("Please, open the files in File > Open...")
-
-    def on_GA_save_matrix(self, _):
-        entry: Gtk.Entry = self.builder.get_object('GA_output_matrix')
-        filename = self.handler.save_file()
-        if filename:
-            entry.set_text(filename)
-
-    def on_GA_save_cv(self, _):
-        entry: Gtk.Entry = self.builder.get_object('GA_output_cv')
-        filename = self.handler.save_file()
-        if filename:
-            entry.set_text(filename)
-
-    def on_GA_save_q2(self, _):
-        entry: Gtk.Entry = self.builder.get_object('GA_output_q2')
-        filename = self.handler.save_file()
-        if filename:
-            entry.set_text(filename)
-
-    def on_GA_save_sel(self, _):
-        entry: Gtk.Entry = self.builder.get_object(
-            'GA_output_selected_variables')
-        filename = self.handler.save_file()
-        if filename:
-            entry.set_text(filename)

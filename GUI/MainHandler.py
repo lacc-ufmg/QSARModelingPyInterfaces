@@ -92,11 +92,10 @@ class Handler(object):
         if self.last_opened_path and use_last_path:
             file_chooser.set_current_folder(self.last_opened_path)
         response = file_chooser.run()
-        filename = None
+        filename = ""
         if response == Gtk.ResponseType.OK:
             filename = file_chooser.get_filename()
             self.last_opened_path = os.path.dirname(os.path.abspath(filename))
-            # entry.set_text(filename)
         file_chooser.destroy()
         return filename
 
@@ -111,6 +110,7 @@ class Handler(object):
             file_chooser.set_current_folder(self.last_saved_path)
         elif self.last_opened_path:
             file_chooser.set_current_folder(self.last_opened_path)
+        filename = ""
         response = file_chooser.run()
         if response == Gtk.ResponseType.OK:
             filename = file_chooser.get_filename()
@@ -119,8 +119,6 @@ class Handler(object):
         return filename
 
     def on_save_file(self, entry: Gtk.Entry) -> None:
-        logging.error("Call to PAUSED function :MainHandler:on_save_file()")
-        return
         filename = self.save_file()
         if filename:
             entry.set_text(filename)

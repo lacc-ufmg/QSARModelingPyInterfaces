@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import pandas as pd
 import json
+import logging
 from modules.cross_validation_class import CrossValidation
 from modules.yrandomization import YRandomization
 from modules.lno import LNO
@@ -60,10 +61,10 @@ if __name__ == '__main__':
     y = pd.read_csv(sys.argv[3], sep=';', header=None).values
     indVar = variance_cut(dfX.values, 0.1)
     dfVar = dfX.loc[:, dfX.columns[indVar]]
-    print(dfVar.shape)
+    logging.info(dfVar.shape)
     indCorr = correlation_cut(dfVar.values, y, 0.3)
     dfCorr = dfVar.loc[:, dfVar.columns[indCorr]]
-    print(dfCorr.shape)
+    logging.info(dfCorr.shape)
     out_directory = sys.argv[4]
     X = dfCorr.values
     with open(directory+"/Popout.json") as pop_file:
@@ -78,4 +79,4 @@ if __name__ == '__main__':
         cv = CrossValidation(dfSel.values, y)
         cv.saveParameters(out_directory+"/parameters_cv.csv")
     else:
-        print("y-randomization or LNO failed!")
+        logging.error("y-randomization or LNO failed!")

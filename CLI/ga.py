@@ -1,13 +1,11 @@
 import random
 import json
-
+import logging
 from deap import base
 from deap import creator
 from deap import tools
-from numpy import zeros, shape, argmax
-from pandas import read_csv
+from numpy import zeros, shape
 from modules.cross_validation_class import CrossValidation
-from modules.yrandomization import YRandomization
 
 
 def returnIndices(individual):
@@ -45,8 +43,6 @@ def initIndividual(icls, imin, imax, size):
 
 
 class Ga(object):
-    """docstring for Ga"""
-
     def __init__(self, X, y, nLV=None, scale=True, min_size=5, max_size=25, size_population=200, mig_rate=0.2,
                  cxpb=0.5, mutpb=0.2, ngen=120):
         self.X = X
@@ -111,7 +107,7 @@ class Ga(object):
             ind.fitness.values = fit
 
         for g in range(NGEN):
-            print("Generation {} of {}".format(g+1, NGEN))
+            logging.info("Generation {} of {}".format(g+1, NGEN))
             # generates migrants to add to the population
             mig = toolbox.population(n=int(MIG_RATE*SIZE_POPULATION))
             fitnesses = map(toolbox.evaluate, mig)

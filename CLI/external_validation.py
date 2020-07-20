@@ -1,5 +1,3 @@
-import sys
-import numpy as np
 import pandas as pd
 from modules.validacao_externa import ExternalValidation
 from modules.cross_validation_class import CrossValidation

@@ -1,5 +1,4 @@
 # Importing libraries
-import numpy as np
 import pandas as pd
 from modules.validacao_externa import ExternalValidation
 from modules.cross_validation_class import CrossValidation
@@ -7,11 +6,11 @@ from modules.kennardstonealgorithm import kennardstonealgorithm
 from modules import lj_cut as lj
 import os
 import argparse
+import logging
 
 
 def run(filename):
-    # Open configuration file in order to look for the matrices and the parameters to run
-    # external validation
+    """Open configuration file in order to look for the matrices and the parameters to run external validation"""
     dfConf = pd.read_csv(filename, header=None)
     directory = dfConf[1][0]
     Xfile = dfConf[1][1]
@@ -44,9 +43,9 @@ def run(filename):
     ext = ExternalValidation(X, y, nLV)
     ext.extVal(train, test, nLV)
     if ext.validateExtVal(train, test):
-        print("Passed")
+        logging.info("Passed")
     else:
-        print("Failed")
+        logging.info("Failed")
     ext.saveExtVal(train, test, out_directory+"/"+ext_val_file)
     cv = CrossValidation(X[train, :], y[train], nLVMax=nLV, scale=True)
     cv.saveParameters(os.path.join(out_directory, cv_file))

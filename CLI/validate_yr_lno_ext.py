@@ -9,6 +9,7 @@ from modules import lj_cut as lj
 from modules.filter import variance_cut, correlation_cut
 from modules.validacao_externa import ExternalValidation
 import os
+import logging
 
 
 def validate(X, y, pop, Q2, Q2_cut=0.5, yr_cut=0.3, lno_cut=0.1):
@@ -79,10 +80,10 @@ if __name__ == '__main__':
         directory, sys.argv[3]), sep=';', header=None).values
     indVar = variance_cut(dfX.values, 0.1)
     dfVar = dfX.loc[:, dfX.columns[indVar]]
-    print(dfVar.shape)
+    logging.info(dfVar.shape)
     indCorr = correlation_cut(dfVar.values, y, 0.3)
     dfCorr = dfVar.loc[:, dfVar.columns[indCorr]]
-    print(dfCorr.shape)
+    logging.info(dfCorr.shape)
     out_directory = sys.argv[4]
     X = dfCorr.values
     with open(directory+"/Popout.json") as pop_file:
@@ -100,4 +101,4 @@ if __name__ == '__main__':
         cv = CrossValidation(dfSel.values, y)
         cv.saveParameters(out_directory+"/parameters_cv.csv")
     else:
-        print("y-randomization or LNO failed!")
+        logging.error("y-randomization or LNO failed!")

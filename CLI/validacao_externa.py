@@ -5,9 +5,7 @@ from modules.calculate_parameters import ssy, calcPress, calcR, calcR2, calcMAE,
 import numpy as np
 import pandas as pd
 import math
-import sys
-import json
-import os
+import logging
 
 
 class ExternalValidation(object):
@@ -107,17 +105,17 @@ class ExternalValidation(object):
             mNE = abs(np.mean(NE))
             mPE = np.mean(PE)
             if (nNE == 0) or (nPE == 0) or (nNE/nPE > 5) or (nPE/nNE > 5):
-                print("Warning")
+                logging.debug("Warning")
             if (MAE95 <= 0.1*tr) and (MAE95 + 3*sd95 <= 0.2*tr):
-                print("good")
+                logging.debug("good")
                 tests_sets.append(test)
                 R2 = np.r_[R2, Q2F2]
                 Q2 = np.r_[Q2, max(cv.Q2())]
             else:
                 if (MAE95 > 0.15*tr) or (MAE95 + 3*sd95 > 0.25*tr):
-                    print("bad")
+                    logging.debug("bad")
                 else:
-                    print("moderate")
+                    logging.debug("moderate")
 
         ind = np.argsort(-R2)
         self.R2 = R2[ind]
@@ -192,8 +190,8 @@ class ExternalValidation(object):
         dfPred.to_csv(fileName, sep=',', header=False)
 
     def runValidExtVal(self, directory, n_models=1):
-        print("Entrou na funcao de testar validacoes")
-        print(len(self.tests_sets))
+        logging.debug("Entrou na funcao de testar validacoes")
+        logging.debug(len(self.tests_sets))
         for i in range(min(n_models, len(self.tests_sets))):
             test = self.tests_sets[i]
             train = [j for j in range(len(self.y)) if j not in test]
@@ -217,7 +215,7 @@ class ExternalValidation(object):
         dfCv = pd.DataFrame()
         for train, test in ss.split(X):
             if self.validateExtVal(train, test, nLV):
-                # print("Achou um conjunto teste valido")
+                # logging.debug("Achou um conjunto teste valido")
                 # self.saveExtVal(train,test,os.path.join(directory,"test"+str(i+1)+".csv"))
                 dfExt[i] = self.extVal(train, test, nLV).iloc[:, 0]
                 cv = CrossValidation(

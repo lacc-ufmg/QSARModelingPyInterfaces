@@ -1,15 +1,12 @@
-import sys
-import numpy as np
 import pandas as pd
 from modules.ga import Ga
 from modules.cross_validation_class import CrossValidation
-from modules.yrandomization import YRandomization
-from modules.lno import LNO
 from modules.filter import variance_cut, correlation_cut, autocorrelation_cut
 from modules import lj_cut as lj
 from modules.validate_yr_lno import validate
 import os
 import argparse
+import logging
 
 
 def run(filename):
@@ -37,22 +34,22 @@ def run(filename):
     autoscale = dfConf[1][20].upper() == "YES"
     df = pd.read_csv(directory+"/"+xFile, sep=';', index_col=0)
     dfX = lj.transform(df) if dfConf[1][21].upper() == "YES" else df
-    print("Dimensions of the original matrix")
-    print(dfX.shape)
+    logging.info("Dimensions of the original matrix")
+    logging.info(dfX.shape)
     y = pd.read_csv(directory+"/"+yFile, sep=';', header=None).values
     indVar = variance_cut(dfX.values, var_cut)
     dfVar = dfX.loc[:, dfX.columns[indVar]]
-    print("Dimensions of the matrix after the variance cut")
-    print(dfVar.shape)
+    logging.info("Dimensions of the matrix after the variance cut")
+    logging.info(dfVar.shape)
     indCorr = correlation_cut(dfVar.values, y, corr_cut)
     dfCorr = dfVar.loc[:, dfVar.columns[indCorr]]
-    print("Dimensions of the matrix after the correlation cut")
-    print(dfCorr.shape)
+    logging.info("Dimensions of the matrix after the correlation cut")
+    logging.info(dfCorr.shape)
     auto_cut = float(dfConf[1][22])
     indAuto = autocorrelation_cut(dfCorr.values, y, auto_cut)
     dfRest = dfCorr.loc[:, dfCorr.columns[indAuto]]
-    print("Dimensions of the matrix after auto correlation cut")
-    print(dfRest.shape)
+    logging.info("Dimensions of the matrix after auto correlation cut")
+    logging.info(dfRest.shape)
     dfRest.to_csv(os.path.join(out_directory, "filtered_"+out_matrix), sep=';')
     X = dfRest.values
     if nLVModel == None:
@@ -72,7 +69,7 @@ def run(filename):
         cv = CrossValidation(dfSel.values, y)
         cv.saveParameters(out_directory+"/"+out_cv)
     else:
-        print("y-randomization or LNO failed!")
+        logging.error("y-randomization or LNO failed!")
 
 
 if __name__ == '__main__':

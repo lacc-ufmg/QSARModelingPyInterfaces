@@ -1,9 +1,7 @@
 from sklearn.model_selection import LeaveOneOut
-from sklearn.cross_decomposition import PLSRegression
 import numpy as np
 import pandas as pd
 from math import sqrt
-from sklearn.preprocessing import scale
 from modules.calculate_parameters import calcPress, calcR2, calcRMSE, calcR
 from modules.plsbdg import PLSBidiag
 

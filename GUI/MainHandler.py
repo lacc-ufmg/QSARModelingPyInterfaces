@@ -43,8 +43,8 @@ class Handler(object):
 
         # Handling files
         # TODO: remove hardcoded filenames
-        self.X_matrix = "/home/helitonmrf/Documents/QSAR_Tests/Set1.csv"
-        self.y_vector = "/home/helitonmrf/Documents/QSAR_Tests/y_set1.txt"
+        self.X_matrix = None
+        self.y_vector = None
         self.last_opened_path = ""
         self.last_saved_path = ""
 

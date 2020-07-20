@@ -11,6 +11,7 @@ gi.require_version('Gtk', '3.0')
 
 class GAHandler(Handler):
     def __init__(self, builder, handler):
+        super().__init__(builder)
         self.builder = builder
         self.handler = handler
         self.X_matrix = handler.X_matrix

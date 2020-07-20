@@ -88,6 +88,7 @@
             <child>
               <object class="GtkMenuItem" id="menu_generate">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Generates a complete model.</property>
                 <property name="label" translatable="yes">Generate</property>
@@ -118,6 +119,7 @@
             <child>
               <object class="GtkMenuItem" id="menu_validate">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Validate</property>
                 <child type="submenu">

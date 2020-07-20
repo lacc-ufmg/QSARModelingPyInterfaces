@@ -12,7 +12,7 @@ gi.require_version('Gtk', '3.0')
 
 
 # Uncomment the following lines to see all console logs.
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 
 builder: Gtk.Builder = Gtk.Builder()

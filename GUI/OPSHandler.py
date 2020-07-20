@@ -11,11 +11,12 @@ gi.require_version('Gtk', '3.0')
 
 class OPSHandler(Handler):
     def __init__(self, builder, handler):
+        super().__init__(builder)
         self.builder = builder
         # self.handler = handler
         self.X_matrix = handler.X_matrix
         self.y_vector = handler.y_vector
-        #self._thread = ThreadPoolExecutor()
+        # self._thread = ThreadPoolExecutor()
         self.config_OPS_window = builder.get_object('config_OPS_window')
         self.config_OPS_window.connect(
             'delete-event', lambda w, e: w.hide() or True)
@@ -58,7 +59,7 @@ class OPSHandler(Handler):
                                                             "OPS_output_CV_{}.csv".format(rand))
             if not self.ops_config['output_models']:
                 self.ops_config['output_models'] = os.path.join(os.path.dirname(self.X_matrix),
-                                                                "OPS_output_models_{}.csv".format(rand))
+                                                                "OPS_output_models_{}.json".format(rand))
 
             # TODO: implement multithreading
             RunCalculations.runOPS(self.ops_config)

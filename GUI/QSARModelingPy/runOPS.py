@@ -5,11 +5,13 @@ from QSARModelingPy.ops import OPS
 from QSARModelingPy.cross_validation_class import CrossValidation
 from QSARModelingPy.filter import filter_matrix
 from QSARModelingPy.validate_yr_lno import validate
+
+from Interfaces import ConfigOPSInterface
 # Uncomment the following line to see all console logs (if not yet done in main.py).
 # logging.basicConfig(level=logging.DEBUG)
 
 
-def run(config) -> bool:
+def run(config: ConfigOPSInterface) -> bool:
     # Open configuration file in order to look for the matrices and the parameters to run
     # OPS and cross-validation
     xFile = config['XMatrix']
@@ -19,8 +21,10 @@ def run(config) -> bool:
     var_cut = float(config['varcut'])
     corr_cut = float(config['corrcut'])
     autocorr_cut = float(config['autocorrcut'])
-    nLVOPS = None if int(config['latent_vars_ops']) == 0 else int(config['latent_vars_ops'])
-    nLVModel = None if int(config['latent_vars_model']) == 0 else int(config['latent_vars_model'])
+    nLVOPS = None if int(config['latent_vars_ops']) == 0 else int(
+        config['latent_vars_ops'])
+    nLVModel = None if int(config['latent_vars_model']) == 0 else int(
+        config['latent_vars_model'])
     opsWindow = int(config['ops_window'])
     opsIncrement = int(config['ops_increment'])
     percentage = int(config['vars_percentage'])
@@ -32,21 +36,25 @@ def run(config) -> bool:
     out_models = config['output_models']
     autoscale = config['autoscale']
 
-    dfRest = filter_matrix(df, y, config['lj_transform'], var_cut, corr_cut, autocorr_cut)
+    dfRest = filter_matrix(
+        df, y, config['lj_transform'], var_cut, corr_cut, autocorr_cut)
 
     # Run
     dfRest.to_csv(out_matrix)
     X = dfRest.values
-    ops = OPS(X, y, nLVOPS, nLVModel, opsWindow, opsIncrement, percentage, nModels, autoscale)
+    ops = OPS(X, y, nLVOPS, nLVModel, opsWindow,
+              opsIncrement, percentage, nModels, autoscale)
     typeOPS = config['ops_type']
     if typeOPS == 's':
         ops.runOPS()
     elif typeOPS == 'f':
         ops.feedOPS()
     else:
-        raise Exception(f"Invalid option '{typeOPS}' for OPS type. Use 's' for single run or 'f' for feedOPS.")
+        raise Exception(
+            f"Invalid option '{typeOPS}' for OPS type. Use 's' for single run or 'f' for feedOPS.")
     ops.saveModels(out_models)
-    var_sel = validate(X, y, ops.models["var_sel"], ops.models["Q2"], yr_cut=yr_crit, lno_cut=lno_crit)
+    var_sel = validate(
+        X, y, ops.models["var_sel"], ops.models["Q2"], yr_cut=yr_crit, lno_cut=lno_crit)
     if var_sel:
         dfSel = dfRest.loc[:, dfRest.columns[var_sel]]
         dfSel.to_csv(out_matrix)

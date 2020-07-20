@@ -4,6 +4,7 @@ from QSARModelingPy.plsbdg import PLSBidiag
 from sklearn.preprocessing import scale as autoscale
 import operator
 import json
+import logging
 
 
 class OPS(object):
@@ -12,21 +13,16 @@ class OPS(object):
     def __init__(self, X, y, nLV=None, nLVModel=None, window=2, increment=1, percentage=100,
                  nModels=100, scale=True):
         super(OPS, self).__init__()
-        if not scale:
-            self.X = X
-            self.y = y
+        self.X = autoscale(X) if scale else X
+        self.y = autoscale(y) if scale else y
+        self.nLV = min(np.shape(X)) if nLV is None else nLV
+        self.nLVModel = int(np.shape(X)[0]/5) if nLVModel is None else nLVModel
+        if window >= 2:
+            self.window = window
         else:
-            self.X = autoscale(X)
-            self.y = autoscale(y)
-        if nLV == None:
-            self.nLV = min(np.shape(X))
-        else:
-            self.nLV = nLV
-        if nLVModel == None:
-            self.nLVModel = int(np.shape(X)[0]/5)
-        else:
-            self.nLVModel = nLVModel
-        self.window = window if window >= 2 else 2
+            self.window = 2
+            logging.warning(
+                "For OPS, window parameter must be at least 2. Continuing with this value.")
         self.increment = increment
         self.percentage = percentage
         self.nModels = nModels
@@ -62,7 +58,7 @@ class OPS(object):
         Q2 = np.zeros(0)
         var_sel = []
         for i in range(nVec):
-            print("Running vector {} of {}".format(i+1, nVec))
+            logging.info("Running vector {} of {}".format(i+1, nVec))
             # ordenar em ordem decrescente, por isso o -vec
             ind = np.argsort(-vec[:, i])
             Xor = X[:, ind]

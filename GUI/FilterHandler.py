@@ -11,6 +11,7 @@ gi.require_version('Gtk', '3.0')
 
 class FilterHandler(Handler):
     def __init__(self, builder, handler):
+        super().__init__(builder)
         self.builder = builder
         self.handler = handler
         self.config_varcut_window = self.builder.get_object(

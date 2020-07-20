@@ -1,17 +1,17 @@
+from gi.repository import Gtk
 import logging
 from MainHandler import Handler
 from runCalculations import RunCalculations
 import random
 import pandas
-from gi.repository import Gtk
 import os
 import gi
-
 gi.require_version('Gtk', '3.0')
 
 
 class ValidationHandler(Handler):
     def __init__(self, builder, handler):
+        super().__init__(builder)
         self.builder = builder
         self.handler = handler
         self.builder.get_object('config_cv_window').connect(
@@ -48,5 +48,5 @@ class ValidationHandler(Handler):
                 "yrlno_output_params").get_text() or None,
             yr_cut=self.builder.get_object("yrlno_yrand").get_value(),
             Q2_cut=self.builder.get_object("yrlno_lno").get_value(),
-            lno_cut=self.builder.get_object("yrlno_q2_crit").get_value()
+            lno_cut=self.builder.get_object("yrlno_q2").get_value()
         )

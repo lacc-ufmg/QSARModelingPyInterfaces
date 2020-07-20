@@ -1,9 +1,12 @@
 import pandas
 import os
+import json
+import logging
 from QSARModelingPy.runGa import run as runGA
 from QSARModelingPy.runOPS import run as runOPS
 from QSARModelingPy.filter import variance_cut, correlation_cut, autocorrelation_cut
 from QSARModelingPy.cross_validation_class import CrossValidation
+from QSARModelingPy.validate_yr_lno import validate
 from Interfaces import ConfigGAInterface, ConfigOPSInterface
 
 
@@ -71,10 +74,32 @@ class RunCalculations:
                                     f'{X_name}_CV_output.csv')
         dfX = pandas.read_csv(X_path, index_col=0).values
         dfy = pandas.read_csv(y_path, header=None).values
-        print(dfX.shape, dfy.shape)
+        logging.info(dfX.shape, dfy.shape)
         cv = CrossValidation(dfX, dfy)
         cv.saveParameters(filename)
 
     @staticmethod
-    def run_yrlno(X_path: str, y_path: str, pop_path: str, Q2_path: str, output_vars: str, output_params: str, yr_cut: float = 0.3, Q2_cut: float = 0.5, lno_cut: float = 0.1):
-        pass
+    def run_yrlno(X_path: str, y_path: str, pop_path: str, Q2_path: str, output_vars: str, output_params: str, yr_cut: float = 0.3, Q2_cut: float = 0.5, lno_cut: float = 0.1) -> bool:
+        dfX = pandas.read_csv(X_path, index_col=0).to_numpy()
+        dfy = pandas.read_csv(y_path, header=None).to_numpy()
+
+        # TODO: handle multiple pop/Q2 file formats.
+        with open(pop_path, 'r') as pop_fl:
+            pop_json = json.load(pop_fl)
+
+        pop = pop_json['var_sel']
+        q2 = pop_json['Q2']
+
+        selected_variables = validate(
+            dfX, dfy, pop, q2, Q2_cut, yr_cut, lno_cut
+        )
+        if selected_variables != []:
+            dfSel = dfX.loc[:, dfX.columns[selected_variables]]
+            dfSel.to_csv(output_vars, sep=';')
+            cv = CrossValidation(dfSel.to_numpy(), dfy)
+            cv.saveParameters(output_params)
+            logging.info("Y-randomization and LNO executed with success!")
+            return True
+        else:
+            logging.error("y-randomization or LNO failed!")
+            return False

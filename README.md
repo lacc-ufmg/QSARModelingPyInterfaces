@@ -30,6 +30,8 @@ $ conda env create -f environment.yml
 $ conda activate QSARModelingPy
 ```
 
+> Please, note that you _must_ activate your virtual environment each time your terminal has been restarted. You'll get a visual clue that it's active by looking for `(QSARModelingPy)` at beginning of your shell line.
+
 ### Using in command line
 
 You're ready. Enter the right directory and do what you need.

@@ -1,19 +1,19 @@
 import sys
 import numpy as np
 import pandas as pd
-from ga import Ga
-from cross_validation_class import CrossValidation
-from yrandomization import YRandomization
-from lno import LNO
-from filter import variance_cut,correlation_cut,autocorrelation_cut
-import lj_cut as lj
-from validate_yr_lno import validate
+from modules.ga import Ga
+from modules.cross_validation_class import CrossValidation
+from modules.yrandomization import YRandomization
+from modules.lno import LNO
+from modules.filter import variance_cut, correlation_cut, autocorrelation_cut
+from modules import lj_cut as lj
+from modules.validate_yr_lno import validate
 import os
 import argparse
 
 
 def run(filename):
-    dfConf = pd.read_csv(filename,header=None)
+    dfConf = pd.read_csv(filename, header=None)
     directory = dfConf[1][0]
     xFile = dfConf[1][1]
     yFile = dfConf[1][2]
@@ -35,47 +35,50 @@ def run(filename):
     Q2_file = dfConf[1][18]
     var_sel_file = dfConf[1][19]
     autoscale = dfConf[1][20].upper() == "YES"
-    df = pd.read_csv(directory+"/"+xFile,sep=';',index_col=0)
+    df = pd.read_csv(directory+"/"+xFile, sep=';', index_col=0)
     dfX = lj.transform(df) if dfConf[1][21].upper() == "YES" else df
     print("Dimensions of the original matrix")
     print(dfX.shape)
-    y = pd.read_csv(directory+"/"+yFile,sep=';',header=None).values
-    indVar = variance_cut(dfX.values,var_cut)
-    dfVar = dfX.loc[:,dfX.columns[indVar]]
+    y = pd.read_csv(directory+"/"+yFile, sep=';', header=None).values
+    indVar = variance_cut(dfX.values, var_cut)
+    dfVar = dfX.loc[:, dfX.columns[indVar]]
     print("Dimensions of the matrix after the variance cut")
     print(dfVar.shape)
-    indCorr = correlation_cut(dfVar.values,y,corr_cut)
-    dfCorr = dfVar.loc[:,dfVar.columns[indCorr]]
+    indCorr = correlation_cut(dfVar.values, y, corr_cut)
+    dfCorr = dfVar.loc[:, dfVar.columns[indCorr]]
     print("Dimensions of the matrix after the correlation cut")
     print(dfCorr.shape)
     auto_cut = float(dfConf[1][22])
-    indAuto = autocorrelation_cut(dfCorr.values,y,auto_cut)
-    dfRest = dfCorr.loc[:,dfCorr.columns[indAuto]]
+    indAuto = autocorrelation_cut(dfCorr.values, y, auto_cut)
+    dfRest = dfCorr.loc[:, dfCorr.columns[indAuto]]
     print("Dimensions of the matrix after auto correlation cut")
     print(dfRest.shape)
-    dfRest.to_csv(os.path.join(out_directory,"filtered_"+out_matrix),sep=';')
+    dfRest.to_csv(os.path.join(out_directory, "filtered_"+out_matrix), sep=';')
     X = dfRest.values
     if nLVModel == None:
         nLVModel = int(dfCorr.shape[0]/5)
-    ga = Ga(X,y,nLVModel, autoscale, min_size, max_size, size_population, mig_rate, cxpb, mutpb, ngen)
+    ga = Ga(X, y, nLVModel, autoscale, min_size, max_size,
+            size_population, mig_rate, cxpb, mutpb, ngen)
     ga.run()
     ga.saveQ2(out_directory+"/"+Q2_file)
     ga.savePop(out_directory+"/"+var_sel_file)
     Q2 = ga.Q2
-    Q2 = [Q2[i][0] for i,_ in enumerate(Q2)]
-    var_sel = validate(X,y,ga.pop_selected,Q2,yr_cut=yr_crit,lno_cut=lno_crit)
+    Q2 = [Q2[i][0] for i, _ in enumerate(Q2)]
+    var_sel = validate(X, y, ga.pop_selected, Q2,
+                       yr_cut=yr_crit, lno_cut=lno_crit)
     if var_sel != []:
-        dfSel = dfRest.loc[:,dfRest.columns[var_sel]]
-        dfSel.to_csv(out_directory+"/"+out_matrix,sep=';')
-        cv = CrossValidation(dfSel.values,y)
-        cv.saveParameters(out_directory+"/"+out_cv)        
+        dfSel = dfRest.loc[:, dfRest.columns[var_sel]]
+        dfSel.to_csv(out_directory+"/"+out_matrix, sep=';')
+        cv = CrossValidation(dfSel.values, y)
+        cv.saveParameters(out_directory+"/"+out_cv)
     else:
         print("y-randomization or LNO failed!")
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--filename','-f',required=True,
+    parser.add_argument('--filename', '-f', required=True,
                         metavar='<filename>',
                         help='Config GA file.')
     args = parser.parse_args()

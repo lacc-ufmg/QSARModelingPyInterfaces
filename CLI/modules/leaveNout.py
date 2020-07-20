@@ -1,9 +1,8 @@
 import random
 import numpy as np
 
-
 class LeaveNout(object):
-
+	"""docstring for leaveNout"""
 	def __init__(self, n, n_repeats):
 		self.n = n
 		self.n_repeats = n_repeats

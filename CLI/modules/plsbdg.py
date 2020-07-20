@@ -1,7 +1,6 @@
 import numpy as np
 from sklearn.preprocessing import scale
 
-
 def normalize(v):
 	(m,n) = np.shape(v)
 	fn = np.zeros(n)
@@ -11,11 +10,12 @@ def normalize(v):
 		vn[:,i] = v[:,i]/fn[i]
 	return vn,fn
 
-
 class PLSBidiag(object):
+	"""docstring for PLSBiadiag"""
 	def __init__(self, n_components = 1, scale=True):
 		self.nLV = n_components
 		self.scale = scale
+
 
 	def bdiag(self,a,y):
 		nLV = self.nLV

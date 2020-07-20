@@ -1,10 +1,10 @@
-from modules.leaveNout import LeaveNout
+from leaveNout import LeaveNout
 import numpy as np
 from sklearn.cross_decomposition import PLSRegression
-import modules.calculate_parameters as cp
-
+import calculate_parameters as cp
 
 class LNO(object):
+	"""docstring for LNO"""
 	def __init__(self, X, y, nLV, n = None, nrepet = 5):
 		self.X = X
 		self.y = y
@@ -36,5 +36,6 @@ class LNO(object):
 				if j == 0:
 					self.Q2[i,k] = cp.calcR2(self.y,ycv)
 					k = k + 1
+		# self.Q2[i,:] = [cp.calcR2(self.y[:,0],self.ycv[:,i]) for i in range(self.nrepet)]
 
 		

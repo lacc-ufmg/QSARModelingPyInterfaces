@@ -2,38 +2,38 @@ import sys
 import numpy as np
 import pandas as pd
 import json
-from cross_validation_class import CrossValidation
-from yrandomization import YRandomization
-from lno import LNO
-import lj_cut as lj
-from filter import variance_cut,correlation_cut
+from modules.cross_validation_class import CrossValidation
+from modules.yrandomization import YRandomization
+from modules.lno import LNO
+from modules import lj_cut as lj
+from modules.filter import variance_cut, correlation_cut
 
 
-def validate(X,y,pop,Q2,Q2_cut=0.5,yr_cut=0.3,lno_cut=0.1):
+def validate(X, y, pop, Q2, Q2_cut=0.5, yr_cut=0.3, lno_cut=0.1):
     # y-randomization
     lpass = []
     intercepts = []
-    for i,var_sel in enumerate(pop):
+    for i, var_sel in enumerate(pop):
         if Q2[i] > Q2_cut:
-            XSel = X[:,var_sel]
-            cv = CrossValidation(XSel,y)
+            XSel = X[:, var_sel]
+            cv = CrossValidation(XSel, y)
             nLV = np.argmax(cv.Q2())+1
-            yr = YRandomization(XSel,y,nLV,50)
+            yr = YRandomization(XSel, y, nLV, 50)
             intercepts.append(yr.returnIntercept())
             if yr.returnIntercept() < yr_cut:
                 lpass.append(i)
-    
+
     # leave-N-out
     lpass2 = []
     if lpass != []:
         for i in lpass:
             if Q2[i] > Q2_cut:
-                XSel = X[:,pop[i]]
-                m,_ = np.shape(X)
-                cv = CrossValidation(XSel,y)
+                XSel = X[:, pop[i]]
+                m, _ = np.shape(X)
+                cv = CrossValidation(XSel, y)
                 nLV = np.argmax(cv.Q2())+1
-                lno = LNO(XSel,y,nLV,int(m/4),5)
-                m = np.mean(lno.Q2,1)
+                lno = LNO(XSel, y, nLV, int(m/4), 5)
+                m = np.mean(lno.Q2, 1)
                 std = max([abs(m[j]-m[0]) for j in range(len(m))])
                 if std < lno_cut:
                     lpass2.append(i)
@@ -46,35 +46,36 @@ def validate(X,y,pop,Q2,Q2_cut=0.5,yr_cut=0.3,lno_cut=0.1):
     else:
         return []
 
-if __name__=='__main__':
-	directory = sys.argv[1]
-	# Xfile = sys.argv[2]
-	# yfile = sys.argv[3]
-	# out_file = sys.argv[4]
-	# df = pd.read_csv(directory+Xfile,sep='\t')
-	# X = df.values
-	# y = pd.read_csv(directory+yfile,sep=';',header=None).values
-	df = pd.read_csv(sys.argv[2],sep=';',index_col=0)
-	dfX = lj.transform(df)
-	y = pd.read_csv(sys.argv[3],sep=';',header=None).values
-	indVar = variance_cut(dfX.values,0.1)
-	dfVar = dfX.loc[:,dfX.columns[indVar]]
-	print(dfVar.shape)
-	indCorr = correlation_cut(dfVar.values,y,0.3)
-	dfCorr = dfVar.loc[:,dfVar.columns[indCorr]]
-	print(dfCorr.shape)
-	out_directory = sys.argv[4]
-	X = dfCorr.values
-	with open(directory+"/Popout.json") as pop_file:
-		pop = json.load(pop_file)
-	with open(directory+"/Q2out.json") as Q2_file:
-		Q2 = json.load(Q2_file)
-	var_sel = validate(X,y,pop,Q2,yr_cut=0.25,lno_cut=0.1)
-	
-	if var_sel != []:
-	    dfSel = dfCorr.loc[:,dfCorr.columns[var_sel]]
-	    dfSel.to_csv(out_directory+"/XSel.csv",sep=';')
-	    cv = CrossValidation(dfSel.values,y)
-	    cv.saveParameters(out_directory+"/parameters_cv.csv")
-	else:
-	    print("y-randomization or LNO failed!")
+
+if __name__ == '__main__':
+    directory = sys.argv[1]
+    # Xfile = sys.argv[2]
+    # yfile = sys.argv[3]
+    # out_file = sys.argv[4]
+    # df = pd.read_csv(directory+Xfile,sep='\t')
+    # X = df.values
+    # y = pd.read_csv(directory+yfile,sep=';',header=None).values
+    df = pd.read_csv(sys.argv[2], sep=';', index_col=0)
+    dfX = lj.transform(df)
+    y = pd.read_csv(sys.argv[3], sep=';', header=None).values
+    indVar = variance_cut(dfX.values, 0.1)
+    dfVar = dfX.loc[:, dfX.columns[indVar]]
+    print(dfVar.shape)
+    indCorr = correlation_cut(dfVar.values, y, 0.3)
+    dfCorr = dfVar.loc[:, dfVar.columns[indCorr]]
+    print(dfCorr.shape)
+    out_directory = sys.argv[4]
+    X = dfCorr.values
+    with open(directory+"/Popout.json") as pop_file:
+        pop = json.load(pop_file)
+    with open(directory+"/Q2out.json") as Q2_file:
+        Q2 = json.load(Q2_file)
+    var_sel = validate(X, y, pop, Q2, yr_cut=0.25, lno_cut=0.1)
+
+    if var_sel != []:
+        dfSel = dfCorr.loc[:, dfCorr.columns[var_sel]]
+        dfSel.to_csv(out_directory+"/XSel.csv", sep=';')
+        cv = CrossValidation(dfSel.values, y)
+        cv.saveParameters(out_directory+"/parameters_cv.csv")
+    else:
+        print("y-randomization or LNO failed!")

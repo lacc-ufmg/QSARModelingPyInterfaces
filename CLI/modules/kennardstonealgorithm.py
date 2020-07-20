@@ -1,15 +1,14 @@
 # select samples using Kennard-Stone algorithm
 import numpy as np
 
-"""
---- input ---
-X : dataset of X-variables (samples x variables)
-k : number of samples to be selected
 
---- output ---
-selected_sample_numbers : selected sample numbers (training data)
-remaining_sample_numbers : remaining sample numbers (test data)
-"""
+# --- input ---
+# X : dataset of X-variables (samples x variables)
+# k : number of samples to be selected
+#
+# --- output ---
+# selected_sample_numbers : selected sample numbers (training data)
+# remaining_sample_numbers : remaining sample numbers (test data)
 
 def kennardstonealgorithm(x_variables, k):
     x_variables = np.array(x_variables)

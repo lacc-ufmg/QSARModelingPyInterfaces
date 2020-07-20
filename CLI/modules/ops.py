@@ -1,13 +1,12 @@
 import numpy as np
-from modules.cross_validation_class import CrossValidation
-from modules.plsbdg import PLSBidiag
+from cross_validation_class import CrossValidation
+from plsbdg import PLSBidiag
 from sklearn.preprocessing import scale as autoscale
 import operator
 import json
 
-
 class OPS(object):
-
+	"""docstring for OPS"""
 	def __init__(self, X, y, nLV = None, nLVModel = None, window = 2, increment = 1, percentage = 100, 
 		nModels = 100, scale = True):
 		super(OPS, self).__init__()
@@ -67,7 +66,10 @@ class OPS(object):
 			while nVar <= maxVar:
 				Xev = Xor[:,0:nVar]
 				cv = CrossValidation(Xev,y,nLVModel)
+				# models["Q2"].append(max(cv.Q2()))
+				# models["var_sel"].append(ind[0:nVar])
 				Q2 = np.append(Q2,max(cv.Q2()))
+				# var_sel.append(self.vars[ind[0:nVar]].tolist())
 				var_sel.append([int(self.vars[ind[i]]) for i in range(nVar)])
 				nVar += self.increment
 			indSort = np.argsort(-Q2).tolist()
@@ -86,7 +88,7 @@ class OPS(object):
 		X = self.X
 		y = self.y
 		Q2 = 0
-		while Q2 < self.models["Q2"][0]: 
+		while Q2 < self.models["Q2"][0]: # and np.sort(var_sel1) != np.sort(self.models["var_sel"][0]):
 			var_sel1 = self.models["var_sel"][0]
 			Q2 = self.models["Q2"][0]
 			print("{} variables were selected in the previous step of OPS run".format(len(var_sel1)))

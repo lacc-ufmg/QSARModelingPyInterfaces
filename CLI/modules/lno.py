@@ -1,7 +1,7 @@
-from leaveNout import LeaveNout
+from modules.leaveNout import LeaveNout
 import numpy as np
 from sklearn.cross_decomposition import PLSRegression
-import calculate_parameters as cp
+import modules.calculate_parameters as cp
 
 class LNO(object):
 	"""docstring for LNO"""

@@ -6,8 +6,8 @@ from deap import creator
 from deap import tools
 from numpy import zeros,shape,argmax
 from pandas import read_csv
-from cross_validation_class import CrossValidation
-from yrandomization import YRandomization
+from modules.cross_validation_class import CrossValidation
+from modules.yrandomization import YRandomization
 
 # df = read_csv('Xfiltered2.csv',sep=';')
 # X = df.values

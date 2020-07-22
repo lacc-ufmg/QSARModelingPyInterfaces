@@ -2,12 +2,12 @@ import sys
 import numpy as np
 import pandas as pd
 import json
-from cross_validation_class import CrossValidation
-from yrandomization import YRandomization
-from lno import LNO
-import lj_cut as lj
-from filter import variance_cut,correlation_cut
-from validacao_externa import ExternalValidation
+from modules.cross_validation_class import CrossValidation
+from modules.yrandomization import YRandomization
+from modules.lno import LNO
+import modules.lj_cut as lj
+from modules.filter import variance_cut,correlation_cut
+from modules.validacao_externa import ExternalValidation
 
 # def validate(X,y,pop,Q2,Q2_cut=0.5,yr_cut=0.3,lno_cut=0.1):
 # 	# y-randomization

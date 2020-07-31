@@ -4,7 +4,7 @@ QSAR Modeling is an open source computational package to generate and validate Q
 
 ## Using
 
-QSARModelingPy is divided in three differents approaches: you can execute it headless (in command line), in a Jupyter Notebook or in a Graphical User Interface.
+QSARModelingPy is divided in three differents approaches: you can execute it headless (in command line), in a Jupyter Notebook or in a Graphical User Interface. It's also possible use QSARModeling as Python Package through [PyPI](https://pypi.org/project/qsarmodelingpy/).
 
 Whatever method of your choice, start installing [Anaconda](https://www.anaconda.com/products/individual) (or [Minicoda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/)).
 
@@ -51,7 +51,7 @@ Enter `jupyter` directory and run jupyter notebook:
 
 Execute `QSARModelingNotebook.ipynb` and you're ready.
 
-### Using with the Graphical User Interface
+### Using with the Graphical User Interface (GUI)
 
 First of all, you'll need to install adwaita icons. For linux, run:
 

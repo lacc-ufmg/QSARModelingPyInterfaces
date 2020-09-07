@@ -1,10 +1,10 @@
 # QSARModelingPy
 
-QSAR Modeling is an open source computational package to generate and validate QSAR models.
+QSAR Modeling is an open source computational package to generate and validate QSAR models that implements [QSARModelingPyCore](https://github.com/hellmrf/QSARModelingPyCore). If you are looking for the `qsarmodelingpy` package, you can find it [here](https://pypi.org/project/qsarmodelingpy/).
 
 ## Using
 
-QSARModelingPy is divided in three differents approaches: you can execute it headless (in command line), in a Jupyter Notebook or in a Graphical User Interface.
+QSARModelingPy is divided in three differents approaches: you can execute it headless (in command line), in a Jupyter Notebook or in a Graphical User Interface (of course, you can also use it programmatically. In this case, go to [PyPI](https://pypi.org/project/qsarmodelingpy/)).
 
 Whatever method of your choice, start installing [Anaconda](https://www.anaconda.com/products/individual) (or [Minicoda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/)).
 

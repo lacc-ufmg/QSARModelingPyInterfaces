@@ -1,16 +1,12 @@
 name: QSARModelingPy
 channels:
-  - conda-forge
-  - defaults
+    - conda-forge
+    - defaults
 dependencies:
-  - python=3.8.1
-  - deap=1.3.1
-  - numpy=1.18.1
-  - pandas=1.0.3
-  - pygobject=3.36.1
-  - gtk3=3.24.18
-  - scikit-learn=0.22.1
-  #- pip:
-  #  - pyqt5==5.14.2
-  #  - pyqt5-sip==12.7.2
-  #  - pyqtwebengine==5.14.0
+    - python=3.8.1
+    - deap=1.3.1
+    - numpy=1.18.1
+    - pandas=1.0.3
+    - pygobject=3.36.1
+    - gtk3=3.24.18
+    - scikit-learn=0.22.1

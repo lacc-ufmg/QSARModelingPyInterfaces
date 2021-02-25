@@ -5,7 +5,7 @@ from deap import base
 from deap import creator
 from deap import tools
 from numpy import zeros, shape
-from modules.cross_validation_class import CrossValidation
+from qsarmodelingpy.cross_validation_class import CrossValidation
 
 
 def returnIndices(individual):

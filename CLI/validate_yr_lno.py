@@ -3,11 +3,11 @@ import numpy as np
 import pandas as pd
 import json
 import logging
-from modules.cross_validation_class import CrossValidation
-from modules.yrandomization import YRandomization
-from modules.lno import LNO
-from modules import lj_cut as lj
-from modules.filter import variance_cut, correlation_cut
+from qsarmodelingpy.cross_validation_class import CrossValidation
+from qsarmodelingpy.yrandomization import YRandomization
+from qsarmodelingpy.lno import LNO
+from qsarmodelingpy import lj_cut as lj
+from qsarmodelingpy.filter import variance_cut, correlation_cut
 
 
 def validate(X, y, pop, Q2, Q2_cut=0.5, yr_cut=0.3, lno_cut=0.1):

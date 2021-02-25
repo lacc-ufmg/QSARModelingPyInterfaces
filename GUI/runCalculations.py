@@ -2,11 +2,11 @@ import pandas
 import os
 import json
 import logging
-from QSARModelingPy.runGa import run as runGA
-from QSARModelingPy.runOPS import run as runOPS
-from QSARModelingPy.filter import variance_cut, correlation_cut, autocorrelation_cut
-from QSARModelingPy.cross_validation_class import CrossValidation
-from QSARModelingPy.validate_yr_lno import validate
+from qsarmodelingpy.runGa import run as runGA
+from qsarmodelingpy.runOPS import run as runOPS
+from qsarmodelingpy.filter import variance_cut, correlation_cut, autocorrelation_cut
+from qsarmodelingpy.cross_validation_class import CrossValidation
+from qsarmodelingpy.validate_yr_lno import validate
 from Interfaces import ConfigGAInterface, ConfigOPSInterface
 
 

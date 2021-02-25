@@ -1,9 +1,9 @@
 import pandas as pd
-from modules.ops import OPS
-from modules.cross_validation_class import CrossValidation
-from modules.filter import variance_cut, correlation_cut
-from modules import lj_cut as lj
-from modules.validate_yr_lno import validate
+from qsarmodelingpy.ops import OPS
+from qsarmodelingpy.cross_validation_class import CrossValidation
+from qsarmodelingpy.filter import variance_cut, correlation_cut
+from qsarmodelingpy import lj_cut as lj
+from qsarmodelingpy.validate_yr_lno import validate
 import logging
 
 if __name__ == '__main__':

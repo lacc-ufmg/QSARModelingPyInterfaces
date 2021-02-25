@@ -1,9 +1,9 @@
 # Importing libraries
 import pandas as pd
-from modules.validacao_externa import ExternalValidation
-from modules.cross_validation_class import CrossValidation
-from modules.kennardstonealgorithm import kennardstonealgorithm
-from modules import lj_cut as lj
+from qsarmodelingpy.validacao_externa import ExternalValidation
+from qsarmodelingpy.cross_validation_class import CrossValidation
+from qsarmodelingpy.kennardstonealgorithm import kennardstonealgorithm
+from qsarmodelingpy import lj_cut as lj
 import os
 import argparse
 import logging

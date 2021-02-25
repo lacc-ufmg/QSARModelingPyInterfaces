@@ -1,6 +1,6 @@
 import pandas as pd
-from modules.validacao_externa import ExternalValidation
-from modules.cross_validation_class import CrossValidation
+from qsarmodelingpy.validacao_externa import ExternalValidation
+from qsarmodelingpy.cross_validation_class import CrossValidation
 
 if __name__ == '__main__':
     dfConf = pd.read_csv("confExtVal.csv", header=None)

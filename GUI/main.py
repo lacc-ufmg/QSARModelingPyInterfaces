@@ -7,6 +7,7 @@ from MainHandler import Handler
 from HandlerFinder import HandlerFinder
 from gi.repository import Gtk
 import gi
+from os import path
 
 gi.require_version('Gtk', '3.0')
 
@@ -14,17 +15,15 @@ gi.require_version('Gtk', '3.0')
 # Uncomment the following lines to see all console logs.
 # logging.basicConfig(level=logging.DEBUG)
 
+def add_all_from_file(files: list, builder: Gtk.Builder) -> None:
+    for f in files:
+        builder.add_from_file(path.join(path.dirname(__file__), "Views", f))
+
 
 builder: Gtk.Builder = Gtk.Builder()
-builder.add_from_file('./Views/main.glade')
-builder.add_from_file('./Views/ga.glade')
-builder.add_from_file('./Views/ops.glade')
-builder.add_from_file('./Views/about.glade')
-builder.add_from_file('./Views/varcut.glade')
-builder.add_from_file('./Views/corrcut.glade')
-builder.add_from_file('./Views/autocorrcut.glade')
-builder.add_from_file('./Views/cross_validation.glade')
-builder.add_from_file('./Views/yrlno.glade')
+add_all_from_file(["main.glade", "ga.glade", "ops.glade", "about.glade", "varcut.glade",
+                   "corrcut.glade", "autocorrcut.glade", "cross_validation.glade", "yrlno.glade"], builder)
+
 
 handler = Handler(builder)
 

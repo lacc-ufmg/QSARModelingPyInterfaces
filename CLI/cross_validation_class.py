@@ -2,8 +2,8 @@ from sklearn.model_selection import LeaveOneOut
 import numpy as np
 import pandas as pd
 from math import sqrt
-from modules.calculate_parameters import calcPress, calcR2, calcRMSE, calcR
-from modules.plsbdg import PLSBidiag
+from qsarmodelingpy.calculate_parameters import calcPress, calcR2, calcRMSE, calcR
+from qsarmodelingpy.plsbdg import PLSBidiag
 
 
 class CrossValidation(object):

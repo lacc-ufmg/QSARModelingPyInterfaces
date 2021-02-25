@@ -1,7 +1,7 @@
-from modules.leaveNout import LeaveNout
+from qsarmodelingpy.leaveNout import LeaveNout
 import numpy as np
 from sklearn.cross_decomposition import PLSRegression
-import modules.calculate_parameters as cp
+import qsarmodelingpy.calculate_parameters as cp
 
 
 class LNO(object):

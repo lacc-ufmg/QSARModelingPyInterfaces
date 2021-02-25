@@ -1,6 +1,6 @@
 import numpy as np
-from modules.cross_validation_class import CrossValidation
-from modules.plsbdg import PLSBidiag
+from qsarmodelingpy.cross_validation_class import CrossValidation
+from qsarmodelingpy.plsbdg import PLSBidiag
 from sklearn.preprocessing import scale as autoscale
 import json
 import logging

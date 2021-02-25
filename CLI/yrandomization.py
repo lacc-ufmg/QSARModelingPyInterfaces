@@ -1,5 +1,5 @@
 import random
-from modules.cross_validation_class import CrossValidation
+from qsarmodelingpy.cross_validation_class import CrossValidation
 import numpy as np
 from sklearn.preprocessing import scale
 from sklearn import linear_model

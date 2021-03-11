@@ -5,3 +5,6 @@ __pycache__
 .vscode
 *.code-workspace
 *.old*
+build/
+dist/
+*.snap

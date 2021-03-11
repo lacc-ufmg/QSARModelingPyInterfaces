@@ -1,4 +1,5 @@
-from typing import TypedDict, Union
+from typing_extensions import TypedDict
+from typing import Union
 
 
 class ConfigGAInterface(TypedDict):

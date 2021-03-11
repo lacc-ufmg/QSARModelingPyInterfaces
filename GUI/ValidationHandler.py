@@ -18,28 +18,28 @@ class ValidationHandler(Handler):
             'delete-event', lambda w, e: w.hide() or True)
         self.builder.get_object('config_yrlno_window').connect(
             'delete-event', lambda w, e: w.hide() or True)
-        self.X_matrix = self.handler.X_matrix
-        self.y_vector = self.handler.y_vector
 
     def on_cv_run_button_clicked(self, _) -> None:
-        if not self.X_matrix or not self.y_vector:
+        if not self.handler.get_X_matrix() or not self.handler.get_y_vector():
+            logging.error("Load matrix/vector first.")
             return
-
         auto = self.builder.get_object("cv_autonLV").get_active()
         nLV = None if auto else self.builder.get_object(
             "cross_validation_nLV").get_value()
         filename = self.builder.get_object("cv_output").get_text()
 
+        logging.debug("Calling RunCalculations.")
         RunCalculations.runCrossValidation(
-            self.X_matrix, self.y_vector, filename, nLV)
+            self.handler.get_X_matrix(), self.handler.get_y_vector(), filename, nLV)
 
     def on_yrlno_run_button_clicked(self, _) -> None:
-        if not self.X_matrix or not self.y_vector:
+        if not self.handler.get_X_matrix() or not self.handler.get_y_vector():
+            logging.error("Please open matrix and vector first.")
             return
 
         RunCalculations.run_yrlno(
-            X_path=self.X_matrix,
-            y_path=self.y_vector,
+            X_path=self.handler.get_X_matrix(),
+            y_path=self.handler.get_y_vector(),
             pop_path=self.builder.get_object("yrlno_input_pop").get_text(),
             Q2_path=self.builder.get_object("yrlno_input_q2").get_text(),
             output_vars=self.builder.get_object(

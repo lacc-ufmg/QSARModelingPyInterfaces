@@ -14,8 +14,6 @@ class GAHandler(Handler):
         super().__init__(builder)
         self.builder = builder
         self.handler = handler
-        self.X_matrix = handler.X_matrix
-        self.y_vector = handler.y_vector
         self.config_GA_window = self.builder.get_object('config_GA_window')
         self.config_GA_window.connect(
             'delete-event', lambda w, e: w.hide() or True)
@@ -26,10 +24,10 @@ class GAHandler(Handler):
         self.config_GA_window.hide()
 
     def on_GA_run_button_clicked(self, _) -> None:
-        if self.files_ok():
+        if self.handler.files_ok():
             self.ga_config = {
-                'XMatrix': self.X_matrix,
-                'yvector': self.y_vector,
+                'XMatrix': self.handler.get_X_matrix(),
+                'yvector': self.handler.get_y_vector(),
                 'output_matrix': self.builder.get_object('GA_output_matrix').get_text(),
                 'output_cv': self.builder.get_object('GA_output_cv').get_text(),
                 'output_q2': self.builder.get_object('GA_output_q2').get_text(),
@@ -53,23 +51,23 @@ class GAHandler(Handler):
 
             rand = random.randint(10000, 99999)
             if not self.ga_config['output_matrix']:
-                self.ga_config['output_matrix'] = os.path.join(os.path.dirname(self.X_matrix),
+                self.ga_config['output_matrix'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                                "GA_output_matrix_{}.csv".format(rand))
             if not self.ga_config['output_cv']:
-                self.ga_config['output_cv'] = os.path.join(os.path.dirname(self.X_matrix),
+                self.ga_config['output_cv'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                            "GA_output_CV_{}.csv".format(rand))
             if not self.ga_config['output_q2']:
-                self.ga_config['output_q2'] = os.path.join(os.path.dirname(self.X_matrix),
+                self.ga_config['output_q2'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                            "GA_output_Q2_{}.csv".format(rand))
             if not self.ga_config['output_selected']:
-                self.ga_config['output_selected'] = os.path.join(os.path.dirname(self.X_matrix),
+                self.ga_config['output_selected'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                                  "GA_output_selected_{}.csv".format(rand))
 
             RunCalculations.runGA(self.ga_config)
 
             # If everything is ok, current matrix will be the filtered one.
             if os.path.isfile(self.ga_config['output_matrix']):
-                self.X_matrix = self.ga_config['output_matrix']
+                self.handler.get_X_matrix(self.ga_config['output_matrix'])
                 self.draw_matrices('matrix')
         else:
             print("Please, open the files in File > Open...")

@@ -18,8 +18,6 @@ class FilterHandler(Handler):
             'config_varcut_window')
         self.config_varcut_window.connect(
             'delete-event', lambda w, e: w.hide() or True)
-        self.X_matrix = handler.X_matrix
-        self.y_vector = handler.y_vector
         self.config_varcut_window = builder.get_object('config_varcut_window')
         self.config_corrcut_window = builder.get_object(
             'config_corrcut_window')
@@ -46,19 +44,18 @@ class FilterHandler(Handler):
         output = self.builder.get_object(
             f'{prefix}_output').get_text() if save else ""
         new_matrix = runMethod[prefix](
-            self.X_matrix, self.y_vector, value, save, output)
+            self.handler.get_X_matrix(), self.handler.get_y_vector(), value, save, output)
         print(
-            f'x_matrix:{self.X_matrix}\n\ny_vector:{self.y_vector}\n\nreturn:{new_matrix}')
+            f'x_matrix:{self.handler.get_X_matrix()}\n\ny_vector:{self.handler.get_y_vector()}\n\nreturn:{new_matrix}')
         # TODO: let user choose whether to replace the active matrix with the new one
         if os.path.isfile(new_matrix):
-            self.X_matrix = new_matrix
-            self.handler.X_matrix = new_matrix
+            self.handler.set_X_matrix(new_matrix)
             self.handler.draw_matrices('matrix')
         window[prefix].hide()
 
     def on_varcut_run_button_clicked(self, _) -> None:
         """ Handle Run button from Variance cut screen """
-        if self.files_ok():
+        if self.handler.files_ok():
             value = float(self.builder.get_object('varcut_varcut').get_value())
             # TODO
             """ In the future, the user will be able to cut the matrix without
@@ -68,24 +65,23 @@ class FilterHandler(Handler):
             output = self.builder.get_object(
                 'varcut_output').get_text() if save else ""
             new_matrix = RunCalculations.runVarCut(
-                self.X_matrix, value, save, output)
+                self.handler.get_X_matrix(), value, save, output)
             # TODO: let user choose whether to replace the active matrix with the new one
             if os.path.isfile(new_matrix):
-                self.X_matrix = new_matrix
-                self.handler.X_matrix = new_matrix
+                self.handler.set_X_matrix(new_matrix)
                 self.handler.draw_matrices('matrix')
             self.config_varcut_window.hide()
 
     def on_corrcut_run_button_clicked(self, _) -> None:
         """ Handle Run button from Correlation cut screen """
-        if self.files_ok():
+        if self.handler.files_ok():
             value = float(self.builder.get_object(
                 'corrcut_corrcut').get_value())
             self.run_corrfilter('corrcut', value)
 
     def on_autocorrcut_run_button_clicked(self, _) -> None:
         """ Handle Run button from Autocorrelation cut screen """
-        if self.files_ok():
+        if self.handler.files_ok():
             value = float(self.builder.get_object(
                 'autocorrcut_autocorrcut').get_value())
             self.run_corrfilter('autocorrcut', value)

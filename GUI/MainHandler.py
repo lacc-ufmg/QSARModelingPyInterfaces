@@ -1,11 +1,14 @@
-import logging
-from runCalculations import RunCalculations
-import pandas
-from gi.repository import Gtk
 import os
+import sys
+from gi.repository import Gtk
+import pandas
+from runCalculations import RunCalculations
+import Utils
+import logging
 import gi
-
 gi.require_version('Gtk', '3.0')
+
+DEBUG_MODE = "--debug" in sys.argv or "-d" in sys.argv
 
 
 class Handler(object):
@@ -42,11 +45,21 @@ class Handler(object):
         self.csv_file_filter.set_name('CSV Files (*.csv)')
 
         # Handling files
-        # TODO: remove hardcoded filenames
         self.X_matrix = None
         self.y_vector = None
         self.last_opened_path = ""
         self.last_saved_path = ""
+
+        # TODO: remove these stuff
+        # if DEBUG_MODE:
+        #     self.set_X_matrix(
+        #         "/home/helitonmrf/Documents/QSAR/cancer_prostata/d10.csv")
+        #     self.set_y_vector(
+        #         "/home/helitonmrf/Documents/QSAR/cancer_prostata/atividades.txt")
+        #     self.draw_matrices('matrix')
+        #     self.draw_matrices('vector')
+
+        # self.block_menus_until_file_load()
 
     def on_menu_ops_model_activate(self, _) -> None:
         """ Handle menu Generate > OPS """
@@ -147,14 +160,20 @@ class Handler(object):
         """ Handle menu File > Open... > Open matrix """
         filename = self.open_file()
         if filename:
-            self.X_matrix = filename
+            # self.X_matrix = filename
+            logging.debug(f"Selected {filename}.")
+            self.set_X_matrix(filename)
+            logging.debug(f"Setted {self.get_X_matrix()}.")
             self.draw_matrices('matrix')
 
     def on_menu_open_vector_activate(self, _) -> None:
         """ Handle menu File > Open... > Open vector """
         filename = self.open_file()
         if filename:
-            self.y_vector = filename
+            # self.y_vector = filename
+            logging.debug(f"Selected {filename}.")
+            self.set_y_vector(filename)
+            logging.debug(f"Setted {self.get_y_vector()}.")
             self.draw_matrices('vector')
 
     def draw_matrices(self, what_to_draw) -> None:
@@ -177,9 +196,37 @@ class Handler(object):
 
         self.block_menus_until_file_load()
 
+    @staticmethod
+    def _detect_header_and_indices_DEPRECATED(path: str) -> tuple:
+        """Detect if the csv in `path` has header and columns, returning in the Pandas format. It only works if the first header column or first index line are strings. Numeric values will be considered as data.
+        Args:
+            path (str): The path to the csv file.
+        Returns:
+            tuple: (index_col, header), where both can be `None` (not found) or `0` (first line/column).
+        """
+        def _is_numeric(string: str) -> bool:
+            try:
+                float(string)
+            except ValueError:
+                return False
+            return True
+        df_short = pandas.read_csv(
+            path, sep=None, header=None, nrows=2, usecols=[0, 1])
+        first_row_is_header = not _is_numeric(df_short.iloc[0, 1])
+        header = 0 if first_row_is_header else None
+        if first_row_is_header and (str(df_short.iloc[0, 0]) in "0" or str(df_short.iloc[0, 0]) == 'nan' or float(df_short.iloc[0, 0]) == 0.0):
+            # when the header were detected and the [0, 0] position is
+            # either empty or 0, it'll be considered an index column.
+            index_col = 0
+        else:
+            first_column_is_index = not _is_numeric(df_short.iloc[1, 0])
+            index_col = 0 if first_column_is_index else None
+        return index_col, header
+
     def draw_pandas_matrix(self, treeview, path, print_index=True) -> None:
         """ Draws in treeview a pandas matrix from path (csv) """
-        df = pandas.read_csv(path, index_col=0)
+        df = Utils.load_matrix(path)
+
         print_etc = False
         if df.shape[1] > 10:
             df = df.iloc[:, 0:10]
@@ -195,7 +242,6 @@ class Handler(object):
             appendix += list(df.iloc[i, :])
             if print_etc:
                 appendix += ["..."]
-
             liststore.append(appendix)
         self.clear_treeview(treeview)
         current_model = treeview.get_model()
@@ -227,7 +273,7 @@ class Handler(object):
 
     def draw_pandas_vector(self, treeview, path: str) -> None:
         """ Draws in treeview a pandas vector from path (csv/txt) """
-        df = pandas.read_csv(path)
+        df = pandas.read_csv(path, sep=None)
 
         self.clear_treeview(treeview)
 
@@ -251,6 +297,26 @@ class Handler(object):
 
         self.about_window.run()
 
+    def get_X_matrix(self) -> str:
+        return self.X_matrix
+
+    def get_y_vector(self) -> str:
+        return self.y_vector
+
+    def set_X_matrix(self, new_value: str) -> None:
+        if new_value is None or os.path.isfile(str(new_value)):
+            self.X_matrix = new_value
+            self.block_menus_until_file_load()
+        else:
+            raise TypeError(f"File {new_value} is not a valid file.")
+
+    def set_y_vector(self, new_value: str) -> None:
+        if new_value is None or os.path.isfile(str(new_value)):
+            self.y_vector = new_value
+            self.block_menus_until_file_load()
+        else:
+            raise TypeError(f"File {new_value} is not a valid file.")
+
     @staticmethod
     def on_auto_state_set(obj, active: bool) -> None:
         """Set an object as active (editable) or not. Usually called by switchers."""
@@ -263,7 +329,15 @@ class Handler(object):
             obj.set_sensitive(True)
 
     def files_ok(self) -> bool:
-        return os.path.isfile(self.X_matrix) and os.path.isfile(self.y_vector)
+        matp = self.get_X_matrix()
+        logging.debug(f"mat = {matp}")
+        mat = os.path.isfile(matp)
+        logging.debug(f"mat = {mat}")
+        vecp = self.get_y_vector()
+        logging.debug(f"vec = {vecp}")
+        vec = os.path.isfile(vecp)
+        logging.debug(f"vec = {vec}")
+        return os.path.isfile(self.get_X_matrix()) and os.path.isfile(self.get_y_vector())
 
     @staticmethod
     def on_close_modal(modal) -> None:

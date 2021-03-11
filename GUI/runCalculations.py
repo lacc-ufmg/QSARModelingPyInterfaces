@@ -1,3 +1,4 @@
+import numpy as np
 import pandas
 import os
 import json
@@ -22,7 +23,7 @@ class RunCalculations:
 
     @staticmethod
     def runVarCut(filename: str, value: float, save: bool = True, output: str = "") -> str:
-        df = pandas.read_csv(filename, index_col=0)
+        df = pandas.read_csv(filename, index_col=0, sep=None)
         indVar = variance_cut(df.values, value)
         dfCut = df.loc[:, df.columns[indVar]]
         if save:
@@ -40,7 +41,7 @@ class RunCalculations:
 
     @staticmethod
     def runCorrelationFilter(auto: bool, X_path: str, y_path: str, value: float, save: bool = True, output: str = "") -> str:
-        dfX = pandas.read_csv(X_path, index_col=0)
+        dfX = pandas.read_csv(X_path, index_col=0, sep=None)
         dfy = pandas.read_csv(y_path, header=None)
         indVar = autocorrelation_cut(dfX.values, dfy, value) if auto else correlation_cut(
             dfX.values, dfy.values, value)
@@ -72,23 +73,31 @@ class RunCalculations:
             X_name = os.path.splitext(os.path.basename(X_path))[0]
             filename = os.path.join(os.path.dirname(X_path),
                                     f'{X_name}_CV_output.csv')
-        dfX = pandas.read_csv(X_path, index_col=0).values
+        dfX = pandas.read_csv(X_path, index_col=0, sep=None).values
         dfy = pandas.read_csv(y_path, header=None).values
-        logging.info(dfX.shape, dfy.shape)
+        logging.debug(dfX.shape)
+        logging.debug(dfy.shape)
+        logging.debug(dfy)
         cv = CrossValidation(dfX, dfy)
         cv.saveParameters(filename)
 
     @staticmethod
     def run_yrlno(X_path: str, y_path: str, pop_path: str, Q2_path: str, output_vars: str, output_params: str, yr_cut: float = 0.3, Q2_cut: float = 0.5, lno_cut: float = 0.1) -> bool:
-        dfX = pandas.read_csv(X_path, index_col=0).to_numpy()
+        dfX = pandas.read_csv(X_path, index_col=0, sep=None).to_numpy()
         dfy = pandas.read_csv(y_path, header=None).to_numpy()
 
-        # TODO: handle multiple pop/Q2 file formats.
-        with open(pop_path, 'r') as pop_fl:
-            pop_json = json.load(pop_fl)
+        # T ODO: handle multiple pop/Q2 file formats.
+        # with open(pop_path, 'r') as pop_fl:
+        #     pop_json = json.load(pop_fl)
 
-        pop = pop_json['var_sel']
-        q2 = pop_json['Q2']
+        # pop = pop_json['var_sel']
+        # q2 = pop_json['Q2']
+
+        with open(pop_path, 'r') as pop_fl:
+            pop = np.array(json.load(pop_fl))
+
+        with open(Q2_path, 'r') as q2_fl:
+            q2 = np.array(json.load(q2_fl))
 
         selected_variables = validate(
             dfX, dfy, pop, q2, Q2_cut, yr_cut, lno_cut

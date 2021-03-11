@@ -1,3 +1,5 @@
+import sys
+import coloredlogs
 import logging
 from ValidationHandler import ValidationHandler
 from FilterHandler import FilterHandler
@@ -11,25 +13,40 @@ from os import path
 
 gi.require_version('Gtk', '3.0')
 
+logging_level = logging.DEBUG if "--debug" in sys.argv or "-d" in sys.argv else logging.INFO
+coloredlogs.DEFAULT_FIELD_STYLES = {'filename': {'color': 'blue'}, 'lineno': {
+    'color': 'blue'}, 'funcName': {'color': 'magenta'}, 'levelname': {'bold': True, 'color': 'black'}}
+coloredlogs.install(
+    fmt="%(filename)s:%(lineno)s %(funcName)s() %(levelname)s  %(message)s", level=logging_level)
 
-# Uncomment the following lines to see all console logs.
-# logging.basicConfig(level=logging.DEBUG)
+__DIR__ = getattr(sys, '_MEIPASS', path.abspath(path.dirname(__file__)))
+
 
 def add_all_from_file(files: list, builder: Gtk.Builder) -> None:
     for f in files:
-        builder.add_from_file(path.join(path.dirname(__file__), "Views", f))
+        builder.add_from_file(path.abspath(
+            path.join(__DIR__, "Views", f)))
 
 
 builder: Gtk.Builder = Gtk.Builder()
-add_all_from_file(["main.glade", "ga.glade", "ops.glade", "about.glade", "varcut.glade",
-                   "corrcut.glade", "autocorrcut.glade", "cross_validation.glade", "yrlno.glade"], builder)
+add_all_from_file([
+    "main.glade",
+    "about.glade",
+    "ga.glade",
+    "ops.glade",
+    "varcut.glade",
+    "corrcut.glade",
+    "autocorrcut.glade",
+    "cross_validation.glade",
+    "yrlno.glade"
+], builder)
 
 
 handler = Handler(builder)
 
 """ Register handlers """
 handlers = [
-    Handler(builder),
+    handler,
     GAHandler(builder, handler),
     OPSHandler(builder, handler),
     FilterHandler(builder, handler),

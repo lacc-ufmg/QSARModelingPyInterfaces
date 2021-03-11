@@ -1,6 +1,7 @@
 from Interfaces import ConfigOPSInterface
 from MainHandler import Handler
 from runCalculations import RunCalculations
+import Utils
 import random
 import os
 import gi
@@ -13,9 +14,7 @@ class OPSHandler(Handler):
     def __init__(self, builder, handler):
         super().__init__(builder)
         self.builder = builder
-        # self.handler = handler
-        self.X_matrix = handler.X_matrix
-        self.y_vector = handler.y_vector
+        self.handler = handler
         # self._thread = ThreadPoolExecutor()
         self.config_OPS_window = builder.get_object('config_OPS_window')
         self.config_OPS_window.connect(
@@ -27,10 +26,10 @@ class OPSHandler(Handler):
         self.config_OPS_window.hide()
 
     def on_OPS_run_button_clicked(self, _) -> None:
-        if self.files_ok():
+        if self.handler.files_ok():
             self.ops_config = {
-                'XMatrix': self.X_matrix,
-                'yvector': self.y_vector,
+                'XMatrix': self.handler.get_X_matrix(),
+                'yvector': self.handler.get_y_vector(),
                 'output_matrix': self.builder.get_object('OPS_output_matrix').get_text(),
                 'output_cv': self.builder.get_object('OPS_output_cv').get_text(),
                 'output_models': self.builder.get_object('OPS_output_models').get_text(),
@@ -50,15 +49,16 @@ class OPSHandler(Handler):
                 'ops_type': 'f' if self.builder.get_object('ops_feed_ops').get_active() else 's'
             }
 
+            # TODO: use date instead of random numbers
             rand = random.randint(10000, 99999)
             if not self.ops_config['output_matrix']:
-                self.ops_config['output_matrix'] = os.path.join(os.path.dirname(self.X_matrix),
+                self.ops_config['output_matrix'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                                 "OPS_output_matrix_{}.csv".format(rand))
             if not self.ops_config['output_cv']:
-                self.ops_config['output_cv'] = os.path.join(os.path.dirname(self.X_matrix),
+                self.ops_config['output_cv'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                             "OPS_output_CV_{}.csv".format(rand))
             if not self.ops_config['output_models']:
-                self.ops_config['output_models'] = os.path.join(os.path.dirname(self.X_matrix),
+                self.ops_config['output_models'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                                 "OPS_output_models_{}.json".format(rand))
 
             # TODO: implement multithreading
@@ -67,7 +67,7 @@ class OPSHandler(Handler):
 
             # If everything is ok, current matrix will be the filtered one.
             if os.path.isfile(self.ops_config['output_matrix']):
-                self.X_matrix = self.ops_config['output_matrix']
+                self.handler.set_X_matrix(self.ops_config['output_matrix'])
                 self.draw_matrices('matrix')
         else:
             print("Please, go to File > Open... before run a calculation.")

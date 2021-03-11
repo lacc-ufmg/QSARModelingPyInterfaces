@@ -1,10 +1,15 @@
+"""Variable selection with Genetic Algorithm."""
 import random
 import json
+from tqdm import tqdm
 import logging
+
 from deap import base
 from deap import creator
 from deap import tools
-from numpy import zeros, shape
+from numpy import zeros, shape, argmax
+import pandas as pd
+from pandas import read_csv
 from qsarmodelingpy.cross_validation_class import CrossValidation
 
 
@@ -43,13 +48,28 @@ def initIndividual(icls, imin, imax, size):
 
 
 class Ga(object):
-    def __init__(self, X, y, nLV=None, scale=True, min_size=5, max_size=25, size_population=200, mig_rate=0.2,
-                 cxpb=0.5, mutpb=0.2, ngen=120):
+    def __init__(self, X: pd.DataFrame, y: pd.DataFrame, nLV: int = None, scale: bool = True, min_size: int = 5, max_size: int = 25, size_population: int = 200, mig_rate: float = 0.2,
+                 cxpb: float = 0.5, mutpb: float = 0.2, ngen: int = 120):
+        """Variable selection with Genetic Algorithm.
+
+        Args:
+            X (DataFrame): The matrix with descriptors.
+            y (DataFrame, list, array): The dependent variable vector.
+            nLV (int, optional): Number of Latent Variables. Defaults to None.
+            scale (bool, optional): Defaults to True.
+            min_size (int, optional): Minimum number of variables in the model. Defaults to 5.
+            max_size (int, optional): Maximum number of variables in the model. Defaults to 25.
+            size_population (int, optional): Size of the population in each generation. Defaults to 200.
+            mig_rate (float, optional): Migration rate. Defaults to 0.2.
+            cxpb (float, optional): Crossover rate. Defaults to 0.5.
+            mutpb (float, optional): Mutation rate. Defaults to 0.2.
+            ngen (int, optional): Number of generations. Defaults to 120.
+        """
         self.X = X
         self.y = y
         self.nLV = nLV
         self.scale = scale
-        self. min_size = min_size
+        self.min_size = min_size
         self.max_size = max_size
         self.size_population = size_population
         self.mig_rate = mig_rate
@@ -58,7 +78,7 @@ class Ga(object):
         self.ngen = ngen
 
     def evaluate(self, individual):
-        # Do some hard computing on the individual
+        """Do some hard computing on the individual"""
         indices = [i for i, v in enumerate(individual) if v == 1]
         Xev = self.X[:, indices]
         cv = CrossValidation(Xev, self.y, min(
@@ -68,7 +88,6 @@ class Ga(object):
         return (Q2,)
 
     def run(self):
-
         creator.create("FitnessMax", base.Fitness, weights=(1.0,))
         creator.create("Individual", list, fitness=creator.FitnessMax)
 
@@ -97,6 +116,7 @@ class Ga(object):
         toolbox.decorate("mate", checkLen(MIN_SIZE, MAX_SIZE))
         toolbox.decorate("mutate", checkLen(MIN_SIZE, MAX_SIZE))
         toolbox.register("select", tools.selTournament, tournsize=2)
+        #toolbox.register("select", tools.selBest)
         toolbox.register("evaluate", self.evaluate)
 
         pop = toolbox.population(n=SIZE_POPULATION)
@@ -105,9 +125,10 @@ class Ga(object):
         fitnesses = map(toolbox.evaluate, pop)
         for ind, fit in zip(pop, fitnesses):
             ind.fitness.values = fit
-
-        for g in range(NGEN):
-            logging.info("Generation {} of {}".format(g+1, NGEN))
+        logging.info("Running Genetic Algorithm...")
+        progress_bar = tqdm(total=NGEN, position=1, leave=True)
+        for _ in range(NGEN):
+            progress_bar.update()
             # generates migrants to add to the population
             mig = toolbox.population(n=int(MIG_RATE*SIZE_POPULATION))
             fitnesses = map(toolbox.evaluate, mig)
@@ -141,15 +162,25 @@ class Ga(object):
 
             # The population is replaced by best individuals in the offspring
             pop = toolbox.select(offspring, len(pop))
-
+        progress_bar.close()
         individuals = [ind for ind in pop]
         self.Q2 = [ind.fitness.values for ind in pop]
         self.pop_selected = [returnIndices(ind) for ind in individuals]
 
     def saveQ2(self, file):
+        """Saves Q² output to `file`.
+
+        Args:
+            file (str path, file-like, `io`): The filename to save Q² output.
+        """
         with open(file, "w") as Q2_file:
             Q2_file.write(json.dumps(self.Q2))
 
     def savePop(self, file):
+        """Saves population to `file`.
+
+        Args:
+            file (str path, file-like, `io`): The filename to save population output.
+        """
         with open(file, "w") as pop_file:
             pop_file.write(json.dumps(self.pop_selected))

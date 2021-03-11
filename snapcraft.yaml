@@ -1,0 +1,19 @@
+name: qsarmodeling
+version: git
+summary: QSARModeling written in Python
+description: |
+    description here!
+
+base: core18
+grade: devel
+confinement: devmode
+
+parts:
+    qsarmodeling:
+        plugin: dump
+        source: ./dist/qsarmodeling.tar.xz
+
+apps:
+    qsarmodeling:
+        extensions: [gnome-3-28]
+        command: qsarmodeling

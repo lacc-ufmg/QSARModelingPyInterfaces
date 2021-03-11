@@ -1,0 +1,15 @@
+pyinstaller ./GUI/main.py --name qsarmodeling \
+    --hidden-import cmath \
+    --hidden-import sklearn.utils._weight_vector \
+    --hidden-import pandas \
+    --add-data "./GUI/Views/main.glade:Views" \
+    --add-data "./GUI/Views/main.glade:Views" \
+    --add-data "./GUI/Views/ga.glade:Views" \
+    --add-data "./GUI/Views/ops.glade:Views" \
+    --add-data "./GUI/Views/about.glade:Views" \
+    --add-data "./GUI/Views/varcut.glade:Views" \
+    --add-data "./GUI/Views/corrcut.glade:Views" \
+    --add-data "./GUI/Views/autocorrcut.glade:Views" \
+    --add-data "./GUI/Views/cross_validation.glade:Views" \
+    --add-data "./GUI/Views/yrlno.glade:Views" \
+    --noconfirm

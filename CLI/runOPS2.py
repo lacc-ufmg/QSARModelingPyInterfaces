@@ -8,7 +8,7 @@ from qsarmodelingpy.validate_yr_lno import validate
 import os
 import argparse
 import logging
-
+logging.setLevel(logging.INFO)
 
 def run(filename, typeOPS):
     """Open configuration file in order to look for the matrices and the parameters to run OPS and cross-validation"""
@@ -83,7 +83,7 @@ if __name__ == '__main__':
                         help='Config OPS file.')
     parser.add_argument('--type', '-t', required=True, type=str,
                         metavar='<t>',
-                        help='Type of OPS run (s for single and f for feed.'
+                        help='Type of OPS run (s for single and f for feed).'
                         )
 
     args = parser.parse_args()

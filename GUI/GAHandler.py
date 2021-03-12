@@ -67,7 +67,7 @@ class GAHandler(Handler):
 
             # If everything is ok, current matrix will be the filtered one.
             if os.path.isfile(self.ga_config['output_matrix']):
-                self.handler.get_X_matrix(self.ga_config['output_matrix'])
+                self.handler.set_X_matrix(self.ga_config['output_matrix'])
                 self.draw_matrices('matrix')
         else:
             print("Please, open the files in File > Open...")

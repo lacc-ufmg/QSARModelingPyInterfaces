@@ -1,5 +1,6 @@
 import logging
 import pandas
+from typing import Callable, Union
 
 
 def detect_header_and_indices(path: str) -> tuple:
@@ -29,6 +30,6 @@ def detect_header_and_indices(path: str) -> tuple:
     return index_col, header
 
 
-def load_matrix(path: str) -> pandas.DataFrame:
+def load_matrix(path: str, usecols: Union[list, Callable, None] = None) -> pandas.DataFrame:
     index_col, header = detect_header_and_indices(path)
-    return pandas.read_csv(path, sep=None, header=header, index_col=index_col)
+    return pandas.read_csv(path, sep=None, header=header, index_col=index_col, usecols=usecols)

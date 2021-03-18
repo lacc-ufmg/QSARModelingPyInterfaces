@@ -1,17 +1,16 @@
 import sys
 import coloredlogs
 import logging
+from os import path
 from ValidationHandler import ValidationHandler
 from FilterHandler import FilterHandler
 from OPSHandler import OPSHandler
 from GAHandler import GAHandler
 from MainHandler import Handler
 from HandlerFinder import HandlerFinder
-from gi.repository import Gtk
 import gi
-from os import path
-
 gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 logging_level = logging.DEBUG if "--debug" in sys.argv or "-d" in sys.argv else logging.INFO
 coloredlogs.DEFAULT_FIELD_STYLES = {'filename': {'color': 'blue'}, 'lineno': {

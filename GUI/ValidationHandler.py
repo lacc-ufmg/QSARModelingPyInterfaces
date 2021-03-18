@@ -1,4 +1,3 @@
-from gi.repository import Gtk
 import logging
 from MainHandler import Handler
 from runCalculations import RunCalculations
@@ -7,6 +6,7 @@ import pandas
 import os
 import gi
 gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 
 class ValidationHandler(Handler):

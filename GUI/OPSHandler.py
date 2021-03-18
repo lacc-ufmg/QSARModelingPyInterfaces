@@ -1,12 +1,15 @@
+from multiprocessing import Process
 from Interfaces import ConfigOPSInterface
 from MainHandler import Handler
+# from gi.repository import Gtk
 from runCalculations import RunCalculations
 import Utils
+import logging
 import random
 import os
 import gi
 gi.require_version('Gtk', '3.0')
-# from gi.repository import Gtk
+from gi.repository import Gtk
 # from concurrent.futures import ThreadPoolExecutor
 
 
@@ -20,9 +23,22 @@ class OPSHandler(Handler):
         self.config_OPS_window.connect(
             'delete-event', lambda w, e: w.hide() or True)
         self.ops_config: ConfigOPSInterface
+        self.running_process = None
 
-    def on_OPS_cancel_button_clicked(self, _) -> None:
+    def OPS_confirm_close(self, dialog, response) -> None:
+        dialog.hide()
+        if response == Gtk.ResponseType.OK and self.running_process is not None:
+            self.on_OPS_cancel_button_clicked(None, force=True)
+
+    def on_OPS_cancel_button_clicked(self, _, force: bool = False) -> None:
         """ Handle OPS cancel button """
+        if self.running_process is not None and not force:
+            self.builder.get_object('OPS_will_kill_all_window').show()
+            return
+        elif self.running_process is not None:
+            logging.warning("Terminating OPS Calculation.")
+            self.running_process.terminate()
+            self.running_process = None
         self.config_OPS_window.hide()
 
     def on_OPS_run_button_clicked(self, _) -> None:
@@ -61,13 +77,18 @@ class OPSHandler(Handler):
                 self.ops_config['output_models'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                                 "OPS_output_models_{}.json".format(rand))
 
-            # TODO: implement multithreading
-            RunCalculations.runOPS(self.ops_config)
-            # self._thread.submit(RunCalculations.runOPS, self.ops_config)
-
-            # If everything is ok, current matrix will be the filtered one.
-            if os.path.isfile(self.ops_config['output_matrix']):
-                self.handler.set_X_matrix(self.ops_config['output_matrix'])
-                self.draw_matrices('matrix')
+            self.running_process = Process(target=self.call_runner)
+            self.running_process.start()
+            logging.debug(f"Started PID = {self.running_process.pid}")
         else:
             print("Please, go to File > Open... before run a calculation.")
+
+    def call_runner(self) -> None:
+        logging.debug("Calling OPS runner.")
+        RunCalculations.runOPS(self.ops_config)
+        # If everything is ok, current matrix will be the filtered one.
+        if os.path.isfile(self.ops_config['output_matrix']):
+            self.handler.set_X_matrix(self.ops_config['output_matrix'])
+            self.draw_matrices('matrix')
+        self.running_process = None
+        logging.debug("Calculation done.")

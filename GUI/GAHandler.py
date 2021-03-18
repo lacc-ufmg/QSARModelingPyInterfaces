@@ -1,12 +1,13 @@
-from gi.repository import Gtk
-from Interfaces import ConfigGAInterface
-from MainHandler import Handler
-from runCalculations import RunCalculations
 import random
 import os
 import gi
-
+import logging
+from multiprocessing import Process
+from Interfaces import ConfigGAInterface
+from MainHandler import Handler
+from runCalculations import RunCalculations
 gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 
 class GAHandler(Handler):
@@ -18,12 +19,29 @@ class GAHandler(Handler):
         self.config_GA_window.connect(
             'delete-event', lambda w, e: w.hide() or True)
         self.ga_config: ConfigGAInterface
+        self.running_process = None
 
-    def on_GA_cancel_button_clicked(self, _) -> None:
-        """ Handle OPS cancel button """
+    def GA_confirm_close(self, dialog, response) -> None:
+        dialog.hide()
+        if response == Gtk.ResponseType.OK and self.running_process is not None:
+            self.on_GA_cancel_button_clicked(None, force=True)
+
+    def on_GA_cancel_button_clicked(self, _, force: bool = False) -> None:
+        """ Handle GA cancel button """
+        if self.running_process is not None and not force:
+            self.builder.get_object('GA_will_kill_all_window').show()
+            return
+        elif self.running_process is not None:
+            logging.warning("Terminating GA Calculation.")
+            self.running_process.terminate()
+            self.running_process = None
         self.config_GA_window.hide()
 
     def on_GA_run_button_clicked(self, _) -> None:
+        if self.running_process is not None:
+            logging.warning(
+                f"Already running with PID = {self.running_process.pid}")
+            return
         if self.handler.files_ok():
             self.ga_config = {
                 'XMatrix': self.handler.get_X_matrix(),
@@ -63,11 +81,21 @@ class GAHandler(Handler):
                 self.ga_config['output_selected'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                                  "GA_output_selected_{}.csv".format(rand))
 
-            RunCalculations.runGA(self.ga_config)
+            logging.debug("Ok, I'll call RunCalculations.runGA().")
+            self.running_process = Process(target=self.call_runner)
+            self.running_process.start()
+            logging.debug(f"Started PID = {self.running_process.pid}")
+            # RunCalculations.runGA(self.ga_config)
 
-            # If everything is ok, current matrix will be the filtered one.
-            if os.path.isfile(self.ga_config['output_matrix']):
-                self.handler.set_X_matrix(self.ga_config['output_matrix'])
-                self.draw_matrices('matrix')
         else:
             print("Please, open the files in File > Open...")
+
+    def call_runner(self) -> None:
+        logging.debug("Calling")
+        RunCalculations.runGA(self.ga_config)
+        # If everything is ok, current matrix will be the filtered one.
+        if os.path.isfile(self.ga_config['output_matrix']):
+            self.handler.set_X_matrix(self.ga_config['output_matrix'])
+            self.draw_matrices('matrix')
+        self.running_process = None
+        logging.debug("Calculation done.")

@@ -1,12 +1,12 @@
 import os
 import sys
-from gi.repository import Gtk
 import pandas
 from runCalculations import RunCalculations
 import Utils
 import logging
 import gi
 gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 DEBUG_MODE = "--debug" in sys.argv or "-d" in sys.argv
 
@@ -50,12 +50,12 @@ class Handler(object):
         self.last_opened_path = ""
         self.last_saved_path = ""
 
-        # TODO: remove these stuff
+        # T ODO: remove these stuff
         # if DEBUG_MODE:
         #     self.set_X_matrix(
-        #         "/home/helitonmrf/Documents/QSAR/cancer_prostata/d10.csv")
+        #         "/tmp/QSAR/d10.csv")
         #     self.set_y_vector(
-        #         "/home/helitonmrf/Documents/QSAR/cancer_prostata/atividades.txt")
+        #         "/tmp/QSAR/atividades.txt")
         #     self.draw_matrices('matrix')
         #     self.draw_matrices('vector')
 
@@ -225,7 +225,7 @@ class Handler(object):
 
     def draw_pandas_matrix(self, treeview, path, print_index=True) -> None:
         """ Draws in treeview a pandas matrix from path (csv) """
-        df = Utils.load_matrix(path)
+        df = Utils.load_matrix(path, usecols=list(range(10)))
 
         print_etc = False
         if df.shape[1] > 10:
@@ -273,7 +273,7 @@ class Handler(object):
 
     def draw_pandas_vector(self, treeview, path: str) -> None:
         """ Draws in treeview a pandas vector from path (csv/txt) """
-        df = pandas.read_csv(path, sep=None)
+        df = pandas.read_csv(path, header=None, sep=None, engine='python')
 
         self.clear_treeview(treeview)
 

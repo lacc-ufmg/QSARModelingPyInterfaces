@@ -875,4 +875,44 @@
       </object>
     </child>
   </object>
+  <object class="GtkMessageDialog" id="GA_will_kill_all_window">
+    <property name="can_focus">False</property>
+    <property name="type">popup</property>
+    <property name="modal">True</property>
+    <property name="window_position">center</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="urgency_hint">True</property>
+    <property name="attached_to">config_GA_window</property>
+    <property name="message_type">warning</property>
+    <property name="buttons">ok-cancel</property>
+    <property name="text" translatable="yes">Are you sure?</property>
+    <property name="secondary_text" translatable="yes">There are processes running. Closing will kill them and all progress will be lost. Click OK to exit or click Cancel to continue executing.</property>
+    <signal name="response" handler="GA_confirm_close" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="homogeneous">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
 </interface>

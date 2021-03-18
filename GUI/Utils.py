@@ -17,7 +17,7 @@ def detect_header_and_indices(path: str) -> tuple:
             return False
         return True
     df_short = pandas.read_csv(
-        path, sep=None, header=None, nrows=2, usecols=[0, 1])
+        path, sep=None, engine='python', header=None, nrows=2, usecols=[0, 1])
     first_row_is_header = not _is_numeric(df_short.iloc[0, 1])
     header = 0 if first_row_is_header else None
     if first_row_is_header and (str(df_short.iloc[0, 0]) in "0" or str(df_short.iloc[0, 0]) == 'nan' or float(df_short.iloc[0, 0]) == 0.0):
@@ -32,4 +32,4 @@ def detect_header_and_indices(path: str) -> tuple:
 
 def load_matrix(path: str, usecols: Union[list, Callable, None] = None) -> pandas.DataFrame:
     index_col, header = detect_header_and_indices(path)
-    return pandas.read_csv(path, sep=None, header=header, index_col=index_col, usecols=usecols)
+    return pandas.read_csv(path, sep=None, engine='python', header=header, index_col=index_col, usecols=usecols)

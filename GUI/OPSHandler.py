@@ -1,7 +1,6 @@
 from multiprocessing import Process
 from Interfaces import ConfigOPSInterface
 from MainHandler import Handler
-# from gi.repository import Gtk
 from runCalculations import RunCalculations
 import Utils
 import logging
@@ -10,7 +9,6 @@ import os
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-# from concurrent.futures import ThreadPoolExecutor
 
 
 class OPSHandler(Handler):
@@ -18,27 +16,36 @@ class OPSHandler(Handler):
         super().__init__(builder)
         self.builder = builder
         self.handler = handler
-        # self._thread = ThreadPoolExecutor()
         self.config_OPS_window = builder.get_object('config_OPS_window')
         self.config_OPS_window.connect(
             'delete-event', lambda w, e: w.hide() or True)
         self.ops_config: ConfigOPSInterface
         self.running_process = None
 
+    def _is_running(self) -> bool:
+        if self.running_process is None:
+            return False
+        if self.running_process.is_alive():
+            return True
+        else:
+            self.running_process.terminate()
+            return False
+
     def OPS_confirm_close(self, dialog, response) -> None:
         dialog.hide()
-        if response == Gtk.ResponseType.OK and self.running_process is not None:
+        if response == Gtk.ResponseType.OK and self._is_running():
             self.on_OPS_cancel_button_clicked(None, force=True)
 
     def on_OPS_cancel_button_clicked(self, _, force: bool = False) -> None:
         """ Handle OPS cancel button """
-        if self.running_process is not None and not force:
-            self.builder.get_object('OPS_will_kill_all_window').show()
-            return
-        elif self.running_process is not None:
-            logging.warning("Terminating OPS Calculation.")
-            self.running_process.terminate()
-            self.running_process = None
+        if self._is_running():
+            if not force:
+                self.builder.get_object('OPS_will_kill_all_window').show()
+                return
+            else:
+                logging.warning("Terminating OPS Calculation.")
+                self.running_process.terminate()
+                self.running_process = None
         self.config_OPS_window.hide()
 
     def on_OPS_run_button_clicked(self, _) -> None:

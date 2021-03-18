@@ -21,24 +21,35 @@ class GAHandler(Handler):
         self.ga_config: ConfigGAInterface
         self.running_process = None
 
+    def _is_running(self) -> bool:
+        if self.running_process is None:
+            return False
+        if self.running_process.is_alive():
+            return True
+        else:
+            self.running_process.terminate()
+            return False
+
     def GA_confirm_close(self, dialog, response) -> None:
         dialog.hide()
-        if response == Gtk.ResponseType.OK and self.running_process is not None:
+        if response == Gtk.ResponseType.OK and self._is_running():
             self.on_GA_cancel_button_clicked(None, force=True)
 
     def on_GA_cancel_button_clicked(self, _, force: bool = False) -> None:
         """ Handle GA cancel button """
-        if self.running_process is not None and not force:
-            self.builder.get_object('GA_will_kill_all_window').show()
-            return
-        elif self.running_process is not None:
-            logging.warning("Terminating GA Calculation.")
-            self.running_process.terminate()
-            self.running_process = None
+        if self._is_running():
+            logging.debug(f"running_process = {self.running_process}")
+            if not force:
+                self.builder.get_object('GA_will_kill_all_window').show()
+                return
+            else:
+                logging.warning("Terminating GA Calculation.")
+                self.running_process.terminate()
+                self.running_process = None
         self.config_GA_window.hide()
 
     def on_GA_run_button_clicked(self, _) -> None:
-        if self.running_process is not None:
+        if self._is_running():
             logging.warning(
                 f"Already running with PID = {self.running_process.pid}")
             return
@@ -85,10 +96,9 @@ class GAHandler(Handler):
             self.running_process = Process(target=self.call_runner)
             self.running_process.start()
             logging.debug(f"Started PID = {self.running_process.pid}")
-            # RunCalculations.runGA(self.ga_config)
 
         else:
-            print("Please, open the files in File > Open...")
+            logging.error("Please, open the files in File > Open...")
 
     def call_runner(self) -> None:
         logging.debug("Calling")
@@ -97,5 +107,4 @@ class GAHandler(Handler):
         if os.path.isfile(self.ga_config['output_matrix']):
             self.handler.set_X_matrix(self.ga_config['output_matrix'])
             self.draw_matrices('matrix')
-        self.running_process = None
         logging.debug("Calculation done.")

@@ -1,8 +1,10 @@
 import random
 import os
 import gi
+import time
 import logging
 from multiprocessing import Process
+from threading import Thread
 from Interfaces import ConfigGAInterface
 from MainHandler import Handler
 from runCalculations import RunCalculations
@@ -48,11 +50,21 @@ class GAHandler(Handler):
                 self.running_process = None
         self.config_GA_window.hide()
 
+    def _keep_updating_progress_bar(self) -> None:
+        pbar = self.builder.get_object("GA_progress_bar")
+        pbar.show()
+        while self._is_running():
+            time.sleep(0.1)
+            pbar.pulse()
+        else:
+            pbar.set_fraction(0)
+
     def on_GA_run_button_clicked(self, _) -> None:
         if self._is_running():
             logging.warning(
                 f"Already running with PID = {self.running_process.pid}")
             return
+
         if self.handler.files_ok():
             self.ga_config = {
                 'XMatrix': self.handler.get_X_matrix(),
@@ -95,6 +107,8 @@ class GAHandler(Handler):
             logging.debug("Ok, I'll call RunCalculations.runGA().")
             self.running_process = Process(target=self.call_runner)
             self.running_process.start()
+            pbthread = Thread(target=self._keep_updating_progress_bar)
+            pbthread.start()
             logging.debug(f"Started PID = {self.running_process.pid}")
 
         else:

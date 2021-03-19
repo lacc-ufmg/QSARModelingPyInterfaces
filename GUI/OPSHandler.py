@@ -1,9 +1,11 @@
 from multiprocessing import Process
+from threading import Thread
 from Interfaces import ConfigOPSInterface
 from MainHandler import Handler
 from runCalculations import RunCalculations
 import Utils
 import logging
+import time
 import random
 import os
 import gi
@@ -48,6 +50,15 @@ class OPSHandler(Handler):
                 self.running_process = None
         self.config_OPS_window.hide()
 
+    def _keep_updating_progress_bar(self) -> None:
+        pbar = self.builder.get_object("OPS_progress_bar")
+        pbar.show()
+        while self._is_running():
+            time.sleep(0.1)
+            pbar.pulse()
+        else:
+            pbar.set_fraction(0)
+
     def on_OPS_run_button_clicked(self, _) -> None:
         if self.handler.files_ok():
             self.ops_config = {
@@ -86,6 +97,8 @@ class OPSHandler(Handler):
 
             self.running_process = Process(target=self.call_runner)
             self.running_process.start()
+            pbthread = Thread(target=self._keep_updating_progress_bar)
+            pbthread.start()
             logging.debug(f"Started PID = {self.running_process.pid}")
         else:
             print("Please, go to File > Open... before run a calculation.")

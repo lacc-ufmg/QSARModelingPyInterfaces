@@ -7,8 +7,7 @@ import logging
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-
-DEBUG_MODE = "--debug" in sys.argv or "-d" in sys.argv
+from Constants import DEBUG_MODE
 
 
 class Handler(object):
@@ -29,6 +28,7 @@ class Handler(object):
             'config_autocorrcut_window')
         self.config_cv_window = builder.get_object('config_cv_window')
         self.config_yrlno_window = builder.get_object('config_yrlno_window')
+        self.config_extval_window = builder.get_object('config_extval_window')
 
         # Saving elements
         self.main_window_pages = [builder.get_object(
@@ -88,6 +88,10 @@ class Handler(object):
     def on_menu_yrlno_activate(self, _) -> None:
         """ Handle menu Validation > Y-Randomization / Leave-N-Out """
         self.config_yrlno_window.show()
+
+    def on_menu_extval_activate(self, _) -> None:
+        """ Handle menu Validation > External Validation """
+        self.config_extval_window.show()
 
     def open_file(self, use_last_path=True) -> str:
         """

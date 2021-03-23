@@ -3,12 +3,15 @@ import pandas
 import os
 import json
 import logging
+from qsarmodelingpy.Interfaces import ConfigExtValInterface
 from qsarmodelingpy.runGa import run as runGA
 from qsarmodelingpy.runOPS import run as runOPS
+from qsarmodelingpy.runExtVal import run as runExtVal
 from qsarmodelingpy.filter import variance_cut, correlation_cut, autocorrelation_cut
 from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.validate_yr_lno import validate
 from Interfaces import ConfigGAInterface, ConfigOPSInterface
+from typing import Union
 
 
 class RunCalculations:
@@ -112,3 +115,7 @@ class RunCalculations:
         else:
             logging.error("y-randomization or LNO failed!")
             return False
+
+    @staticmethod
+    def runExternalValidation(config: ConfigExtValInterface) -> bool:
+        return runExtVal(config)

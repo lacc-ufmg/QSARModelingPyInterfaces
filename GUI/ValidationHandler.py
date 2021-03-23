@@ -1,5 +1,7 @@
 import logging
+from Constants import DEBUG_MODE
 from MainHandler import Handler
+from qsarmodelingpy.Interfaces import ConfigExtValInterface
 from runCalculations import RunCalculations
 import random
 import pandas
@@ -18,6 +20,9 @@ class ValidationHandler(Handler):
             'delete-event', lambda w, e: w.hide() or True)
         self.builder.get_object('config_yrlno_window').connect(
             'delete-event', lambda w, e: w.hide() or True)
+        self.builder.get_object('config_extval_window').connect(
+            'delete-event', lambda w, e: w.hide() or True)
+        self.ext_val_config: ConfigExtValInterface
 
     def on_cv_run_button_clicked(self, _) -> None:
         if not self.handler.get_X_matrix() or not self.handler.get_y_vector():
@@ -50,3 +55,41 @@ class ValidationHandler(Handler):
             Q2_cut=self.builder.get_object("yrlno_lno").get_value(),
             lno_cut=self.builder.get_object("yrlno_q2").get_value()
         )
+
+    def on_extval_run_button_clicked(self, _) -> None:
+        if not self.handler.files_ok():
+            logging.error("Please, open the files in File > Open...")
+            raise FileNotFoundError("Please, open the files in File > Open...")
+
+        # Choose defaults to output files
+        X_name = os.path.splitext(
+            os.path.basename(self.handler.get_X_matrix()))[0]
+        basename = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
+                                f'{X_name}')
+        default_outputs = {
+            'output_extval': basename + "_extval.csv",
+            'output_cv': basename + "_cv_extval.csv",
+            'output_X_train': basename + "_X_train_extval.csv",
+            'output_y_train': basename + "_y_train_extval.csv",
+            'output_X_test': basename + "_X_test_extval.csv",
+            'output_y_test': basename + "_y_test_extval.csv",
+        }
+
+        self.ext_val_config: ConfigExtValInterface = {
+            'XMatrix': self.handler.get_X_matrix(),
+            'yvector': self.handler.get_y_vector(),
+            'test_set': self.builder.get_object('extval_test_set').get_text(),
+            'latent_vars_model': self.builder.get_object('extval_vars_model').get_value() or None,
+            'extval_type': self.builder.get_object('extval_type').get_active_id(),
+            'output_extval': self.builder.get_object('extval_output_extval').get_text() or default_outputs["output_extval"],
+            'output_cv': self.builder.get_object('extval_output_cv').get_text() or default_outputs["output_cv"],
+            'output_X_train': self.builder.get_object('extval_output_X_train').get_text() or default_outputs["output_X_train"],
+            'output_y_train': self.builder.get_object('extval_output_y_train').get_text() or default_outputs["output_y_train"],
+            'output_X_test': self.builder.get_object('extval_output_X_test').get_text() or default_outputs["output_X_test"],
+            'output_y_test': self.builder.get_object('extval_output_y_test').get_text() or default_outputs["output_y_test"],
+            'autoscale': self.builder.get_object('extval_autoscale').get_active(),
+            'lj_transform': self.builder.get_object('extval_ljtransform').get_active(),
+        }
+
+        RunCalculations.runExternalValidation(self.ext_val_config)
+        logging.info("Done.")

@@ -12,7 +12,9 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-logging_level = logging.DEBUG if "--debug" in sys.argv or "-d" in sys.argv else logging.INFO
+from Constants import DEBUG_MODE
+
+logging_level = logging.DEBUG if DEBUG_MODE else logging.INFO
 coloredlogs.DEFAULT_FIELD_STYLES = {'filename': {'color': 'blue'}, 'lineno': {
     'color': 'blue'}, 'funcName': {'color': 'magenta'}, 'levelname': {'bold': True, 'color': 'black'}}
 coloredlogs.install(
@@ -37,7 +39,8 @@ add_all_from_file([
     "corrcut.glade",
     "autocorrcut.glade",
     "cross_validation.glade",
-    "yrlno.glade"
+    "yrlno.glade",
+    "external_validation.glade",
 ], builder)
 
 

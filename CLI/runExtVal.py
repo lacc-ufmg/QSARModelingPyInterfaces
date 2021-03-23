@@ -10,7 +10,13 @@ import logging
 
 
 def run(filename):
-    """Open configuration file in order to look for the matrices and the parameters to run external validation"""
+    """Run External Validation with configuration given by `config`.
+
+    `filename` is (usually) a CSV containing all needed information for this function. Please, [see this template](https://github.com/hellmrf/QSARModelingPy/blob/master/examples/confExtVal.csv) and edit for your needs.
+
+    Args:
+        filename (str, path, file-like, `io`): The configuration file (usually a CSV). [See this template](https://github.com/hellmrf/QSARModelingPy/blob/master/examples/confExtVal.csv).
+    """
     dfConf = pd.read_csv(filename, header=None)
     directory = dfConf[1][0]
     Xfile = dfConf[1][1]

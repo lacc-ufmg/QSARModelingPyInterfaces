@@ -7,7 +7,7 @@ from qsarmodelingpy.yrandomization import YRandomization
 from qsarmodelingpy.lno import LNO
 from qsarmodelingpy import lj_cut as lj
 from qsarmodelingpy.filter import variance_cut, correlation_cut
-from qsarmodelingpy.validacao_externa import ExternalValidation
+from qsarmodelingpy.external_validation import ExternalValidation
 import os
 import logging
 
@@ -21,7 +21,7 @@ def validate(X, y, pop, Q2, Q2_cut=0.5, yr_cut=0.3, lno_cut=0.1):
         if Q2[i] > Q2_cut:
             XSel = X[:, var_sel]
             cv = CrossValidation(XSel, y)
-            nLV = np.argmax(cv.Q2())+1
+            nLV = np.argmax(cv.Q2()) + 1
             yr = YRandomization(XSel, y, nLV, 50)
             intercepts.append(yr.returnIntercept())
             if yr.returnIntercept() < yr_cut:
@@ -34,10 +34,10 @@ def validate(X, y, pop, Q2, Q2_cut=0.5, yr_cut=0.3, lno_cut=0.1):
                 XSel = X[:, pop[i]]
                 m, _ = np.shape(X)
                 cv = CrossValidation(XSel, y)
-                nLV = np.argmax(cv.Q2())+1
-                lno = LNO(XSel, y, nLV, int(m/4), 5)
+                nLV = np.argmax(cv.Q2()) + 1
+                lno = LNO(XSel, y, nLV, int(m / 4), 5)
                 m = np.mean(lno.Q2, 1)
-                std = max([abs(m[j]-m[0]) for j in range(len(m))])
+                std = max([abs(m[j] - m[0]) for j in range(len(m))])
                 if std < lno_cut:
                     lpass2.append(i)
         if lpass2 != []:
@@ -57,7 +57,7 @@ def validate_ext(X, y, test, pop, Q2):
         var_sel = pop[i]
         XSel = X[:, var_sel]
         cv = CrossValidation(XSel, y)
-        nLV = np.argmax(cv.Q2())+1
+        nLV = np.argmax(cv.Q2()) + 1
         ext = ExternalValidation(XSel, y, nLV)
         if ext.validateExtVal(train, test, nLV):
             lpass.append(i)
@@ -86,9 +86,9 @@ if __name__ == '__main__':
     logging.info(dfCorr.shape)
     out_directory = sys.argv[4]
     X = dfCorr.values
-    with open(directory+"/Popout.json") as pop_file:
+    with open(directory + "/Popout.json") as pop_file:
         pop = json.load(pop_file)
-    with open(directory+"/Q2out.json") as Q2_file:
+    with open(directory + "/Q2out.json") as Q2_file:
         Q2 = json.load(Q2_file)
     var_sel = validate(X, y, pop, Q2, yr_cut=0.25, lno_cut=0.1)
     # var_sel_names = df.columns[var_sel]
@@ -97,8 +97,8 @@ if __name__ == '__main__':
     # dfSel.to_csv(directory+out_file,sep='\t',index = False)
     if var_sel != []:
         dfSel = dfCorr.loc[:, dfCorr.columns[var_sel]]
-        dfSel.to_csv(out_directory+"/XSel.csv", sep=';')
+        dfSel.to_csv(out_directory + "/XSel.csv", sep=';')
         cv = CrossValidation(dfSel.values, y)
-        cv.saveParameters(out_directory+"/parameters_cv.csv")
+        cv.saveParameters(out_directory + "/parameters_cv.csv")
     else:
         logging.error("y-randomization or LNO failed!")

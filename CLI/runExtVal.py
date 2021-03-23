@@ -1,6 +1,6 @@
 # Importing libraries
 import pandas as pd
-from qsarmodelingpy.validacao_externa import ExternalValidation
+from qsarmodelingpy.external_validation import ExternalValidation
 from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.kennardstonealgorithm import kennardstonealgorithm
 from qsarmodelingpy import lj_cut as lj
@@ -32,12 +32,12 @@ def run(filename):
     type_ext_val = int(dfConf[1][14])
     if type_ext_val == 1:  # manual selection
         test_set = dfConf[1][3]
-        test = [int(i)-1 for i in test_set.split(',')]
+        test = [int(i) - 1 for i in test_set.split(',')]
         train = [j for j in range(len(y)) if j not in test]
     elif type_ext_val == 2:  # Kennard-Stone
         size_test_set = int(dfConf[1][3])
         # parameter is the size of training set
-        train, test = kennardstonealgorithm(dfX, len(dfX)-size_test_set)
+        train, test = kennardstonealgorithm(dfX, len(dfX) - size_test_set)
     else:  # Random selection
         pass
     ext = ExternalValidation(X, y, nLV)
@@ -46,7 +46,7 @@ def run(filename):
         logging.info("Passed")
     else:
         logging.info("Failed")
-    ext.saveExtVal(train, test, out_directory+"/"+ext_val_file)
+    ext.saveExtVal(train, test, out_directory + "/" + ext_val_file)
     cv = CrossValidation(X[train, :], y[train], nLVMax=nLV, scale=True)
     cv.saveParameters(os.path.join(out_directory, cv_file))
     dfXtrain = dfX.loc[dfX.index[train], dfX.columns]

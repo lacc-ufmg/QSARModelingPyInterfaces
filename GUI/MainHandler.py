@@ -151,7 +151,6 @@ class Handler(object):
             self.builder.get_object('menu_generate'),
             self.builder.get_object('menu_validate'),
             self.builder.get_object('menu_filter'),
-            self.builder.get_object('menu_predict'),
         ]
         if self.X_matrix and self.y_vector:
             for elem in menus:

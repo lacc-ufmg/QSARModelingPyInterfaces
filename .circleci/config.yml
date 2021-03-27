@@ -33,6 +33,10 @@ jobs:
           key: dependencies-win-{{ checksum "environment.yml" }}
       - store_artifacts:
           path: dist\qsarmodeling-win64.zip
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist\qsarmodeling-win64.zip
 
   prepare-and-build-linux:
     docker:

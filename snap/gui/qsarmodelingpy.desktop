@@ -1,8 +1,9 @@
 [Desktop Entry]
-Encoding=UTF-8
-Version=0.1.0-alpha
-Type=Application
-Terminal=false
-Exec=qsarmodelingpy
 Name=QSARModelingPy
-# Icon=/path/to/icon
+Version=0.1.0-alpha
+Exec=qsarmodelingpy
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Comment=Build and validate QSAR models.
+# Icon=qsarmodeling.png

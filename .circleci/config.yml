@@ -84,7 +84,7 @@ jobs:
             openssl aes-256-cbc -d \
               -in .circleci/credentials.enc \
               -out credentials \
-              -k $SNAPCRAFT_CREDENTIALS_KEY
+              -k "${SNAPCRAFT_CREDENTIALS_KEY}"
           name: Decrypt credentials
       - run:
           name: Authenticate snapcraft

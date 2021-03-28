@@ -5,11 +5,12 @@ channels:
   - defaults
 dependencies:
   - python
-  - pygobject=3.36.1
-  - gtk3=3.24.18
+  - pygobject
+  - gtk3
   - adwaita-icon-theme
   - pip
   - pip:
       - coloredlogs
       - typing_extensions
       - qsarmodelingpy
+      - pyinstaller

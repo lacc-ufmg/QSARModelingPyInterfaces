@@ -18,11 +18,10 @@ jobs:
       - run:
           command: conda init powershell
           name: Initializing conda for powershell.
-      - run:
-          command: |
-            conda activate QSARModelingPy
-            pip install pyinstaller
-          name: Install pyinstaller with pip
+      - save_cache:
+          paths:
+            - C:\tools\miniconda3\envs
+          key: dependencies-win-{{ checksum "environment.yml" }}
       - run:
           command: |
             conda activate QSARModelingPy
@@ -31,10 +30,6 @@ jobs:
       - run:
           command: Compress-Archive -Path dist\qsarmodeling -DestinationPath dist\qsarmodeling-win64.zip
           name: Compressing
-      - save_cache:
-          paths:
-            - C:\tools\miniconda3\envs
-          key: dependencies-win-{{ checksum "environment.yml" }}
       - store_artifacts:
           path: dist\qsarmodeling-win64.zip
       - persist_to_workspace:

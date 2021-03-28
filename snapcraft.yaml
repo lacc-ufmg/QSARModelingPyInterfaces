@@ -15,7 +15,7 @@ description: |
         - External Validation
 
 base: core18
-# grade: devel
+grade: devel
 confinement: strict
 
 parts:
@@ -27,3 +27,4 @@ apps:
     qsarmodelingpy:
         extensions: [gnome-3-28]
         command: qsarmodeling
+        plugs: [home]

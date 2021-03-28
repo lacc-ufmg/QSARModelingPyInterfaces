@@ -2,12 +2,10 @@
 
 block_cipher = None
 
-DISTPATH="./dist/linux"
-
 a = Analysis(['GUI/main.py'],
              pathex=[os.path.dirname(os.path.realpath('__file__'))],
              binaries=[],
-             datas=[('./GUI/Views/main.glade', 'Views'), ('./GUI/Views/main.glade', 'Views'), ('./GUI/Views/ga.glade', 'Views'), ('./GUI/Views/ops.glade', 'Views'), ('./GUI/Views/about.glade', 'Views'), ('./GUI/Views/varcut.glade', 'Views'), ('./GUI/Views/corrcut.glade', 'Views'), ('./GUI/Views/autocorrcut.glade', 'Views'), ('./GUI/Views/cross_validation.glade', 'Views'), ('./GUI/Views/yrlno.glade', 'Views')],
+             datas=[('./GUI/Views/main.glade', 'Views'), ('./GUI/Views/main.glade', 'Views'), ('./GUI/Views/ga.glade', 'Views'), ('./GUI/Views/ops.glade', 'Views'), ('./GUI/Views/about.glade', 'Views'), ('./GUI/Views/varcut.glade', 'Views'), ('./GUI/Views/corrcut.glade', 'Views'), ('./GUI/Views/autocorrcut.glade', 'Views'), ('./GUI/Views/cross_validation.glade', 'Views'), ('./GUI/Views/yrlno.glade', 'Views'), ('./GUI/Views/external_validation.glade', 'Views')],
              hiddenimports=['cmath', 'sklearn.utils._weight_vector', 'pandas'],
              hookspath=[],
              runtime_hooks=[],

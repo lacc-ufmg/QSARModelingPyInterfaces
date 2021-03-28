@@ -65,14 +65,11 @@ jobs:
   snapcraft:
     working_directory: /workdir
     docker:
-      - image: snapcore/snapcraft
+      - image: helitonmrf/my-snapcraft-builder:latest
     steps:
       - checkout
       - attach_workspace:
           at: /workdir
-      - run:
-          command: apt update
-          name: apt update
       - run:
           command: snapcraft
           name: Building Snap

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=0.1.0-alpha
+Type=Application
+Terminal=false
+Exec=qsarmodelingpy
+Name=QSARModelingPy
+# Icon=/path/to/icon

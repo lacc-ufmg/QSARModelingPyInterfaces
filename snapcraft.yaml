@@ -1,11 +1,9 @@
-name: qsarmodeling
+name: qsarmodelingpy
 version: git
 summary: QSARModeling written in Python
 description: |
     QSARModelingPy is an open source computational package to generate and validate QSAR models.
-
     ## What you can do with QSARModelingPy
-
     - Select variables through either OPS or Genetic Algorithm
     - Dimensionality reduction:
         - Correlation cut
@@ -18,14 +16,14 @@ description: |
 
 base: core18
 # grade: devel
-# confinement: devmode
+confinement: strict
 
 parts:
-    qsarmodeling:
+    qsarmodelingpy:
         plugin: dump
         source: /workdir/dist/qsarmodeling-linux.tar.xz
 
 apps:
-    qsarmodeling:
+    qsarmodelingpy:
         extensions: [gnome-3-28]
         command: qsarmodeling

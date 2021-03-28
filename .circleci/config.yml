@@ -66,6 +66,8 @@ jobs:
     working_directory: /workdir
     docker:
       - image: helitonmrf/my-snapcraft-builder:latest
+        environment:
+          SNAPCRAFT_CREDENTIALS_KEY: $SNAPCRAFT_CREDENTIALS_KEY
     steps:
       - checkout
       - attach_workspace:
@@ -78,10 +80,7 @@ jobs:
       - run:
           command: |
             apt install openssl
-            openssl aes-256-cbc -d \
-              -in .circleci/credentials.enc \
-              -out credentials \
-              -k "${SNAPCRAFT_CREDENTIALS_KEY}"
+            openssl aes-256-cbc -d -in /workdir/.circleci/credentials.enc -out credentials -md sha256 -k ${SNAPCRAFT_CREDENTIALS_KEY}
           name: Decrypt credentials
       - run:
           name: Authenticate snapcraft

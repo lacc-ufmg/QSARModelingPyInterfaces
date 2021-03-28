@@ -16,20 +16,24 @@ jobs:
           command: if(-not (conda env list | grep QSARModelingPy)) {conda env create -f environment.yml}
           name: Create conda environment if not exists
       - run:
-          command: conda activate QSARModelingPy
-          name: Activate conda environment
+          command: conda init powershell
+          name: Initializing conda for powershell.
       - run:
-          command: pip install pyinstaller
+          command: |
+            conda activate QSARModelingPy
+            pip install pyinstaller
           name: Install pyinstaller with pip
       - run:
-          command: pyinstaller qsarmodeling-win64.spec --noconfirm
+          command: |
+            conda activate QSARModelingPy
+            pyinstaller qsarmodeling-win64.spec --noconfirm
           name: Run build step
       - run:
           command: Compress-Archive -Path dist\qsarmodeling -DestinationPath dist\qsarmodeling-win64.zip
           name: Compressing
       - save_cache:
           paths:
-            - C:\tools\miniconda3
+            - C:\tools\miniconda3\envs
           key: dependencies-win-{{ checksum "environment.yml" }}
       - store_artifacts:
           path: dist\qsarmodeling-win64.zip
@@ -79,6 +83,20 @@ jobs:
           name: Building Snap
       - run:
           command: mv /workdir/*.snap /workdir/qsarmodelingpy.snap
+      - run:
+          command: |
+            apt install openssl
+            openssl aes-256-cbc -d \
+              -in .circleci/credentials.enc \
+              -out credentials \
+              -k $SNAPCRAFT_CREDENTIALS_KEY
+          name: Decrypt credentials
+      - run:
+          name: Authenticate snapcraft
+          command: snapcraft login --with credentials
+      - run:
+          name: Push snap
+          command: snapcraft push /workdir/qsarmodelingpy.snap --release edge
       - store_artifacts:
           path: /workdir/qsarmodelingpy.snap
 
@@ -111,14 +129,16 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-      # - snapcraft:
-      #     requires:
-      #       - prepare-and-build-linux
-      #     filters:
-      #       tags:
-      #         only: /^v.*/
-      #       branches:
-      #         ignore: /.*/
+      - snapcraft:
+          requires:
+            - prepare-and-build-linux
+          filters:
+            tags:
+              only: /^v\d*\.\d*(?:\.\d*)?$/
+              # Only v0.0.0 or v0.0, with 0 being any number.
+              # Releases like v0.0.0-alpha will not be snapped.
+            branches:
+              ignore: /.*/
       - prepare-and-build-windows:
           filters:
             tags:

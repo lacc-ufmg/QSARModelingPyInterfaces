@@ -1,15 +1,15 @@
 name: QSARModelingPy
 channels:
-    - conda-forge
-    - anaconda
-    - defaults
+  - conda-forge
+  - anaconda
+  - defaults
 dependencies:
-    - python=3.8.1
-    - pygobject=3.36.1
-    - gtk3=3.24.18
-    - adwaita-icon-theme
-    - pip
-    - pip:
-        - coloredlogs
-        - typing_extensions
-        - qsarmodelingpy
+  - python
+  - pygobject=3.36.1
+  - gtk3=3.24.18
+  - adwaita-icon-theme
+  - pip
+  - pip:
+      - coloredlogs
+      - typing_extensions
+      - qsarmodelingpy

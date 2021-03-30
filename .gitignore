@@ -1,6 +1,7 @@
 __pycache__
 *.bak
 *~
+.~*
 .idea
 .vscode
 *.code-workspace
@@ -14,3 +15,4 @@ stage/
 core
 .ipynb_checkpoints/
 *credential*
+*#

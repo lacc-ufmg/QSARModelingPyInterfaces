@@ -7,6 +7,7 @@ from qsarmodelingpy import lj_cut as lj
 import os
 import argparse
 import logging
+logging.setLevel(logging.INFO)
 
 
 def run(filename):

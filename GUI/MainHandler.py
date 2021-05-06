@@ -249,7 +249,7 @@ class Handler(object):
 
     def draw_pandas_vector(self, treeview, path: str) -> None:
         """ Draws in treeview a pandas vector from path (csv/txt) """
-        df = pandas.read_csv(path, header=None, sep=None, engine='python')
+        df = pandas.read_csv(path, header=None, sep=",")
 
         self.clear_treeview(treeview)
 

@@ -7,7 +7,13 @@ from qsarmodelingpy import lj_cut as lj
 import os
 import argparse
 import logging
-logging.setLevel(logging.INFO)
+import coloredlogs
+logging_level = logging.INFO
+coloredlogs.DEFAULT_FIELD_STYLES = {'filename': {'color': 'blue'}, 'lineno': {
+    'color': 'blue'}, 'funcName': {'color': 'magenta'}, 'levelname': {'bold': True, 'color': 'black'}}
+coloredlogs.install(
+    fmt="%(filename)s:%(lineno)s %(funcName)s() %(levelname)s  %(message)s", level=logging_level)
+
 
 
 def run(filename):

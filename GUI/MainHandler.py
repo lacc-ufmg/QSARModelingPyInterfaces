@@ -59,7 +59,9 @@ class Handler(object):
         #     self.draw_matrices('matrix')
         #     self.draw_matrices('vector')
 
-        # self.block_menus_until_file_load()
+    def on_menu_openlog_activate(self, _) -> None:
+        """ Open the log """
+        Utils.open_external(Utils.get_log_file())
 
     def on_menu_ops_model_activate(self, _) -> None:
         """ Handle menu Generate > OPS """

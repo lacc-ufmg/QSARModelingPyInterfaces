@@ -1,5 +1,5 @@
 import os
-import sys
+# import sys
 import pandas
 from runCalculations import RunCalculations
 import Utils
@@ -8,7 +8,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from Constants import DEBUG_MODE
-
+# from Utils import open_external
 
 class Handler(object):
 

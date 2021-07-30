@@ -50,14 +50,16 @@ class Handler(object):
         self.last_opened_path = ""
         self.last_saved_path = ""
 
-        # T ODO: remove these stuff
+        # TODO: remove these stuff
         # if DEBUG_MODE:
         #     self.set_X_matrix(
-        #         "/tmp/QSAR/d10.csv")
+        #         "/home/helitonmrf/Documents/TEMP/qsarm_tests/d10.csv")
         #     self.set_y_vector(
-        #         "/tmp/QSAR/atividades.txt")
+        #         "/home/helitonmrf/Documents/TEMP/qsarm_tests/atividades.txt")
         #     self.draw_matrices('matrix')
         #     self.draw_matrices('vector')
+
+        #     self.block_menus_until_file_load()
 
     def on_menu_openlog_activate(self, _) -> None:
         """ Open the log """

@@ -3,8 +3,6 @@ from Constants import DEBUG_MODE
 from MainHandler import Handler
 from qsarmodelingpy.Interfaces import ConfigExtValInterface
 from runCalculations import RunCalculations
-import random
-import pandas
 import os
 import gi
 gi.require_version('Gtk', '3.0')

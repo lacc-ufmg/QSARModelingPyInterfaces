@@ -1,13 +1,12 @@
 import os
 import pandas
-from runCalculations import RunCalculations
-from qsarmodelingpy import Utils
+import qsarmodelingpy.Utils
+import Utils
 import logging
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from Constants import DEBUG_MODE
-# from Utils import open_external
 
 class Handler(object):
 
@@ -204,7 +203,7 @@ class Handler(object):
 
     def draw_pandas_matrix(self, treeview, path, print_index=True) -> None:
         """ Draws in treeview a pandas matrix from path (csv) """
-        df = Utils.load_matrix(path, usecols=list(range(10)))
+        df = qsarmodelingpy.Utils.load_matrix(path, usecols=list(range(10)))
 
         print_et_cetera_column = False
         if df.shape[1] > 10:

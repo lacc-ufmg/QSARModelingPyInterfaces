@@ -13,6 +13,6 @@ parts/
 prime/
 stage/
 core
-.ipynb_checkpoints/
+**/.ipynb_checkpoints/**
 *credential*
 *#

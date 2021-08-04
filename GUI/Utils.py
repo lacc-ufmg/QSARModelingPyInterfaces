@@ -20,13 +20,10 @@ def detect_header_and_indices(path: str) -> tuple:
         path, sep=None, engine='python', header=None, nrows=2, usecols=[0, 1])
     first_row_is_header = not _is_numeric(df_short.iloc[0, 1])
     header = 0 if first_row_is_header else None
-    if first_row_is_header and (str(df_short.iloc[0, 0]) in "0" or str(df_short.iloc[0, 0]) == 'nan' or float(df_short.iloc[0, 0]) == 0.0):
-        # when the header were detected and the [0, 0] position is
-        # either empty or 0, it'll be considered an index column.
-        index_col = 0
-    else:
-        first_column_is_index = not _is_numeric(df_short.iloc[1, 0])
-        index_col = 0 if first_column_is_index else None
+
+    index_keywords = ["molecules", "molecule", "index"]
+    first_column_is_index = not _is_numeric(df_short.iloc[1, 0]) or str(df_short.iloc[0, 0]).lower() in index_keywords
+    index_col = 0 if first_column_is_index else None
     return index_col, header
 
 

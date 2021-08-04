@@ -3,7 +3,6 @@ from threading import Thread
 from Interfaces import ConfigOPSInterface
 from MainHandler import Handler
 from runCalculations import RunCalculations
-import Utils
 import logging
 import time
 import random

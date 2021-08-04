@@ -203,20 +203,20 @@ class Handler(object):
         """ Draws in treeview a pandas matrix from path (csv) """
         df = Utils.load_matrix(path, usecols=list(range(10)))
 
-        print_etc = False
+        print_et_cetera_column = False
         if df.shape[1] > 10:
             df = df.iloc[:, 0:10]
-            print_etc = True
+            print_et_cetera_column = True
         liststore_args = [str] if print_index else []
         liststore_args += [float] * int(df.shape[1])
-        if print_etc:
+        if print_et_cetera_column:
             liststore_args += [str]
         liststore = Gtk.ListStore(*liststore_args)
         df_indexes = df.index.values
         for i in range(df.shape[0]):
             appendix = [str(df_indexes[i])] if print_index else []
             appendix += list(df.iloc[i, :])
-            if print_etc:
+            if print_et_cetera_column:
                 appendix += ["..."]
             liststore.append(appendix)
         self.clear_treeview(treeview)
@@ -240,7 +240,7 @@ class Handler(object):
             treeview.append_column(column_text)
 
         # Draw et cetera column
-        if print_etc:
+        if print_et_cetera_column:
             renderer_text = Gtk.CellRendererText()
             text = df.shape[1] + 1 if print_index else df.shape[1]
             column_text = Gtk.TreeViewColumn(

@@ -21,7 +21,8 @@ def detect_header_and_indices(path: str) -> tuple:
     first_row_is_header = not _is_numeric(df_short.iloc[0, 1])
     header = 0 if first_row_is_header else None
 
-    first_column_is_index = not _is_numeric(df_short.iloc[1, 0])
+    index_keywords = ["molecules", "molecule", "index"]
+    first_column_is_index = not _is_numeric(df_short.iloc[1, 0]) or str(df_short.iloc[0, 0]).lower() in index_keywords
     index_col = 0 if first_column_is_index else None
     return index_col, header
 

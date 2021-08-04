@@ -1,8 +1,7 @@
 import os
-import sys
 import pandas
 from runCalculations import RunCalculations
-import Utils
+from qsarmodelingpy import Utils
 import logging
 import gi
 gi.require_version('Gtk', '3.0')

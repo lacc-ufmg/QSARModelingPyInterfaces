@@ -1,13 +1,13 @@
--   [ ] Generate
+-   [X] Generate
     -   [x] OPS Model
     -   [x] GA Model
--   [ ] Validate
+-   [X] Validate
     -   [x] Cross validation
-    -   [ ] External validation
+    -   [X] External validation
     -   [x] Y-randomization / LNO
--   [ ] Filter
+-   [X] Filter
     -   [x] Correlation cut
-    -   [ ] Autocorrelation cut
+    -   [X] Autocorrelation cut
     -   [x] Variance cut
 -   [ ] Predict
     -   [ ] Predict External Set

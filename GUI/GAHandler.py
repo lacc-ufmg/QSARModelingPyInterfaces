@@ -58,6 +58,8 @@ class GAHandler(Handler):
             pbar.pulse()
         else:
             pbar.set_fraction(0)
+            # If everything is ok, current matrix will be the filtered one.
+            self.set_output_matrix_as_input()
 
     def on_GA_run_button_clicked(self, _) -> None:
         if self._is_running():
@@ -105,7 +107,8 @@ class GAHandler(Handler):
                                                                  "GA_output_selected_{}.csv".format(rand))
 
             logging.debug("Ok, I'll call RunCalculations.runGA().")
-            self.running_process = Process(target=self.call_runner)
+            # self.running_process = Process(target=self.call_runner)
+            self.running_process = Process(target=GAHandler.call_runner, args=(self.ga_config,))
             self.running_process.start()
             pbthread = Thread(target=self._keep_updating_progress_bar)
             pbthread.start()
@@ -114,11 +117,18 @@ class GAHandler(Handler):
         else:
             logging.error("Please, open the files in File > Open...")
 
-    def call_runner(self) -> None:
-        logging.debug("Calling")
-        RunCalculations.runGA(self.ga_config)
-        # If everything is ok, current matrix will be the filtered one.
+    @staticmethod
+    def call_runner(config: ConfigGAInterface) -> None:
+        logging.debug("Calling GA runner")
+        RunCalculations.runGA(config)
+        logging.debug("Calculation done.")
+
+
+    def set_output_matrix_as_input(self) -> None:
+        """Sets the output matrix as input in the GUI.
+
+        It's particularly useful at the end of a calculation, when you want that the result is shown in the GUI.
+        """
         if os.path.isfile(self.ga_config['output_matrix']):
             self.handler.set_X_matrix(self.ga_config['output_matrix'])
             self.draw_matrices('matrix')
-        logging.debug("Calculation done.")

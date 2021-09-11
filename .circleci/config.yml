@@ -24,6 +24,10 @@ jobs:
           key: dependencies-win-{{ checksum "environment.yml" }}
       - run:
           command: |
+            pip install -U qsarmodelingpy
+          name: Get the latest QSARModeling Core
+      - run:
+          command: |
             conda activate QSARModelingPy
             pyinstaller qsarmodeling-win64.spec --noconfirm
           name: Run build step

@@ -65,12 +65,12 @@ class ValidationHandler(Handler):
         basename = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                 f'{X_name}')
         default_outputs = {
-            'output_extval': basename + "_extval.csv",
-            'output_cv': basename + "_cv_extval.csv",
-            'output_X_train': basename + "_X_train_extval.csv",
-            'output_y_train': basename + "_y_train_extval.csv",
-            'output_X_test': basename + "_X_test_extval.csv",
-            'output_y_test': basename + "_y_test_extval.csv",
+            'output_extval':  f"{basename}_extval.csv",
+            'output_cv':  f"{basename}_cv_extval.csv",
+            'output_X_train':  f"{basename}_X_train_extval.csv",
+            'output_y_train':  f"{basename}_y_train_extval.csv",
+            'output_X_test':  f"{basename}_X_test_extval.csv",
+            'output_y_test':  f"{basename}_y_test_extval.csv",
         }
 
         self.ext_val_config: ConfigExtValInterface = {

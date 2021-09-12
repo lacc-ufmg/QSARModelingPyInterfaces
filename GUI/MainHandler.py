@@ -8,12 +8,16 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from Constants import DEBUG_MODE
 
+import warnings
+warnings.filterwarnings("ignore")
+
 class Handler(object):
 
     def __init__(self, builder):
         self.builder = builder
         # Saving windows
         self.main_window = builder.get_object('main_window')
+        self.results_window = builder.get_object('results_window')
         self.config_OPS_window = builder.get_object('config_OPS_window')
         self.config_GA_window = builder.get_object('config_GA_window')
         self.about_window = builder.get_object('about_window')
@@ -37,6 +41,8 @@ class Handler(object):
         # connect destroy signal
         self.main_window.connect('destroy', Gtk.main_quit)
         self.about_window.connect(
+            'delete-event', lambda w, e: w.hide() or True)
+        self.results_window.connect(
             'delete-event', lambda w, e: w.hide() or True)
 
         # Setting file filters
@@ -262,7 +268,6 @@ class Handler(object):
 
         for i in range(max(df.shape[0], df.shape[1])):
             liststore.append([data[i]])
-
         treeview.set_model(liststore)
 
         # Draw data column

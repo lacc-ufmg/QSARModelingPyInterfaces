@@ -1,13 +1,14 @@
-from multiprocessing import Process
-from threading import Thread
-from Interfaces import ConfigOPSInterface
-from MainHandler import Handler
-from runCalculations import RunCalculations
 import logging
 import time
 import random
 import os
 import gi
+from multiprocessing import Process
+from threading import Thread
+from Interfaces import ConfigOPSInterface
+from MainHandler import Handler
+from runCalculations import RunCalculations
+from Utils import set_output_matrix_as_input
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
@@ -57,6 +58,8 @@ class OPSHandler(Handler):
             pbar.pulse()
         else:
             pbar.set_fraction(0)
+            # If everything is ok, current matrix will be the filtered one.
+            set_output_matrix_as_input(self, self.ops_config)
 
     def on_OPS_run_button_clicked(self, _) -> None:
         if self.handler.files_ok():
@@ -94,7 +97,7 @@ class OPSHandler(Handler):
                 self.ops_config['output_models'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                                 "OPS_output_models_{}.json".format(rand))
 
-            self.running_process = Process(target=self.call_runner)
+            self.running_process = Process(target=OPSHandler.call_runner, args=(self.ops_config,))
             self.running_process.start()
             pbthread = Thread(target=self._keep_updating_progress_bar)
             pbthread.start()
@@ -102,12 +105,10 @@ class OPSHandler(Handler):
         else:
             print("Please, go to File > Open... before run a calculation.")
 
-    def call_runner(self) -> None:
+    @staticmethod
+    def call_runner(config: ConfigOPSInterface) -> None:
         logging.debug("Calling OPS runner.")
-        RunCalculations.runOPS(self.ops_config)
-        # If everything is ok, current matrix will be the filtered one.
-        if os.path.isfile(self.ops_config['output_matrix']):
-            self.handler.set_X_matrix(self.ops_config['output_matrix'])
-            self.draw_matrices('matrix')
-        self.running_process = None
+        RunCalculations.runOPS(config)
         logging.debug("Calculation done.")
+
+    

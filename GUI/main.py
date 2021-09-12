@@ -8,6 +8,7 @@ from OPSHandler import OPSHandler
 from GAHandler import GAHandler
 from MainHandler import Handler
 from HandlerFinder import HandlerFinder
+from ResultsHandler import ResultsHandler
 from Utils import cleanup_temporary_directory, get_log_file
 import gi
 gi.require_version('Gtk', '3.0')
@@ -48,6 +49,7 @@ add_all_from_file([
     "cross_validation.glade",
     "yrlno.glade",
     "external_validation.glade",
+    "results.glade",
 ], builder)
 
 
@@ -60,6 +62,7 @@ handlers = [
     OPSHandler(builder, handler),
     FilterHandler(builder, handler),
     ValidationHandler(builder, handler),
+    ResultsHandler(builder, handler),
 ]
 
 

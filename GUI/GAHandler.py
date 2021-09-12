@@ -8,6 +8,7 @@ from threading import Thread
 from Interfaces import ConfigGAInterface
 from MainHandler import Handler
 from runCalculations import RunCalculations
+from Utils import set_output_matrix_as_input
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
@@ -59,7 +60,7 @@ class GAHandler(Handler):
         else:
             pbar.set_fraction(0)
             # If everything is ok, current matrix will be the filtered one.
-            self.set_output_matrix_as_input()
+            set_output_matrix_as_input(self, self.ga_config)
 
     def on_GA_run_button_clicked(self, _) -> None:
         if self._is_running():
@@ -107,7 +108,6 @@ class GAHandler(Handler):
                                                                  "GA_output_selected_{}.csv".format(rand))
 
             logging.debug("Ok, I'll call RunCalculations.runGA().")
-            # self.running_process = Process(target=self.call_runner)
             self.running_process = Process(target=GAHandler.call_runner, args=(self.ga_config,))
             self.running_process.start()
             pbthread = Thread(target=self._keep_updating_progress_bar)
@@ -122,13 +122,3 @@ class GAHandler(Handler):
         logging.debug("Calling GA runner")
         RunCalculations.runGA(config)
         logging.debug("Calculation done.")
-
-
-    def set_output_matrix_as_input(self) -> None:
-        """Sets the output matrix as input in the GUI.
-
-        It's particularly useful at the end of a calculation, when you want that the result is shown in the GUI.
-        """
-        if os.path.isfile(self.ga_config['output_matrix']):
-            self.handler.set_X_matrix(self.ga_config['output_matrix'])
-            self.draw_matrices('matrix')

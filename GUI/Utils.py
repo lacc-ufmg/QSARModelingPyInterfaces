@@ -9,6 +9,8 @@ import time
 import platform
 import configparser
 from typing import Union
+__DIR__ = Path(getattr(sys, '_MEIPASS', Path(__file__).parent.resolve()))
+
 TMP_DIRECTORY = None
 LOG_FILE = None
 

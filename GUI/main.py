@@ -8,15 +8,13 @@ from GAHandler import GAHandler
 from MainHandler import Handler
 from HandlerFinder import HandlerFinder
 from ResultsHandler import ResultsHandler
-from Utils import cleanup_temporary_directory, get_log_file
+from Utils import cleanup_temporary_directory, __DIR__
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
 logger.init()
-
-__DIR__ = getattr(sys, '_MEIPASS', path.abspath(path.dirname(__file__)))
 
 
 def add_all_from_file(files: list, builder: Gtk.Builder) -> None:

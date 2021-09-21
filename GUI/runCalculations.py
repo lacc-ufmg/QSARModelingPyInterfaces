@@ -71,7 +71,7 @@ class RunCalculations:
         return RunCalculations.runCorrelationFilter(True, X_path, y_path, autocorrcut, save, output)
 
     @staticmethod
-    def runCrossValidation(X_path: str, y_path: str, filename: str = "", nLV=None) -> None:
+    def runCrossValidation(X_path: str, y_path: str, filename: str = "", nLV=None, skipsaving=False) -> CrossValidation:
         if filename == "":
             X_name = os.path.splitext(os.path.basename(X_path))[0]
             filename = os.path.join(os.path.dirname(X_path),
@@ -82,10 +82,13 @@ class RunCalculations:
         logging.debug(dfy.shape)
         logging.debug(dfy)
         cv = CrossValidation(dfX, dfy)
-        cv.saveParameters(filename)
+        if not skipsaving:
+            cv.saveParameters(filename)
+        return cv
+
 
     @staticmethod
-    def run_yrlno(X_path: str, y_path: str, pop_path: str, Q2_path: str, output_vars: str, output_params: str, yr_cut: float = 0.3, Q2_cut: float = 0.5, lno_cut: float = 0.1) -> bool:
+    def run_yrlno(X_path: str, y_path: str, pop_path: str, Q2_path: str, output_vars: str, output_params: str, yr_cut: float = 0.3, Q2_cut: float = 0.5, lno_cut: float = 0.1, return_object=False) -> Union[bool, CrossValidation]:
         dfX = pandas.read_csv(X_path, index_col=0, sep=None).to_numpy()
         dfy = pandas.read_csv(y_path, header=None).to_numpy()
 
@@ -111,6 +114,8 @@ class RunCalculations:
             cv = CrossValidation(dfSel.to_numpy(), dfy)
             cv.saveParameters(output_params)
             logging.info("Y-randomization and LNO executed with success!")
+            if return_object:
+                return cv
             return True
         else:
             logging.error("y-randomization or LNO failed!")

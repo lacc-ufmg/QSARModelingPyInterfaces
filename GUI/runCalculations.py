@@ -40,7 +40,7 @@ class RunCalculations:
             """ In the future, the user will be able to cut the matrix without 
              saving it, leaving it temporarily available within the program to
              perform another calculation in the sequence. """
-            pass
+            raise NotImplementedError("save=False is reserved for future usage. Please, use save=True.")
 
     @staticmethod
     def runCorrelationFilter(auto: bool, X_path: str, y_path: str, value: float, save: bool = True, output: str = "") -> str:
@@ -60,7 +60,7 @@ class RunCalculations:
             """ In the future, the user will be able to cut the matrix without 
              saving it, leaving it temporarily available within the program to
              perform another calculation in the sequence. """
-            pass
+            raise NotImplementedError("save=False is reserved for future usage. Please, use save=True.")
 
     @staticmethod
     def runCorrCut(X_path: str, y_path: str, corrcut: float, save: bool = True, output: str = "") -> str:

@@ -20,7 +20,7 @@ class ValidationHandler(Handler):
             'delete-event', lambda w, e: w.hide() or True)
         self.builder.get_object('config_extval_window').connect(
             'delete-event', lambda w, e: w.hide() or True)
-        self.ext_val_config: ConfigExtValInterface
+        # self.ext_val_config: ConfigExtValInterface
 
     def on_cv_run_button_clicked(self, _) -> None:
         if not self.handler.get_X_matrix() or not self.handler.get_y_vector():
@@ -46,9 +46,9 @@ class ValidationHandler(Handler):
             pop_path=self.builder.get_object("yrlno_input_pop").get_text(),
             Q2_path=self.builder.get_object("yrlno_input_q2").get_text(),
             output_vars=self.builder.get_object(
-                "yrlno_output_vars").get_text() or None,
+                "yrlno_output_vars").get_text(),
             output_params=self.builder.get_object(
-                "yrlno_output_params").get_text() or None,
+                "yrlno_output_params").get_text(),
             yr_cut=self.builder.get_object("yrlno_yrand").get_value(),
             Q2_cut=self.builder.get_object("yrlno_lno").get_value(),
             lno_cut=self.builder.get_object("yrlno_q2").get_value()

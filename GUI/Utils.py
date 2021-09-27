@@ -51,19 +51,19 @@ def open_external(filepath: str) -> None:
     if platform.system() == 'Darwin':       # macOS
         subprocess.call(('open', filepath))
     elif platform.system() == 'Windows':    # Windows
-        os.startfile(filepath)
+        os.startfile(filepath) # type: ignore
     else:                                   # linux variants
         subprocess.call(('xdg-open', filepath))
 
 
-def get_config_filename(filename=None) -> str:
+def get_config_filename(filename=None) -> Union[Path, None]:
     """Look for the configuration file and return the path if found.
 
     Args:
         filename (str | Path | None, optional): the filename to use as default (if this is given and the file exists, it'll be returned). Defaults to None.
 
     Returns:
-        str: The Path to the configuration file, or None if not found.
+        Path: The Path to the configuration file, or None if not found.
     """
     if filename is not None and Path(filename).is_file():
         return Path(filename)
@@ -83,7 +83,7 @@ def get_config_filename(filename=None) -> str:
     return None
 
 
-def read_config(section: str = None, key: str = None, filename: str = None) -> Union[str, dict]:
+def read_config(section: str = None, key: str = None, filename: Union[Path, str, None] = None) -> Union[str, dict]:
     """Reads a configuration file.
 
     Args:

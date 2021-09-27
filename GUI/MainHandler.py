@@ -216,7 +216,7 @@ class Handler(object):
             df = df.iloc[:, 0:10]
             print_et_cetera_column = True
         liststore_args = [str] if print_index else []
-        liststore_args += [float] * int(df.shape[1])
+        liststore_args += [float] * int(df.shape[1]) # type: ignore
         if print_et_cetera_column:
             liststore_args += [str]
         liststore = Gtk.ListStore(*liststore_args)

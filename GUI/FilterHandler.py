@@ -52,6 +52,7 @@ class FilterHandler(Handler):
             self.handler.set_X_matrix(new_matrix)
             self.handler.draw_matrices('matrix')
         window[prefix].hide()
+        return True
 
     def on_varcut_run_button_clicked(self, _) -> None:
         """ Handle Run button from Variance cut screen """

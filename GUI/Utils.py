@@ -8,11 +8,11 @@ import subprocess
 import time
 import platform
 import configparser
-from typing import Union
+from typing import Optional, Union
 __DIR__ = Path(getattr(sys, '_MEIPASS', Path(__file__).parent.resolve()))
 
-TMP_DIRECTORY = None
-LOG_FILE = None
+TMP_DIRECTORY: Optional[str] = None
+LOG_FILE: Optional[str]  = None
 
 
 def __initialize_temporary_file() -> str:

@@ -10,7 +10,7 @@ from qsarmodelingpy.runExtVal import run as runExtVal
 from qsarmodelingpy.filter import variance_cut, correlation_cut, autocorrelation_cut
 from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.validate_yr_lno import validate
-from Interfaces import ConfigGAInterface, ConfigOPSInterface
+from qsarmodelingpy.Interfaces import ConfigGAInterface, ConfigOPSInterface, ExtValResult
 from typing import Union
 
 
@@ -21,7 +21,7 @@ class RunCalculations:
         return runGA(config)
 
     @staticmethod
-    def runOPS(config: ConfigOPSInterface) -> None:
+    def runOPS(config: ConfigOPSInterface) -> bool:
         return runOPS(config)
 
     @staticmethod
@@ -40,7 +40,8 @@ class RunCalculations:
             """ In the future, the user will be able to cut the matrix without 
              saving it, leaving it temporarily available within the program to
              perform another calculation in the sequence. """
-            raise NotImplementedError("save=False is reserved for future usage. Please, use save=True.")
+            raise NotImplementedError(
+                "save=False is reserved for future usage. Please, use save=True.")
 
     @staticmethod
     def runCorrelationFilter(auto: bool, X_path: str, y_path: str, value: float, save: bool = True, output: str = "") -> str:
@@ -60,7 +61,8 @@ class RunCalculations:
             """ In the future, the user will be able to cut the matrix without 
              saving it, leaving it temporarily available within the program to
              perform another calculation in the sequence. """
-            raise NotImplementedError("save=False is reserved for future usage. Please, use save=True.")
+            raise NotImplementedError(
+                "save=False is reserved for future usage. Please, use save=True.")
 
     @staticmethod
     def runCorrCut(X_path: str, y_path: str, corrcut: float, save: bool = True, output: str = "") -> str:
@@ -86,10 +88,19 @@ class RunCalculations:
             cv.saveParameters(filename)
         return cv
 
-
     @staticmethod
-    def run_yrlno(X_path: str, y_path: str, pop_path: str, Q2_path: str, output_vars: str, output_params: str, yr_cut: float = 0.3, Q2_cut: float = 0.5, lno_cut: float = 0.1, return_object=False) -> Union[bool, CrossValidation]:
-        dfX = pandas.read_csv(X_path, index_col=0, sep=None).to_numpy()
+    def run_yrlno(X_path: str,
+                  y_path: str,
+                  pop_path: str,
+                  Q2_path: str,
+                  output_vars: str,
+                  output_params: str,
+                  yr_cut: float = 0.3,
+                  Q2_cut: float = 0.5,
+                  lno_cut: float = 0.1,
+                  return_object=False
+                  ) -> Union[bool, CrossValidation]:
+        dfX = pandas.read_csv(X_path, index_col=0, sep=None)
         dfy = pandas.read_csv(y_path, header=None).to_numpy()
 
         # T ODO: handle multiple pop/Q2 file formats.
@@ -111,7 +122,7 @@ class RunCalculations:
         if selected_variables != []:
             dfSel = dfX.loc[:, dfX.columns[selected_variables]]
             dfSel.to_csv(output_vars, sep=';')
-            cv = CrossValidation(dfSel.to_numpy(), dfy)
+            cv = CrossValidation(dfSel.to_numpy(), dfy, status=True)
             cv.saveParameters(output_params)
             logging.info("Y-randomization and LNO executed with success!")
             if return_object:
@@ -119,8 +130,12 @@ class RunCalculations:
             return True
         else:
             logging.error("y-randomization or LNO failed!")
+            dfSel = dfX.loc[:, dfX.columns[selected_variables]].to_numpy()
+            cv = CrossValidation(dfSel, dfy, status=False)
+            if return_object:
+                return cv
             return False
 
     @staticmethod
-    def runExternalValidation(config: ConfigExtValInterface) -> bool:
+    def runExternalValidation(config: ConfigExtValInterface) -> ExtValResult:
         return runExtVal(config)

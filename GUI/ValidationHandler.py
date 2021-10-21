@@ -39,15 +39,28 @@ class ValidationHandler(Handler):
         filename = self.builder.get_object("cv_output").get_text()
 
         logging.debug("Calling RunCalculations.")
-        RunCalculations.runCrossValidation(
-            self.handler.get_X_matrix(), self.handler.get_y_vector(), filename, nLV)
+        cv = RunCalculations.runCrossValidation(self.handler.get_X_matrix(), self.handler.get_y_vector(), filename, nLV)
+        plotter = Plots.CrossValidationPlots()
+        params = cv.returnParameters()
+        stats = self.__cv_prepare_stats(params)
+        texts = ResultWindowTexts(toptext="Your Cross Validation is done.",
+                                  title="Cross Validation Results",
+                                  statistics=stats)
+        self.results_handler.show(cv, plotter, texts)
+    
+    def __cv_prepare_stats(self, params: pd.DataFrame) -> str:
+        stats: List[str] = []
+        for i, d in params.iterrows():
+            stats.append(f"{i} = {d[0]}")
+        return "\n".join(stats)
 
     def on_yrlno_run_button_clicked(self, _) -> None:
         if not self.handler.get_X_matrix() or not self.handler.get_y_vector():
             logging.error("Please open matrix and vector first.")
             return
 
-        RunCalculations.run_yrlno(
+        logging.debug("Calling RunCalculations.")
+        cv = RunCalculations.run_yrlno(
             X_path=self.handler.get_X_matrix(),
             y_path=self.handler.get_y_vector(),
             pop_path=self.builder.get_object("yrlno_input_pop").get_text(),
@@ -58,8 +71,17 @@ class ValidationHandler(Handler):
                 "yrlno_output_params").get_text(),
             yr_cut=self.builder.get_object("yrlno_yrand").get_value(),
             Q2_cut=self.builder.get_object("yrlno_lno").get_value(),
-            lno_cut=self.builder.get_object("yrlno_q2").get_value()
+            lno_cut=self.builder.get_object("yrlno_q2").get_value(),
+            return_object=True
         )
+        logging.debug("RunCalculations done.")
+        logging.debug("Preparing to plot.")
+        plotter = Plots.YRandomizationPlots()
+        stats = self.__cv_prepare_stats(cv.returnParameters()) # type: ignore
+        texts = ResultWindowTexts(toptext="Your Y-Randomization is done.",
+                                    title="Y-Randomization Results",
+                                    statistics=stats)
+        self.results_handler.show(cv, plotter, texts)
 
     def on_extval_run_button_clicked(self, _) -> None:
         if not self.handler.files_ok():
@@ -67,17 +89,15 @@ class ValidationHandler(Handler):
             raise FileNotFoundError("Please, open the files in File > Open...")
 
         # Choose defaults to output files
-        X_name = os.path.splitext(
-            os.path.basename(self.handler.get_X_matrix()))[0]
-        basename = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                f'{X_name}')
+        X_name = os.path.splitext(os.path.basename(self.handler.get_X_matrix()))[0]
+        basename = os.path.join(os.path.dirname(self.handler.get_X_matrix()), f'{X_name}')
         default_outputs = {
-            'output_extval':  f"{basename}_extval.csv",
-            'output_cv':  f"{basename}_cv_extval.csv",
-            'output_X_train':  f"{basename}_X_train_extval.csv",
-            'output_y_train':  f"{basename}_y_train_extval.csv",
-            'output_X_test':  f"{basename}_X_test_extval.csv",
-            'output_y_test':  f"{basename}_y_test_extval.csv",
+            'output_extval': f"{basename}_extval.csv",
+            'output_cv': f"{basename}_cv_extval.csv",
+            'output_X_train': f"{basename}_X_train_extval.csv",
+            'output_y_train': f"{basename}_y_train_extval.csv",
+            'output_X_test': f"{basename}_X_test_extval.csv",
+            'output_y_test': f"{basename}_y_test_extval.csv",
         }
 
         self.ext_val_config: ConfigExtValInterface = {

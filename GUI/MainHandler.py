@@ -1,4 +1,5 @@
 import os
+from typing import Type, Union, List
 import pandas
 import qsarmodelingpy.Utils
 import Utils
@@ -12,6 +13,8 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class Handler(object):
+
+    __childrens: List[object] = []
 
     def __init__(self, builder):
         self.builder = builder
@@ -55,15 +58,25 @@ class Handler(object):
         self.last_saved_path = ""
 
         # TODO: remove these stuff
-        # if DEBUG_MODE:
-        #     self.set_X_matrix(
-        #         "/home/helitonmrf/Documents/TEMP/qsarm_tests/d10.csv")
-        #     self.set_y_vector(
-        #         "/home/helitonmrf/Documents/TEMP/qsarm_tests/atividades.txt")
-        #     self.draw_matrices('matrix')
-        #     self.draw_matrices('vector')
 
-        #     self.block_menus_until_file_load()
+    def register_handler(self, handler) -> None:
+        """Register a new handler 
+
+        Args:
+            handler (Handler): The handler to be registered
+        """        
+        if handler not in self.__childrens:
+            self.__childrens.append(handler)
+    
+    def get_handlers(self) -> list:
+        """ Get all handlers """
+        return self.__childrens
+
+    def get_handler(self, _type: Type) -> object:
+        for handler in self.__childrens:
+            if isinstance(handler, _type):
+                return handler
+        raise ValueError(f"No handler of type {_type} found.")
 
     def on_menu_openlog_activate(self, _) -> None:
         """ Open the log """

@@ -1,7 +1,12 @@
 import logging
+from typing import List
+
+import pandas as pd
 from Constants import DEBUG_MODE
 from MainHandler import Handler
+from ResultsHandler import ResultsHandler, ResultWindowTexts
 from qsarmodelingpy.Interfaces import ConfigExtValInterface
+import Plots
 from runCalculations import RunCalculations
 import os
 import gi
@@ -10,7 +15,7 @@ from gi.repository import Gtk
 
 
 class ValidationHandler(Handler):
-    def __init__(self, builder, handler):
+    def __init__(self, builder, handler: Handler):
         super().__init__(builder)
         self.builder = builder
         self.handler = handler
@@ -20,6 +25,8 @@ class ValidationHandler(Handler):
             'delete-event', lambda w, e: w.hide() or True)
         self.builder.get_object('config_extval_window').connect(
             'delete-event', lambda w, e: w.hide() or True)
+
+        self.results_handler: ResultsHandler = self.handler.get_handler(ResultsHandler)  # type: ignore
         # self.ext_val_config: ConfigExtValInterface
 
     def on_cv_run_button_clicked(self, _) -> None:

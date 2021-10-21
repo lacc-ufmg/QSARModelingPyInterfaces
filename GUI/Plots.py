@@ -1,12 +1,15 @@
 from typing import Callable, Dict
 import numpy as np
 import logging, logger
+from qsarmodelingpy.external_validation import ExternalValidation
 import matplotlib.pyplot as plt  # TODO: add do dependecies
 logger.silence_matplotlib_logger()
 from abc import ABC, abstractmethod
 from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.yrandomization import YRandomization
 import Utils
+
+
 
 class Plots(ABC):
 
@@ -112,7 +115,7 @@ if __name__ == "__main__":
                     sep=';', header=None).values
     cv = CrossValidation(X, y)
     methods = CrossValidationPlots().get_methods()
-    logging.debug(f"{methods = }")
+    # logging.debug(f"{methods = }")
 
     # for method in methods:
     #     methods[method](cv)

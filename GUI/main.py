@@ -42,14 +42,13 @@ add_all_from_file([
 handler = Handler(builder)
 
 """ Register handlers """
-handlers = [
-    handler,
-    GAHandler(builder, handler),
-    OPSHandler(builder, handler),
-    FilterHandler(builder, handler),
-    ValidationHandler(builder, handler),
-    ResultsHandler(builder, handler),
-]
+handler.register_handler(GAHandler(builder, handler))
+handler.register_handler(OPSHandler(builder, handler))
+handler.register_handler(ResultsHandler(builder, handler))
+handler.register_handler(ValidationHandler(builder, handler))
+handler.register_handler(FilterHandler(builder, handler))
+
+handlers = handler.get_handlers()
 
 
 if __name__ == '__main__':

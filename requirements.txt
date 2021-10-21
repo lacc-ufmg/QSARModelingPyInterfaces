@@ -5,7 +5,7 @@ coloredlogs
 ipywidgets
 ipyfilechooser
 matplotlib
-pyqt5 # for plotting with more options
+PyQt5 # for plotting with more options
 bokeh # for plotting in Jupyter Notebooks
 
 # it was necessary to run the following (Ubuntu/Debian) in order to get pip install working

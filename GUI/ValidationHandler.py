@@ -6,6 +6,7 @@ from Constants import DEBUG_MODE
 from MainHandler import Handler
 from ResultsHandler import ResultsHandler, ResultWindowTexts
 from qsarmodelingpy.Interfaces import ConfigExtValInterface
+from qsarmodelingpy.validate_yr_lno import ValidateYRLNOResult
 import Plots
 from runCalculations import RunCalculations
 import os
@@ -60,28 +61,27 @@ class ValidationHandler(Handler):
             return
 
         logging.debug("Calling RunCalculations.")
-        cv = RunCalculations.run_yrlno(
+        result: ValidateYRLNOResult = RunCalculations.run_yrlno(
             X_path=self.handler.get_X_matrix(),
             y_path=self.handler.get_y_vector(),
-            pop_path=self.builder.get_object("yrlno_input_pop").get_text(),
-            Q2_path=self.builder.get_object("yrlno_input_q2").get_text(),
-            output_vars=self.builder.get_object(
-                "yrlno_output_vars").get_text(),
-            output_params=self.builder.get_object(
-                "yrlno_output_params").get_text(),
             yr_cut=self.builder.get_object("yrlno_yrand").get_value(),
-            Q2_cut=self.builder.get_object("yrlno_lno").get_value(),
-            lno_cut=self.builder.get_object("yrlno_q2").get_value(),
+            lno_cut=self.builder.get_object("yrlno_lno").get_value(),
             return_object=True
         )
+        yr_result = result['yr_result']
+        yr = yr_result['yr']
         logging.debug("RunCalculations done.")
         logging.debug("Preparing to plot.")
         plotter = Plots.YRandomizationPlots()
-        stats = self.__cv_prepare_stats(cv.returnParameters()) # type: ignore
+
+        passed_str = "YRandomization passed with score {}." if yr_result["passed"] else "YRandomization failed with score {}.\nEither adjust your desired score or check your data."
+        stats = passed_str.format(yr_result["score"])
+
         texts = ResultWindowTexts(toptext="Your Y-Randomization is done.",
                                     title="Y-Randomization Results",
                                     statistics=stats)
-        self.results_handler.show(cv, plotter, texts)
+        
+        self.results_handler.show(yr, plotter, texts)
 
     def on_extval_run_button_clicked(self, _) -> None:
         if not self.handler.files_ok():

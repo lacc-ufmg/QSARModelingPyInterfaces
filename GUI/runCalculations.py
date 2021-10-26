@@ -3,14 +3,13 @@ import pandas
 import os
 import json
 import logging
-from qsarmodelingpy.Interfaces import ConfigExtValInterface
 from qsarmodelingpy.runGa import run as runGA
 from qsarmodelingpy.runOPS import run as runOPS
 from qsarmodelingpy.runExtVal import run as runExtVal
 from qsarmodelingpy.filter import variance_cut, correlation_cut, autocorrelation_cut
 from qsarmodelingpy.cross_validation_class import CrossValidation
-from qsarmodelingpy.validate_yr_lno import validate
-from qsarmodelingpy.Interfaces import ConfigGAInterface, ConfigOPSInterface, ExtValResult
+from qsarmodelingpy.validate_yr_lno import validate, run_leavenout, run_yrandomization, ValidateYRLNOResult, YRResult, LNOResult
+from qsarmodelingpy.Interfaces import ConfigGAInterface, ConfigOPSInterface, ExtValResult, ConfigExtValInterface
 from typing import Union
 
 
@@ -91,50 +90,24 @@ class RunCalculations:
     @staticmethod
     def run_yrlno(X_path: str,
                   y_path: str,
-                  pop_path: str,
-                  Q2_path: str,
-                  output_vars: str,
-                  output_params: str,
                   yr_cut: float = 0.3,
-                  Q2_cut: float = 0.5,
                   lno_cut: float = 0.1,
                   return_object=False
-                  ) -> Union[bool, CrossValidation]:
-        dfX = pandas.read_csv(X_path, index_col=0, sep=None)
+                  ) -> Union[bool, ValidateYRLNOResult]:
+        dfX = load_matrix(X_path)
         dfy = pandas.read_csv(y_path, header=None).to_numpy()
+        yrresult = run_yrandomization(dfX, dfy, yr_cut)
+        lnoresult = run_leavenout(dfX, dfy, lno_cut)
 
-        # T ODO: handle multiple pop/Q2 file formats.
-        # with open(pop_path, 'r') as pop_fl:
-        #     pop_json = json.load(pop_fl)
-
-        # pop = pop_json['var_sel']
-        # q2 = pop_json['Q2']
-
-        with open(pop_path, 'r') as pop_fl:
-            pop = np.array(json.load(pop_fl))
-
-        with open(Q2_path, 'r') as q2_fl:
-            q2 = np.array(json.load(q2_fl))
-
-        selected_variables = validate(
-            dfX, dfy, pop, q2, Q2_cut, yr_cut, lno_cut
-        )
-        if selected_variables != []:
-            dfSel = dfX.loc[:, dfX.columns[selected_variables]]
-            dfSel.to_csv(output_vars, sep=';')
-            cv = CrossValidation(dfSel.to_numpy(), dfy, status=True)
-            cv.saveParameters(output_params)
-            logging.info("Y-randomization and LNO executed with success!")
-            if return_object:
-                return cv
-            return True
+        passed = yrresult["passed"] and lnoresult["passed"]
+        
+        result = ValidateYRLNOResult({"passed": passed, "yr_result": yrresult, "lno_result": lnoresult})
+        if return_object:
+            return result
         else:
-            logging.error("y-randomization or LNO failed!")
-            dfSel = dfX.loc[:, dfX.columns[selected_variables]].to_numpy()
-            cv = CrossValidation(dfSel, dfy, status=False)
-            if return_object:
-                return cv
-            return False
+            return passed
+
+
 
     @staticmethod
     def runExternalValidation(config: ConfigExtValInterface) -> ExtValResult:

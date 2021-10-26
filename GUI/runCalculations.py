@@ -10,6 +10,7 @@ from qsarmodelingpy.filter import variance_cut, correlation_cut, autocorrelation
 from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.validate_yr_lno import validate, run_leavenout, run_yrandomization, ValidateYRLNOResult, YRResult, LNOResult
 from qsarmodelingpy.Interfaces import ConfigGAInterface, ConfigOPSInterface, ExtValResult, ConfigExtValInterface
+from qsarmodelingpy.Utils import load_matrix
 from typing import Union
 
 
@@ -25,7 +26,7 @@ class RunCalculations:
 
     @staticmethod
     def runVarCut(filename: str, value: float, save: bool = True, output: str = "") -> str:
-        df = pandas.read_csv(filename, index_col=0, sep=None)
+        df = load_matrix(filename)
         indVar = variance_cut(df.values, value)
         dfCut = df.loc[:, df.columns[indVar]]
         if save:
@@ -44,7 +45,7 @@ class RunCalculations:
 
     @staticmethod
     def runCorrelationFilter(auto: bool, X_path: str, y_path: str, value: float, save: bool = True, output: str = "") -> str:
-        dfX = pandas.read_csv(X_path, index_col=0, sep=None)
+        dfX = load_matrix(X_path)
         dfy = pandas.read_csv(y_path, header=None)
         indVar = autocorrelation_cut(dfX.values, dfy, value) if auto else correlation_cut(
             dfX.values, dfy.values, value)
@@ -77,7 +78,7 @@ class RunCalculations:
             X_name = os.path.splitext(os.path.basename(X_path))[0]
             filename = os.path.join(os.path.dirname(X_path),
                                     f'{X_name}_CV_output.csv')
-        dfX = pandas.read_csv(X_path, index_col=0, sep=None).values
+        dfX = load_matrix(X_path).values
         dfy = pandas.read_csv(y_path, header=None).values
         logging.debug(dfX.shape)
         logging.debug(dfy.shape)

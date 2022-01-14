@@ -1,6 +1,5 @@
 import logging
 import time
-import random
 import os
 import gi
 from multiprocessing import Process
@@ -8,7 +7,7 @@ from threading import Thread
 from Interfaces import ConfigOPSInterface
 from MainHandler import Handler
 from runCalculations import RunCalculations
-from Utils import set_output_matrix_as_input
+from Utils import get_current_time_as_string, set_output_matrix_as_input
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
@@ -86,16 +85,16 @@ class OPSHandler(Handler):
             }
 
             # TODO: use date instead of random numbers
-            rand = random.randint(10000, 99999)
+            date_time = get_current_time_as_string()
             if not self.ops_config['output_matrix']:
                 self.ops_config['output_matrix'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                                "OPS_output_matrix_{}.csv".format(rand))
+                                                                "OPS_output_matrix_{}.csv".format(date_time))
             if not self.ops_config['output_cv']:
                 self.ops_config['output_cv'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                            "OPS_output_CV_{}.csv".format(rand))
+                                                            "OPS_output_CV_{}.csv".format(date_time))
             if not self.ops_config['output_models']:
                 self.ops_config['output_models'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                                "OPS_output_models_{}.json".format(rand))
+                                                                "OPS_output_models_{}.json".format(date_time))
 
             self.running_process = Process(target=OPSHandler.call_runner, args=(self.ops_config,))
             self.running_process.start()

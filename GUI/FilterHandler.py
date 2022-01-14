@@ -1,6 +1,5 @@
 from MainHandler import Handler
 from runCalculations import RunCalculations
-import random
 import pandas
 from gi.repository import Gtk
 import os

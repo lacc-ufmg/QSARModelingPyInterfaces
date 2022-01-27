@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="QSARModeling",
-    version="0.1.4",
+    version="0.2.0",
     author="Martins, J. P. A; Reis Filho, H. M.",
     author_email="jpam@qui.ufmg.br,helitonmrf@ufmg.br",
     description="A software for building and validating QSAR models",

@@ -44,7 +44,7 @@ handler = Handler(builder)
 """ Register handlers """
 handler.register_handler(GAHandler(builder, handler))
 handler.register_handler(OPSHandler(builder, handler))
-handler.register_handler(ResultsHandler(builder, handler))
+handler.register_handler(ResultsHandler(builder))
 handler.register_handler(ValidationHandler(builder, handler))
 handler.register_handler(FilterHandler(builder, handler))
 

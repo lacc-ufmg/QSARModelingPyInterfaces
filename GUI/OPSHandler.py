@@ -68,6 +68,7 @@ class OPSHandler(Handler):
                 'output_matrix': self.builder.get_object('OPS_output_matrix').get_text(),
                 'output_cv': self.builder.get_object('OPS_output_cv').get_text(),
                 'output_models': self.builder.get_object('OPS_output_models').get_text(),
+                'output_PLS_model': self.builder.get_object('OPS_output_model').get_text(),
                 'varcut': self.builder.get_object('ops_varcut').get_value(),
                 'corrcut': self.builder.get_object('ops_corrcut').get_value(),
                 'autoscale': self.builder.get_object('ops_autoscale').get_active(),
@@ -84,17 +85,15 @@ class OPSHandler(Handler):
                 'ops_type': 'f' if self.builder.get_object('ops_feed_ops').get_active() else 's'
             }
 
-            # TODO: use date instead of random numbers
             date_time = get_current_time_as_string()
             if not self.ops_config['output_matrix']:
-                self.ops_config['output_matrix'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                                "OPS_output_matrix_{}.csv".format(date_time))
+                self.ops_config['output_matrix'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()), "OPS_output_matrix_{}.csv".format(date_time))
             if not self.ops_config['output_cv']:
-                self.ops_config['output_cv'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                            "OPS_output_CV_{}.csv".format(date_time))
+                self.ops_config['output_cv'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()), "OPS_output_CV_{}.csv".format(date_time))
             if not self.ops_config['output_models']:
-                self.ops_config['output_models'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                                "OPS_output_models_{}.json".format(date_time))
+                self.ops_config['output_models'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()), "OPS_output_models_{}.json".format(date_time))
+            if not self.ops_config['output_PLS_model']:
+                self.ops_config['output_PLS_model'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()), "OPS_output_model_{}.csv".format(date_time))
 
             self.running_process = Process(target=OPSHandler.call_runner, args=(self.ops_config,))
             self.running_process.start()

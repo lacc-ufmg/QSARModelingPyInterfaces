@@ -125,3 +125,12 @@ def set_output_matrix_as_input(self, config) -> None:
     if self.running_process is not None:
         self.running_process.terminate()
     self.running_process = None
+
+
+def get_current_time_as_string() -> str:
+    """Returns the current time as a string.
+
+    Returns:
+        str: The current time as a string.
+    """
+    return time.strftime("%Y%m%d_%H%M%S", time.localtime())

@@ -1,4 +1,3 @@
-from datetime import datetime
 import os
 import gi
 import time
@@ -76,6 +75,7 @@ class GAHandler(Handler):
                 'output_cv': self.builder.get_object('GA_output_cv').get_text(),
                 'output_q2': self.builder.get_object('GA_output_q2').get_text(),
                 'output_selected': self.builder.get_object('GA_output_selected_variables').get_text(),
+                'output_PLS_model': self.builder.get_object('GA_output_model').get_text(),
                 'varcut': self.builder.get_object('ga_varcut').get_value(),
                 'corrcut': self.builder.get_object('ga_corrcut').get_value(),
                 'autoscale': self.builder.get_object('ga_autoscale').get_active(),
@@ -106,6 +106,9 @@ class GAHandler(Handler):
             if not self.ga_config['output_selected']:
                 self.ga_config['output_selected'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
                                                                  "GA_output_selected_{}.csv".format(date_time))
+            if not self.ga_config['output_PLS_model']:
+                self.ga_config['output_PLS_model'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
+                                                                 "GA_output_model_{}.csv".format(date_time))
 
             logging.debug("Ok, I'll call RunCalculations.runGA().")
             self.running_process = Process(target=GAHandler.call_runner, args=(self.ga_config,))

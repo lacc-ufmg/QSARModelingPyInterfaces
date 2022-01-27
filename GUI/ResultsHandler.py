@@ -22,7 +22,7 @@ class ResultWindowTexts(TypedDict):
     statistics: Optional[str]
 
 class ResultsHandler(Handler):
-    def __init__(self, builder, handler: Handler):
+    def __init__(self, builder):
         super().__init__(builder)
         self.builder = builder
         self.window = self.builder.get_object('results_window')

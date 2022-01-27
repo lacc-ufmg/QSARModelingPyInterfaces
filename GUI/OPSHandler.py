@@ -13,7 +13,7 @@ from gi.repository import Gtk
 
 
 class OPSHandler(Handler):
-    def __init__(self, builder, handler):
+    def __init__(self, builder, handler: Handler):
         super().__init__(builder)
         self.builder = builder
         self.handler = handler

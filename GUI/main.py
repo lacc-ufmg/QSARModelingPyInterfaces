@@ -48,7 +48,7 @@ handler.register_handler(ResultsHandler(builder))
 handler.register_handler(ValidationHandler(builder, handler))
 handler.register_handler(FilterHandler(builder, handler))
 
-handlers = handler.get_handlers()
+handlers = [handler] + handler.get_handlers()
 
 
 if __name__ == '__main__':

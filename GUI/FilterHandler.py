@@ -1,6 +1,5 @@
 from MainHandler import Handler
 from runCalculations import RunCalculations
-import random
 import pandas
 from gi.repository import Gtk
 import os
@@ -10,7 +9,7 @@ gi.require_version('Gtk', '3.0')
 
 
 class FilterHandler(Handler):
-    def __init__(self, builder, handler):
+    def __init__(self, builder, handler: Handler):
         super().__init__(builder)
         self.builder = builder
         self.handler = handler
@@ -52,6 +51,7 @@ class FilterHandler(Handler):
             self.handler.set_X_matrix(new_matrix)
             self.handler.draw_matrices('matrix')
         window[prefix].hide()
+        return True
 
     def on_varcut_run_button_clicked(self, _) -> None:
         """ Handle Run button from Variance cut screen """

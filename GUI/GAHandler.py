@@ -1,4 +1,3 @@
-import random
 import os
 import gi
 import time
@@ -8,13 +7,13 @@ from threading import Thread
 from Interfaces import ConfigGAInterface
 from MainHandler import Handler
 from runCalculations import RunCalculations
-from Utils import set_output_matrix_as_input
+from Utils import set_output_matrix_as_input, get_current_time_as_string
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
 class GAHandler(Handler):
-    def __init__(self, builder, handler):
+    def __init__(self, builder, handler: Handler):
         super().__init__(builder)
         self.builder = builder
         self.handler = handler
@@ -76,6 +75,7 @@ class GAHandler(Handler):
                 'output_cv': self.builder.get_object('GA_output_cv').get_text(),
                 'output_q2': self.builder.get_object('GA_output_q2').get_text(),
                 'output_selected': self.builder.get_object('GA_output_selected_variables').get_text(),
+                'output_PLS_model': self.builder.get_object('GA_output_model').get_text(),
                 'varcut': self.builder.get_object('ga_varcut').get_value(),
                 'corrcut': self.builder.get_object('ga_corrcut').get_value(),
                 'autoscale': self.builder.get_object('ga_autoscale').get_active(),
@@ -93,19 +93,22 @@ class GAHandler(Handler):
                 'lno': self.builder.get_object('ga_lno').get_value()
             }
 
-            rand = random.randint(10000, 99999)
+            date_time = get_current_time_as_string()
             if not self.ga_config['output_matrix']:
                 self.ga_config['output_matrix'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                               "GA_output_matrix_{}.csv".format(rand))
+                                                               "GA_output_matrix_{}.csv".format(date_time))
             if not self.ga_config['output_cv']:
                 self.ga_config['output_cv'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                           "GA_output_CV_{}.csv".format(rand))
+                                                           "GA_output_CV_{}.csv".format(date_time))
             if not self.ga_config['output_q2']:
                 self.ga_config['output_q2'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                           "GA_output_Q2_{}.csv".format(rand))
+                                                           "GA_output_Q2_{}.csv".format(date_time))
             if not self.ga_config['output_selected']:
                 self.ga_config['output_selected'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
-                                                                 "GA_output_selected_{}.csv".format(rand))
+                                                                 "GA_output_selected_{}.csv".format(date_time))
+            if not self.ga_config['output_PLS_model']:
+                self.ga_config['output_PLS_model'] = os.path.join(os.path.dirname(self.handler.get_X_matrix()),
+                                                                 "GA_output_model_{}.csv".format(date_time))
 
             logging.debug("Ok, I'll call RunCalculations.runGA().")
             self.running_process = Process(target=GAHandler.call_runner, args=(self.ga_config,))

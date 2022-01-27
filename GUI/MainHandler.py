@@ -1,4 +1,5 @@
 import os
+from typing import Type, Union, List
 import pandas
 import qsarmodelingpy.Utils
 import Utils
@@ -8,12 +9,18 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from Constants import DEBUG_MODE
 
+import warnings
+warnings.filterwarnings("ignore")
+
 class Handler(object):
+
+    __childrens: List[object] = []
 
     def __init__(self, builder):
         self.builder = builder
         # Saving windows
         self.main_window = builder.get_object('main_window')
+        self.results_window = builder.get_object('results_window')
         self.config_OPS_window = builder.get_object('config_OPS_window')
         self.config_GA_window = builder.get_object('config_GA_window')
         self.about_window = builder.get_object('about_window')
@@ -38,6 +45,8 @@ class Handler(object):
         self.main_window.connect('destroy', Gtk.main_quit)
         self.about_window.connect(
             'delete-event', lambda w, e: w.hide() or True)
+        self.results_window.connect(
+            'delete-event', lambda w, e: w.hide() or True)
 
         # Setting file filters
         self.csv_file_filter.set_name('CSV Files (*.csv)')
@@ -49,15 +58,25 @@ class Handler(object):
         self.last_saved_path = ""
 
         # TODO: remove these stuff
-        # if DEBUG_MODE:
-        #     self.set_X_matrix(
-        #         "/home/helitonmrf/Documents/TEMP/qsarm_tests/d10.csv")
-        #     self.set_y_vector(
-        #         "/home/helitonmrf/Documents/TEMP/qsarm_tests/atividades.txt")
-        #     self.draw_matrices('matrix')
-        #     self.draw_matrices('vector')
 
-        #     self.block_menus_until_file_load()
+    def register_handler(self, handler) -> None:
+        """Register a new handler 
+
+        Args:
+            handler (Handler): The handler to be registered
+        """        
+        if handler not in self.__childrens:
+            self.__childrens.append(handler)
+    
+    def get_handlers(self) -> list:
+        """ Get all handlers """
+        return self.__childrens
+
+    def get_handler(self, _type: Type) -> object:
+        for handler in self.__childrens:
+            if isinstance(handler, _type):
+                return handler
+        raise ValueError(f"No handler of type {_type} found.")
 
     def on_menu_openlog_activate(self, _) -> None:
         """ Open the log """
@@ -210,7 +229,7 @@ class Handler(object):
             df = df.iloc[:, 0:10]
             print_et_cetera_column = True
         liststore_args = [str] if print_index else []
-        liststore_args += [float] * int(df.shape[1])
+        liststore_args += [float] * int(df.shape[1]) # type: ignore
         if print_et_cetera_column:
             liststore_args += [str]
         liststore = Gtk.ListStore(*liststore_args)
@@ -262,7 +281,6 @@ class Handler(object):
 
         for i in range(max(df.shape[0], df.shape[1])):
             liststore.append([data[i]])
-
         treeview.set_model(liststore)
 
         # Draw data column

@@ -1,11 +1,18 @@
 import os
+import sys
+from pathlib import Path
+import logging
 import tempfile
 import shutil
 import subprocess
 import time
 import platform
-TMP_DIRECTORY = None
-LOG_FILE = None
+import configparser
+from typing import Optional, Union
+__DIR__ = Path(getattr(sys, '_MEIPASS', Path(__file__).parent.resolve()))
+
+TMP_DIRECTORY: Optional[str] = None
+LOG_FILE: Optional[str]  = None
 
 
 def __initialize_temporary_file() -> str:
@@ -44,12 +51,69 @@ def open_external(filepath: str) -> None:
     if platform.system() == 'Darwin':       # macOS
         subprocess.call(('open', filepath))
     elif platform.system() == 'Windows':    # Windows
-        os.startfile(filepath)
+        os.startfile(filepath) # type: ignore
     else:                                   # linux variants
         subprocess.call(('xdg-open', filepath))
 
-# GUI Handlers
 
+def get_config_filename(filename=None) -> Union[Path, None]:
+    """Look for the configuration file and return the path if found.
+
+    Args:
+        filename (str | Path | None, optional): the filename to use as default (if this is given and the file exists, it'll be returned). Defaults to None.
+
+    Returns:
+        Path: The Path to the configuration file, or None if not found.
+    """
+    if filename is not None and Path(filename).is_file():
+        return Path(filename)
+
+    LOOKUP = [Path("./qsarmodelingpy.conf"),
+              Path("~/qsarmodelingpy.conf").expanduser(),
+              Path("~/.qsarmodelingpy.conf").expanduser(),
+              Path("./qsarmodeling.conf"),
+              Path("~/qsarmodeling.conf").expanduser(),
+              Path("~/.qsarmodeling.conf").expanduser(),
+              __DIR__ / "qsarmodelingpy.conf"
+              ]
+    for path in LOOKUP:
+        if path.resolve().is_file():
+            logging.info(f"Loaded {path.resolve()} as the configuration file.")
+            return path
+    return None
+
+
+def read_config(section: str = None, key: str = None, filename: Union[Path, str, None] = None) -> Union[str, dict]:
+    """Reads a configuration file.
+
+    Args:
+        section (str): The section of the configuration file. If None, the whole file is returned.
+        key (str): The key of the configuration file. If None, the whole section is returned.
+
+    Returns:
+        str: The value of the configuration file. If the file or section/key doesn't exist, an empty dict is returned.
+    """
+    filename = get_config_filename(filename)
+    if filename is None:
+        return {}
+    parser = configparser.ConfigParser()
+    parser.read(filename)
+    if section is None:
+        if key is not None:
+            for sec in parser.sections():
+                if key in parser[sec]:
+                    return parser[sec][key]
+            return {}
+        return {section: dict(parser[section]) for section in parser.sections()}
+    elif section not in parser.sections():
+        return {}
+    elif key is None:
+        return dict(parser[section])
+    else:
+        return parser[section][key] if key in parser[section] else {}
+
+
+# GUI Handlers
 def set_output_matrix_as_input(self, config) -> None:
     """Sets the output matrix as input in the GUI.
 
@@ -61,3 +125,12 @@ def set_output_matrix_as_input(self, config) -> None:
     if self.running_process is not None:
         self.running_process.terminate()
     self.running_process = None
+
+
+def get_current_time_as_string() -> str:
+    """Returns the current time as a string.
+
+    Returns:
+        str: The current time as a string.
+    """
+    return time.strftime("%Y%m%d_%H%M%S", time.localtime())

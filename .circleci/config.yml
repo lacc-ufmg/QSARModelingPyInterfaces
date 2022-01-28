@@ -81,10 +81,14 @@ jobs:
           name: Building Snap
       - run:
           command: mv /workdir/*.snap /workdir/qsarmodelingpy.snap
+      - store_artifacts:
+          path: ./dist/qsarmodeling.snap
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./dist/qsarmodeling.snap
       - run:
-          command: |
-            apt install openssl
-            openssl aes-256-cbc -d -in /workdir/.circleci/credentials.enc -out credentials -md sha256 -k ${SNAPCRAFT_CREDENTIALS_KEY}
+          command: openssl aes-256-cbc -d -in /workdir/.circleci/credentials.enc -out credentials -md sha256 -k ${SNAPCRAFT_CREDENTIALS_KEY}
           name: Decrypt credentials
       - run:
           name: Authenticate snapcraft
@@ -92,8 +96,8 @@ jobs:
       - run:
           name: Push snap
           command: snapcraft push /workdir/qsarmodelingpy.snap --release edge
-      - store_artifacts:
-          path: /workdir/qsarmodelingpy.snap
+      # - store_artifacts:
+      #     path: /workdir/qsarmodelingpy.snap
 
   upload_artifacts:
     working_directory: ~/project
@@ -114,6 +118,9 @@ jobs:
       - run:
           command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "windows-amd64-qsarmodeling.zip" --file ~/project/dist/qsarmodeling-win64.zip
           name: "Uploading Windows artifact"
+      - run:
+          command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "linux-amd64-qsarmodeling.snap" --file ~/project/dist/qsarmodeling.snap
+          name: "Uploading snap artifact"
 
 workflows:
   main:

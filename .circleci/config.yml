@@ -82,13 +82,16 @@ jobs:
       - run:
           command: mv /workdir/*.snap /workdir/qsarmodelingpy.snap
       - store_artifacts:
-          path: ./dist/qsarmodeling.snap
+          path: /workdir/qsarmodelingpy.snap
       - persist_to_workspace:
           root: .
           paths:
-            - ./dist/qsarmodeling.snap
+            - ./qsarmodelingpy.snap
       - run:
-          command: openssl aes-256-cbc -d -in /workdir/.circleci/credentials.enc -out credentials -md sha256 -k ${SNAPCRAFT_CREDENTIALS_KEY}
+          command: |
+              apt update
+              apt install openssl
+              openssl aes-256-cbc -d -in /workdir/.circleci/credentials.enc -out credentials -md sha256 -k ${SNAPCRAFT_CREDENTIALS_KEY}
           name: Decrypt credentials
       - run:
           name: Authenticate snapcraft
@@ -115,11 +118,11 @@ jobs:
       - run:
           command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "linux-amd64-qsarmodeling.tar.xz" --file ~/project/dist/qsarmodeling-linux.tar.xz
           name: "Uploading Linux artifact"
+      # - run:
+      #     command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "windows-amd64-qsarmodeling.zip" --file ~/project/dist/qsarmodeling-win64.zip
+      #     name: "Uploading Windows artifact"
       - run:
-          command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "windows-amd64-qsarmodeling.zip" --file ~/project/dist/qsarmodeling-win64.zip
-          name: "Uploading Windows artifact"
-      - run:
-          command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "linux-amd64-qsarmodeling.snap" --file ~/project/dist/qsarmodeling.snap
+          command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "linux-amd64-qsarmodeling.snap" --file ~/project/dist/qsarmodelingpy.snap
           name: "Uploading snap artifact"
 
 workflows:
@@ -141,16 +144,16 @@ workflows:
               # Releases like v0.0.0-alpha will not be snapped.
             branches:
               ignore: /.*/
-      - prepare-and-build-windows:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+      # - prepare-and-build-windows:
+      #     filters:
+      #       tags:
+      #         only: /^v.*/
+      #       branches:
+      #         ignore: /.*/
       - upload_artifacts:
           requires:
             - prepare-and-build-linux
-            - prepare-and-build-windows
+            # - prepare-and-build-windows
           filters:
             tags:
               only: /^v.*/

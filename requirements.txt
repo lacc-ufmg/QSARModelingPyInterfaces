@@ -1,12 +1,10 @@
 qsarmodelingpy
-pygobject==3.30.5
+# pygobject==3.30.5
 typing_extensions
 coloredlogs
-ipywidgets
-ipyfilechooser
 matplotlib
+tornado
 PyQt5 # for plotting with more options
-bokeh # for plotting in Jupyter Notebooks
 
 # it was necessary to run the following (Ubuntu/Debian) in order to get pip install working
 # sudo apt-get install libcairo2-dev libgirepository1.0-dev

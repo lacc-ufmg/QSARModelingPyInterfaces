@@ -1,7 +1,36 @@
 import setuptools
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+long_description = """
+# QSARModelingPy
+
+QSARModelingPy is an open-source computational package to generate and validate QSAR models.
+
+**What you _can_ do with QSARModelingPy**
+
+-   Select variables through either OPS or Genetic Algorithm
+-   Dimensionality reduction:
+    -   Correlation cut
+    -   Variance cut
+    -   Autocorrelation cut
+-   Validate your models:
+    -   Cross Validation
+    -   y-randomization / Leave-N-out
+    -   External Validation
+
+## Usage
+After installing this package with:
+```
+$ pip install qsarmodelingpy-gui
+```
+Just launch the application:
+```
+$ qsarmodelingpy
+```
+or:
+```
+$ python -m qsarmodelingpy-gui
+```
+"""
 
 setuptools.setup(
     name="qsarmodelingpy-gui",

@@ -48,6 +48,15 @@ Then install the application running in a terminal (or command prompt):
 $ pip install qsarmodelingpy-gui
 ```
 
+If you got some error saying `ERROR: Command errored out with exit status 1:`, look at the message just before. It'll say what to do. On Debian/Ubuntu, you'll need to install some dependencies:
+```shell
+sudo apt install libglib2.0-dev libgirepository1.0-dev libcairo2-dev
+```
+
+On Windows, you may need [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
+
+After installing the dependencies, you'll need to run `pip install` again.
+
 Then run the application with:
 ```shell
 $ qsarmodelingpy

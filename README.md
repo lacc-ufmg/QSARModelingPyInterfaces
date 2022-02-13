@@ -38,11 +38,21 @@ If you don't know exactly what you need, here are a rule of thumbs:
 
 ### Graphical User Interface (GUI)
 
-There are binaries available for Linux and Windows under "Assets" on the [Releases page](https://github.com/hellmrf/QSARModelingPyInterfaces/releases). Just download, decompress and execute `qsarmodeling` (Linux) or `qsarmodeling.exe` (Windows).
+<!-- There are binaries available for Linux and Windows under "Assets" on the [Releases page](https://github.com/hellmrf/QSARModelingPyInterfaces/releases). Just download, decompress and execute `qsarmodeling` (Linux) or `qsarmodeling.exe` (Windows).
 
-> Linux users may need to `chmod +x ./qsarmodeling` before executing.
+> Linux users may need to `chmod +x ./qsarmodeling` before executing. -->
+You'll need [Python 3](https://www.python.org/downloads/) installed, as well as [pip](https://pip.pypa.io/en/stable/installation/).
 
-#### Snap
+Then install the application running in a terminal (or command prompt):
+```shell
+$ pip install qsarmodelingpy-gui
+```
+
+Then run the application with:
+```shell
+$ qsarmodelingpy
+```
+<!-- #### Snap
 
 There is also a Snap version for Linux distros with snap support. Just run:
 
@@ -50,11 +60,11 @@ There is also a Snap version for Linux distros with snap support. Just run:
 sudo snap install qsarmodelingpy --channel=edge/stable
 ```
 
-And then run the program with `qsarmodelingpy` on the terminal.
+And then run the program with `qsarmodelingpy` on the terminal. -->
 
-#### MacOS
+<!-- #### MacOS
 
-MacOS users can use the Windows version with [Wine](https://www.winehq.org/) or use the instructions below for _Other interfaces_ (which includes GUI).
+MacOS users can use the Windows version with [Wine](https://www.winehq.org/) or use the instructions below for _Other interfaces_ (which includes GUI). -->
 
 ### Other interfaces
 

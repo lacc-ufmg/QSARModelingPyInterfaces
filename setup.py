@@ -45,7 +45,7 @@ setuptools.setup(
     package_dir={"qsarmodelingpy-gui": "GUI"},
     package_data={"qsarmodelingpy-gui": ["Views/*.glade"]},
     install_requires=[
-        'qsarmodelingpy',
+        'qsarmodelingpy>=0.3.0',
         'pygobject==3.30.5',
         'typing_extensions',
         'coloredlogs',

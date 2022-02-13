@@ -1,0 +1,37 @@
+package:
+  name: "qsarmodelingpy_gui"
+  version: "0.3.0"
+
+source:
+  # git_rev: v1.3.1
+  git_url: https://github.com/hellmrf/QSARModelingPyInterfaces
+
+requirements:
+  host:
+    - python
+    - setuptools
+  build:
+    - python
+  run:
+    - python
+    - qsarmodelingpy
+    - pygobject==3.30.5
+    - typing_extensions
+    - coloredlogs
+    - matplotlib
+    - tornado
+    - PyQt5
+    - gtk3
+    - adwaita-icon-theme
+
+
+about:
+  home: https://github.com/hellmrf/QSARModelingPyInterfaces
+  license: GPL-v3.0
+  license_familY: GPL
+  license_file: LICENSE
+  summary: "A software for building and validating QSAR models"
+
+extra:
+  recipe-maintainers:
+    - hellmrf

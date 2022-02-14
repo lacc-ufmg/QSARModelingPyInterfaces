@@ -16,3 +16,4 @@ core
 **/.ipynb_checkpoints/**
 *credential*
 *#
+*.egg-info/

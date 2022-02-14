@@ -38,10 +38,34 @@ If you don't know exactly what you need, here are a rule of thumbs:
 
 ### Graphical User Interface (GUI)
 
+The recommended way of installing the GUI is with [Miniconda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) (or Anaconda, if you already have it). If you're using Windows, you may need to use the Anaconda Prompt where we say "terminal" below.
+
+> Make sure the `conda` command is accessible in your shell. You may need to `conda init <shell>` if you're not using the default shell. For example, if you're using zsh on Linux or Powershell on Windows, you may need to `conda init zsh` or `conda init powershell`, respectively. On Windows, you can also use the Anaconda Prompt and skip this part.
+
+When you have `conda`, install the GUI for QSARModelingPy:
+```shell
+$ conda install -c helitonmrf -c conda-forge qsarmodelingpy-gui
+```
+> Throughout this guide, you'll see command beginning with `$`. This just indicates a shell input, and thus should not be typed.
+
+Then run the application:
+```shell
+$ qsarmodelingpy
+```
+
+#### Without Miniconda
 <!-- There are binaries available for Linux and Windows under "Assets" on the [Releases page](https://github.com/hellmrf/QSARModelingPyInterfaces/releases). Just download, decompress and execute `qsarmodeling` (Linux) or `qsarmodeling.exe` (Windows).
 
 > Linux users may need to `chmod +x ./qsarmodeling` before executing. -->
-You'll need [Python 3](https://www.python.org/downloads/) installed, as well as [pip](https://pip.pypa.io/en/stable/installation/).
+If, for some reason, you don't want to use Miniconda (or Anaconda), you can use `pip`. However, be aware that some of the QSARModeling dependencies don't offer pre-built packages, what basically means that pip will need to build them. Practically, it means you'll need the building apparatus.
+
+Advantages over Miniconda approach:
+- You aren't stuck inside an environment, so `qsarmodelingpy` will be available system-wide.
+
+Disadvantages over Miniconda approach:
+- You may have to install some build dependencies.
+
+First of all, you'll need [Python 3](https://www.python.org/downloads/) installed, as well as [pip](https://pip.pypa.io/en/stable/installation/).
 
 Then install the application running in a terminal (or command prompt):
 ```shell
@@ -50,14 +74,14 @@ $ pip install qsarmodelingpy-gui
 
 If you got some error saying `ERROR: Command errored out with exit status 1:`, look at the message just before. It'll say what to do. On Debian/Ubuntu, you'll need to install some dependencies:
 ```shell
-sudo apt install libglib2.0-dev libgirepository1.0-dev libcairo2-dev
+$ sudo apt install libglib2.0-dev libgirepository1.0-dev libcairo2-dev
 ```
 
 On Windows, you may need [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
 
-After installing the dependencies, you'll need to run `pip install` again.
+After installing the dependencies, you'll need to run `pip install qsarmodelingpy-gui` again.
 
-Then run the application with:
+After you have success installing the pip package, you can run the application with:
 ```shell
 $ qsarmodelingpy
 ```

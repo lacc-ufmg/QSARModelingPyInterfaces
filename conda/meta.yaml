@@ -5,10 +5,9 @@ package:
   version: {{ data.version }}
 
 source:
-  # url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  url: ../dist/{{ data.name }}-{{ data.version }}.tar.gz
-  sha256: 3520bfb054939ff7f1ad05ea188e95db55ebd40ba2de760654a06dcf845fc05a
-  md5: b6b0f0c81eb8608ddde394f87148fe0e
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  # url: ../dist/{{ data.name }}-{{ data.version }}.tar.gz
+  # md5: 115c1af4c2cc3064f3a25ecfb4824a21
 
 build:
   entry_points:

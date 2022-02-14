@@ -1,5 +1,5 @@
 name: qsarmodelingpy
-version: git
+version: '0.2.3'
 summary: QSARModeling written in Python
 description: |
     QSARModelingPy is an open source computational package to generate and validate QSAR models.
@@ -14,17 +14,21 @@ description: |
         - y-randomization / Leave-N-out
         - External Validation
 
-base: core18
+base: core20
 grade: devel
 confinement: strict
 
+# See https://github.com/pygobject/pycairo/issues/89#issuecomment-393416874 for PyGobjects 
 parts:
-    qsarmodelingpy:
-        plugin: dump
-        source: /workdir/dist/qsarmodeling-linux.tar.xz
+    qsarmodelingpy-conda:
+        plugin: conda
+        conda-packages:
+            - -c helitonmrf
+            - -c conda-forge
+            - qsarmodelingpy-gui
 
 apps:
     qsarmodelingpy:
-        extensions: [gnome-3-28]
-        command: qsarmodeling
+        extensions: [gnome-3-38]
+        command: bin/qsarmodelingpy
         plugs: [home]

@@ -1,13 +1,14 @@
-{% set name = "qsarmodelingpy-gui" %}
-{% set version = "0.2.2" %}
+{% set data = load_setup_py_data(setup_file='../setup.py', from_recipe_dir=True) %}
 
 package:
-  name: {{ name|lower }}
-  version: {{ version }}
+  name: {{ data.name }}
+  version: {{ data.version }}
 
 source:
   # url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  path: .
+  url: ../dist/{{ data.name }}-{{ data.version }}.tar.gz
+  sha256: 3520bfb054939ff7f1ad05ea188e95db55ebd40ba2de760654a06dcf845fc05a
+  md5: b6b0f0c81eb8608ddde394f87148fe0e
 
 build:
   entry_points:

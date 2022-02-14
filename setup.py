@@ -41,9 +41,9 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/hellmrf/QSARModelingPyInterfaces",
-    packages=["qsarmodelingpy-gui"],
-    package_dir={"qsarmodelingpy-gui": "GUI"},
-    package_data={"qsarmodelingpy-gui": ["Views/*.glade"]},
+    packages=["qsarmodelingpy_gui"],
+    package_dir={"qsarmodelingpy_gui": "GUI"},
+    package_data={"qsarmodelingpy_gui": ["Views/*.glade"]},
     install_requires=[
         'qsarmodelingpy>=0.3.0',
         'pygobject==3.30.5',

@@ -1,0 +1,53 @@
+{% set data = load_setup_py_data(setup_file='../setup.py', from_recipe_dir=True) %}
+
+package:
+  name: {{ data.name }}
+  version: {{ data.version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  # url: ../dist/{{ data.name }}-{{ data.version }}.tar.gz
+  # md5: 115c1af4c2cc3064f3a25ecfb4824a21
+
+build:
+  entry_points:
+    - qsarmodelingpy = qsarmodelingpy_gui.main:main
+
+requirements:
+  host:
+    - python
+    - setuptools
+    - cairo
+    - pycairo
+    - glib
+  build:
+    - python
+    - cairo
+    - pycairo
+    - glib
+  run:
+    - python
+    - qsarmodelingpy>=0.3.0
+    - cairo
+    - pycairo
+    - pygobject
+    - typing_extensions
+    - coloredlogs
+    - matplotlib
+    - tornado
+    - pyqt
+    - gtk3
+    - adwaita-icon-theme
+
+
+about:
+  home: https://github.com/hellmrf/QSARModelingPyInterfaces
+  license: GPL-v3.0
+  license_familY: GPL
+  license_file: LICENSE
+  summary: "A software for building and validating QSAR models"
+  dev_url: https://github.com/hellmrf/QSARModelingPyInterfaces
+
+extra:
+  recipe-maintainers:
+    - hellmrf

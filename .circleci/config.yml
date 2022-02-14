@@ -1,161 +1,164 @@
-version: 2.1
+# version: 2.1
 
-orbs:
-  win: circleci/windows@2.2.0
+# orbs:
+#   win: circleci/windows@2.2.0
 
-jobs:
-  prepare-and-build-windows:
-    executor: win/default
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - dependencies-win-{{ checksum "environment.yml" }}
-      - run:
-          # Will run on a Windows Machine with Powershell!
-          command: if(-not (conda env list | grep QSARModelingPy)) {conda env create -f environment.yml}
-          name: Create conda environment if not exists
-      - run:
-          command: conda init powershell
-          name: Initializing conda for powershell.
-      - save_cache:
-          paths:
-            - C:\tools\miniconda3\envs
-          key: dependencies-win-{{ checksum "environment.yml" }}
-      - run:
-          command: |
-            pip install -U qsarmodelingpy
-          name: Get the latest QSARModeling Core
-      - run:
-          command: |
-            conda activate QSARModelingPy
-            pyinstaller qsarmodeling-win64.spec --noconfirm
-          name: Run build step
-      - run:
-          command: Compress-Archive -Path dist\qsarmodeling -DestinationPath dist\qsarmodeling-win64.zip
-          name: Compressing
-      - store_artifacts:
-          path: dist\qsarmodeling-win64.zip
-      - persist_to_workspace:
-          root: .
-          paths:
-            - dist\qsarmodeling-win64.zip
+# jobs:
+#   prepare-and-build-windows:
+#     executor: win/default
+#     steps:
+#       - checkout
+#       - restore_cache:
+#           keys:
+#             - dependencies-win-{{ checksum "environment.yml" }}
+#       - run:
+#           # Will run on a Windows Machine with Powershell!
+#           command: if(-not (conda env list | grep QSARModelingPy)) {conda env create -f environment.yml}
+#           name: Create conda environment if not exists
+#       - run:
+#           command: conda init powershell
+#           name: Initializing conda for powershell.
+#       - save_cache:
+#           paths:
+#             - C:\tools\miniconda3\envs
+#           key: dependencies-win-{{ checksum "environment.yml" }}
+#       - run:
+#           command: |
+#             pip install -U qsarmodelingpy
+#           name: Get the latest QSARModeling Core
+#       - run:
+#           command: |
+#             conda activate QSARModelingPy
+#             pyinstaller qsarmodeling-win64.spec --noconfirm
+#           name: Run build step
+#       - run:
+#           command: Compress-Archive -Path dist\qsarmodeling -DestinationPath dist\qsarmodeling-win64.zip
+#           name: Compressing
+#       - store_artifacts:
+#           path: dist\qsarmodeling-win64.zip
+#       - persist_to_workspace:
+#           root: .
+#           paths:
+#             - dist\qsarmodeling-win64.zip
 
-  prepare-and-build-linux:
-    docker:
-      - image: helitonmrf/pyinstaller-centos7
-    working_directory: /build
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - dependencies-linux-{{ checksum "environment.yml" }}
-      - run:
-          command: pip3 install qsarmodelingpy
-          name: Install QSARModelingCore
-      - run:
-          command: pyinstaller qsarmodeling-linux.spec --noconfirm
-          name: Building
-      - run:
-          command: tar -C ./dist/qsarmodeling  -cJf ./dist/qsarmodeling-linux.tar.xz $(ls ./dist/qsarmodeling)
-          name: Compressing
-      - store_artifacts:
-          path: ./dist/qsarmodeling-linux.tar.xz
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./dist/qsarmodeling-linux.tar.xz
+#   prepare-and-build-linux:
+#     docker:
+#       - image: helitonmrf/pyinstaller-centos7
+#     working_directory: /build
+#     steps:
+#       - checkout
+#       - restore_cache:
+#           keys:
+#             - dependencies-linux-{{ checksum "environment.yml" }}
+#       - run:
+#           command: pip3 install qsarmodelingpy
+#           name: Install QSARModelingCore
+#       - run:
+#           command: pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.zip
+#           name: Install PyInstaller
+#       - run:
+#           command: pyinstaller qsarmodeling-linux.spec --noconfirm
+#           name: Building
+#       - run:
+#           command: tar -C ./dist/qsarmodeling  -cJf ./dist/qsarmodeling-linux.tar.xz $(ls ./dist/qsarmodeling)
+#           name: Compressing
+#       - store_artifacts:
+#           path: ./dist/qsarmodeling-linux.tar.xz
+#       - persist_to_workspace:
+#           root: .
+#           paths:
+#             - ./dist/qsarmodeling-linux.tar.xz
 
-  snapcraft:
-    working_directory: /workdir
-    docker:
-      - image: helitonmrf/my-snapcraft-builder:latest
-        environment:
-          SNAPCRAFT_CREDENTIALS_KEY: $SNAPCRAFT_CREDENTIALS_KEY
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /workdir
-      - run:
-          command: snapcraft
-          name: Building Snap
-      - run:
-          command: mv /workdir/*.snap /workdir/qsarmodelingpy.snap
-      - store_artifacts:
-          path: /workdir/qsarmodelingpy.snap
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./qsarmodelingpy.snap
-      - run:
-          command: |
-              apt update
-              apt install openssl
-              openssl aes-256-cbc -d -in /workdir/.circleci/credentials.enc -out credentials -md sha256 -k ${SNAPCRAFT_CREDENTIALS_KEY}
-          name: Decrypt credentials
-      - run:
-          name: Authenticate snapcraft
-          command: snapcraft login --with credentials
-      - run:
-          name: Push snap
-          command: snapcraft push /workdir/qsarmodelingpy.snap --release edge
-      # - store_artifacts:
-      #     path: /workdir/qsarmodelingpy.snap
+#   snapcraft:
+#     working_directory: /workdir
+#     docker:
+#       - image: helitonmrf/my-snapcraft-builder:latest
+#         environment:
+#           SNAPCRAFT_CREDENTIALS_KEY: $SNAPCRAFT_CREDENTIALS_KEY
+#     steps:
+#       - checkout
+#       - attach_workspace:
+#           at: /workdir
+#       - run:
+#           command: snapcraft
+#           name: Building Snap
+#       - run:
+#           command: mv /workdir/*.snap /workdir/qsarmodelingpy.snap
+#       - store_artifacts:
+#           path: /workdir/qsarmodelingpy.snap
+#       - persist_to_workspace:
+#           root: .
+#           paths:
+#             - ./qsarmodelingpy.snap
+#       - run:
+#           command: |
+#               apt update
+#               apt install openssl
+#               openssl aes-256-cbc -d -in /workdir/.circleci/credentials.enc -out credentials -md sha256 -k ${SNAPCRAFT_CREDENTIALS_KEY}
+#           name: Decrypt credentials
+#       - run:
+#           name: Authenticate snapcraft
+#           command: snapcraft login --with credentials
+#       - run:
+#           name: Push snap
+#           command: snapcraft push /workdir/qsarmodelingpy.snap --release edge
+#       # - store_artifacts:
+#       #     path: /workdir/qsarmodelingpy.snap
 
-  upload_artifacts:
-    working_directory: ~/project
-    docker:
-      - image: cimg/base:2020.01
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          command: |
-            wget -O ~/project/github-release.bz2 https://github.com/github-release/github-release/releases/download/v0.10.0/linux-amd64-github-release.bz2
-            bzip2 -d ~/project/github-release.bz2
-            chmod +x ~/project/github-release
-          name: Getting github-release
-      - run:
-          command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "linux-amd64-qsarmodeling.tar.xz" --file ~/project/dist/qsarmodeling-linux.tar.xz
-          name: "Uploading Linux artifact"
-      - run:
-          command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "windows-amd64-qsarmodeling.zip" --file ~/project/dist/qsarmodeling-win64.zip
-          name: "Uploading Windows artifact"
-      - run:
-          command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "linux-amd64-qsarmodeling.snap" --file ~/project/qsarmodelingpy.snap
-          name: "Uploading snap artifact"
+#   upload_artifacts:
+#     working_directory: ~/project
+#     docker:
+#       - image: cimg/base:2020.01
+#     steps:
+#       - attach_workspace:
+#           at: ~/project
+#       - run:
+#           command: |
+#             wget -O ~/project/github-release.bz2 https://github.com/github-release/github-release/releases/download/v0.10.0/linux-amd64-github-release.bz2
+#             bzip2 -d ~/project/github-release.bz2
+#             chmod +x ~/project/github-release
+#           name: Getting github-release
+#       - run:
+#           command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "linux-amd64-qsarmodeling.tar.xz" --file ~/project/dist/qsarmodeling-linux.tar.xz
+#           name: "Uploading Linux artifact"
+#       - run:
+#           command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "windows-amd64-qsarmodeling.zip" --file ~/project/dist/qsarmodeling-win64.zip
+#           name: "Uploading Windows artifact"
+#       - run:
+#           command: ~/project/github-release upload --user hellmrf --repo QSARModelingPyInterfaces --tag ${CIRCLE_TAG} --name "linux-amd64-qsarmodeling.snap" --file ~/project/qsarmodelingpy.snap
+#           name: "Uploading snap artifact"
 
-workflows:
-  main:
-    jobs:
-      - prepare-and-build-linux:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - snapcraft:
-          requires:
-            - prepare-and-build-linux
-          filters:
-            tags:
-              only: /^v\d*\.\d*(?:\.\d*)?$/
-              # Only v0.0.0 or v0.0, with 0 being any number.
-              # Releases like v0.0.0-alpha will not be snapped.
-            branches:
-              ignore: /.*/
-      - prepare-and-build-windows:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - upload_artifacts:
-          requires:
-            - prepare-and-build-linux
-            - prepare-and-build-windows
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+# workflows:
+#   main:
+#     jobs:
+#       - prepare-and-build-linux:
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+#       - snapcraft:
+#           requires:
+#             - prepare-and-build-linux
+#           filters:
+#             tags:
+#               only: /^v\d*\.\d*(?:\.\d*)?$/
+#               # Only v0.0.0 or v0.0, with 0 being any number.
+#               # Releases like v0.0.0-alpha will not be snapped.
+#             branches:
+#               ignore: /.*/
+#       - prepare-and-build-windows:
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/
+#       - upload_artifacts:
+#           requires:
+#             - prepare-and-build-linux
+#             - prepare-and-build-windows
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               ignore: /.*/

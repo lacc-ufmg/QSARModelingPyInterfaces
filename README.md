@@ -43,6 +43,16 @@ If you don't know exactly what you need, here are a rule of thumbs:
 
 ### Graphical User Interface (GUI)
 
+#### Linux: Snap
+Maybe the easiest way to install QSARModelingPy on Linux is through the Snap version (for distros with `snap` support). Just run:
+
+```sh
+sudo snap install qsarmodelingpy --channel=edge/stable
+```
+
+And then run the program with `qsarmodelingpy` on the terminal, or search for `QSARModelingPy` on your launcher.
+
+#### Cross-Platform
 The recommended way of installing the GUI is with [Miniconda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) (or Anaconda, if you already have it). If you're using Windows, you may need to use the Anaconda Prompt where we say "terminal" below.
 
 > Make sure the `conda` command is accessible in your shell. You may need to `conda init <shell>` if you're not using the default shell. For example, if you're using zsh on Linux or Powershell on Windows, you may need to `conda init zsh` or `conda init powershell`, respectively. On Windows, you can also use the Anaconda Prompt and skip this part.
@@ -58,7 +68,7 @@ Then run the application:
 $ qsarmodelingpy
 ```
 
-#### Without Miniconda
+#### Cross-platform: Without Miniconda
 <!-- There are binaries available for Linux and Windows under "Assets" on the [Releases page](https://github.com/hellmrf/QSARModelingPyInterfaces/releases). Just download, decompress and execute `qsarmodeling` (Linux) or `qsarmodeling.exe` (Windows).
 
 > Linux users may need to `chmod +x ./qsarmodeling` before executing. -->
@@ -90,19 +100,7 @@ After you have success installing the pip package, you can run the application w
 ```shell
 $ qsarmodelingpy
 ```
-<!-- #### Snap
 
-There is also a Snap version for Linux distros with snap support. Just run:
-
-```sh
-sudo snap install qsarmodelingpy --channel=edge/stable
-```
-
-And then run the program with `qsarmodelingpy` on the terminal. -->
-
-<!-- #### MacOS
-
-MacOS users can use the Windows version with [Wine](https://www.winehq.org/) or use the instructions below for _Other interfaces_ (which includes GUI). -->
 
 ### Other interfaces
 

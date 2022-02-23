@@ -40,3 +40,18 @@ jobs:
           anacondatoken: ${{ secrets.ANACONDA_TOKEN }}
           additional_channels: "-c helitonmrf"
           platforms: 'win osx linux'
+
+  deploy-snapcraft:
+    needs: [deploy-conda]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Snapcraft
+        uses: snapcore/action-build@v1
+        id: snapcraftbuild
+      - name: Publish snap
+        uses: snapcore/action-publish@v1
+        with:
+          store_login: ${{ secrets.SNAPCRAFT_LOGIN }}
+          snap: ${{ steps.snapcraftbuild.outputs.snap }}
+          release: edge

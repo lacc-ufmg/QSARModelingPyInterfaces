@@ -49,118 +49,26 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Population File</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Q² File</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Output selected variable file</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Output parameters file</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="yrlno_input_pop">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="primary_icon_tooltip_text" translatable="yes">Population file (.csv) containing results of variable selection method.</property>
-                    <property name="placeholder_text" translatable="yes">Choose a file...</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="yrlno_input_q2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="primary_icon_tooltip_text" translatable="yes">File (.csv) containing Q² values for provided population file.</property>
-                    <property name="placeholder_text" translatable="yes">Choose a file...</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="yrlno_output_vars">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="width_chars">17</property>
+                    <property name="caps_lock_warning">False</property>
+                    <property name="progress_pulse_step">0</property>
                     <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the file with selected variables (.csv). If blank, it will use the same directory as matrix and a default filename.</property>
                     <property name="placeholder_text" translatable="yes">(optional) Save to...</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="yrlno_output_params">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the cross validation parameters file (.csv). If blank, it will use the same directory as matrix and a default filename.</property>
-                    <property name="placeholder_text" translatable="yes">(optional) Save to...</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="yrlno_open_pop">
-                    <property name="label" translatable="yes">Open...</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <signal name="clicked" handler="on_open_file" object="yrlno_input_pop" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
                     <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="yrlno_open_q2">
-                    <property name="label" translatable="yes">Open...</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <signal name="clicked" handler="on_open_file" object="yrlno_input_q2" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -173,7 +81,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
-                    <property name="top_attach">2</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -186,7 +94,31 @@
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="yrlno_output_params">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="progress_pulse_step">0</property>
+                    <property name="primary_icon_tooltip_text" translatable="yes">Optional. Absolute path to save the cross validation parameters file (.csv). If blank, it will use the same directory as matrix and a default filename.</property>
+                    <property name="placeholder_text" translatable="yes">(optional) Save to...</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Output parameters file</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
               </object>

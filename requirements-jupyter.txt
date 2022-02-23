@@ -1,0 +1,4 @@
+-r requirements.txt
+ipywidgets
+ipyfilechooser
+bokeh # for plotting in Jupyter Notebooks

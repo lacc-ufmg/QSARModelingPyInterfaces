@@ -34,7 +34,7 @@ $ python -m qsarmodelingpy-gui
 
 setuptools.setup(
     name="qsarmodelingpy-gui",
-    version="0.2.4",
+    version="0.2.5",
     author="Reis Filho, H. M.; Martins, J. P. A",
     author_email="helitonmrf@ufmg.br,jpam@qui.ufmg.br",
     description="A software for building and validating QSAR models",

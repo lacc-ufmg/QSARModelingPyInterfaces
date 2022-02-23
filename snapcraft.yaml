@@ -1,5 +1,5 @@
 name: qsarmodelingpy
-version: '0.2.3'
+version: '0.2.5'
 summary: QSARModeling written in Python
 description: |
     QSARModelingPy is an open source computational package to generate and validate QSAR models.

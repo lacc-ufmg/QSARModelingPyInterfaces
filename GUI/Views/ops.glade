@@ -280,7 +280,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="activate" handler="on_save_file" object="OPS_output_model" swapped="no"/>
+                        <signal name="clicked" handler="on_save_file" object="OPS_output_model" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>

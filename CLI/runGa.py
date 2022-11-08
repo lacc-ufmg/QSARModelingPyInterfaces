@@ -1,9 +1,11 @@
 import pandas as pd
 from qsarmodelingpy.ga import Ga
 from qsarmodelingpy.cross_validation_class import CrossValidation
-from qsarmodelingpy.filter import variance_cut, correlation_cut, autocorrelation_cut
+from qsarmodelingpy.filter import filter_matrix #, variance_cut, correlation_cut, autocorrelation_cut
 from qsarmodelingpy import lj_cut as lj
 from qsarmodelingpy.validate_yr_lno import validate
+from qsarmodelingpy import Utils
+from qsarmodelingpy.save_PLS_coefficients import save_coefficients
 import os
 import argparse
 import logging
@@ -41,43 +43,54 @@ def run(filename):
         Q2_file = dfConf[idx][18]
         var_sel_file = dfConf[idx][19]
         autoscale = dfConf[idx][20].upper() == "YES"
-        df = pd.read_csv(directory + "/" + xFile, sep=';', index_col=0)
-        dfX = lj.transform(df) if dfConf[idx][21].upper() == "YES" else df
-        logging.info("Dimensions of the original matrix")
-        logging.info(dfX.shape)
-        y = pd.read_csv(directory + "/" + yFile, sep=';', header=None).values
-        indVar = variance_cut(dfX.values, var_cut)
-        dfVar = dfX.loc[:, dfX.columns[indVar]]
-        logging.info("Dimensions of the matrix after the variance cut")
-        logging.info(dfVar.shape)
-        indCorr = correlation_cut(dfVar.values, y, corr_cut)
-        dfCorr = dfVar.loc[:, dfVar.columns[indCorr]]
-        logging.info("Dimensions of the matrix after the correlation cut")
-        logging.info(dfCorr.shape)
-        auto_cut = float(dfConf[idx][22])
-        indAuto = autocorrelation_cut(dfCorr.values, y, auto_cut)
-        dfRest = dfCorr.loc[:, dfCorr.columns[indAuto]]
-        logging.info("Dimensions of the matrix after auto correlation cut")
-        logging.info(dfRest.shape)
+        lj_transform = dfConf[idx][21].upper() == "YES"
+        autocorr_cut = float(dfConf[idx][22])
+
+        xpath = os.path.join(directory, xFile)
+        ypath = os.path.join(directory, yFile)
+
+        # df = pd.read_csv(xpath, sep=';', index_col=0)
+        df = Utils.load_matrix(xpath)
+        y = pd.read_csv(ypath, header=None).values
+        dfRest = filter_matrix(df, y, lj_transform, var_cut, corr_cut, autocorr_cut)
+        # dfX = lj.transform(df) if lj_transform else df
+        # logging.info("Dimensions of the original matrix")
+        # logging.info(dfX.shape)
+        # indVar = variance_cut(dfX.values, var_cut)
+        # dfVar = dfX.loc[:, dfX.columns[indVar]]
+        # logging.info("Dimensions of the matrix after the variance cut")
+        # logging.info(dfVar.shape)
+        # indCorr = correlation_cut(dfVar.values, y, corr_cut)
+        # dfCorr = dfVar.loc[:, dfVar.columns[indCorr]]
+        # logging.info("Dimensions of the matrix after the correlation cut")
+        # logging.info(dfCorr.shape)
+        # auto_cut = float(dfConf[idx][22])
+        # indAuto = autocorrelation_cut(dfCorr.values, y, auto_cut)
+        # dfRest = dfCorr.loc[:, dfCorr.columns[indAuto]]
+        # logging.info("Dimensions of the matrix after auto correlation cut")
+        # logging.info(dfRest.shape)
         dfRest.to_csv(os.path.join(
-            out_directory, "filtered_" + out_matrix), sep=';')
+            out_directory, "filtered_" + out_matrix))
         X = dfRest.values
         if nLVModel == None:
-            nLVModel = int(dfCorr.shape[0] / 5)
+            nLVModel = int(dfRest.shape[0] / 5)
         ga = Ga(X, y, nLVModel, autoscale, min_size, max_size,
                 size_population, mig_rate, cxpb, mutpb, ngen)
         ga.run()
-        ga.saveQ2(out_directory + "/" + Q2_file)
-        ga.savePop(out_directory + "/" + var_sel_file)
+        ga.saveQ2(os.path.join(out_directory, Q2_file))
+        ga.savePop(os.path.join(out_directory, var_sel_file))
         Q2 = ga.Q2
         Q2 = [Q2[i][0] for i, _ in enumerate(Q2)]
         var_sel = validate(X, y, ga.pop_selected, Q2,
                            yr_cut=yr_crit, lno_cut=lno_crit)
         if var_sel != []:
             dfSel = dfRest.loc[:, dfRest.columns[var_sel]]
-            dfSel.to_csv(out_directory + "/" + out_matrix, sep=';')
+            dfSel.to_csv(os.path.join(out_directory, out_matrix))
             cv = CrossValidation(dfSel.values, y)
-            cv.saveParameters(out_directory + "/" + out_cv)
+            cv.saveParameters(os.path.join(out_directory, out_cv))
+            save_coefficients(dfSel, y, os.path.join(out_directory, f"{out_matrix}_PLS.csv"))
+            logging.info("Genetic Algorithm Done")
+            return True
         else:
             logging.error("y-randomization or LNO failed!")
 

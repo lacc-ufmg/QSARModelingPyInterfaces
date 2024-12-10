@@ -1,19 +1,16 @@
-import logging
+import os
+from loguru import logger
 from typing import List
-
 import pandas as pd
-from Constants import DEBUG_MODE
-from MainHandler import Handler
-from ResultsHandler import ResultsHandler, ResultWindowTexts
+
+from qsarmodeling.gui.Constants import DEBUG_MODE
+from qsarmodeling.gui.MainHandler import Handler
+from qsarmodeling.gui.ResultsHandler import ResultsHandler, ResultWindowTexts
+from qsarmodeling.gui.runCalculations import RunCalculations
+from qsarmodeling.gui import Plots
+
 from qsarmodelingpy.Interfaces import ConfigExtValInterface
 from qsarmodelingpy.validate_yr_lno import ValidateYRLNOResult
-import Plots
-from runCalculations import RunCalculations
-import os
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-
 
 class ValidationHandler(Handler):
     def __init__(self, builder, handler: Handler):
@@ -32,14 +29,14 @@ class ValidationHandler(Handler):
 
     def on_cv_run_button_clicked(self, _) -> None:
         if not self.handler.get_X_matrix() or not self.handler.get_y_vector():
-            logging.error("Load matrix/vector first.")
+            logger.error("Load matrix/vector first.")
             return
         auto = self.builder.get_object("cv_autonLV").get_active()
         nLV = None if auto else self.builder.get_object(
             "cross_validation_nLV").get_value()
         filename = self.builder.get_object("cv_output").get_text()
 
-        logging.debug("Calling RunCalculations.")
+        logger.debug("Calling RunCalculations.")
         cv = RunCalculations.runCrossValidation(self.handler.get_X_matrix(), self.handler.get_y_vector(), filename, nLV)
         plotter = Plots.CrossValidationPlots()
         params = cv.returnParameters()
@@ -57,10 +54,10 @@ class ValidationHandler(Handler):
 
     def on_yrlno_run_button_clicked(self, _) -> None:
         if not self.handler.get_X_matrix() or not self.handler.get_y_vector():
-            logging.error("Please open matrix and vector first.")
+            logger.error("Please open matrix and vector first.")
             return
 
-        logging.debug("Calling RunCalculations.")
+        logger.debug("Calling RunCalculations.")
         result: ValidateYRLNOResult = RunCalculations.run_yrlno(
             X_path=self.handler.get_X_matrix(),
             y_path=self.handler.get_y_vector(),
@@ -70,8 +67,8 @@ class ValidationHandler(Handler):
         )
         yr_result = result['yr_result']
         yr = yr_result['yr']
-        logging.debug("RunCalculations done.")
-        logging.debug("Preparing to plot.")
+        logger.debug("RunCalculations done.")
+        logger.debug("Preparing to plot.")
         plotter = Plots.YRandomizationPlots()
 
         passed_str = "YRandomization passed with score {}." if yr_result["passed"] else "YRandomization failed with score {}.\nEither adjust your desired score or check your data."
@@ -85,7 +82,7 @@ class ValidationHandler(Handler):
 
     def on_extval_run_button_clicked(self, _) -> None:
         if not self.handler.files_ok():
-            logging.error("Please, open the files in File > Open...")
+            logger.error("Please, open the files in File > Open...")
             raise FileNotFoundError("Please, open the files in File > Open...")
 
         # Choose defaults to output files
@@ -117,4 +114,4 @@ class ValidationHandler(Handler):
         }
 
         RunCalculations.runExternalValidation(self.ext_val_config)
-        logging.info("Done.")
+        logger.info("Done.")

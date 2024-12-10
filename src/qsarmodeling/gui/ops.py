@@ -1,4 +1,3 @@
-
 from PySide6.QtWidgets import QApplication, QDialog, QVBoxLayout, QHBoxLayout, QLabel, QDoubleSpinBox, QPushButton, QProgressBar
 
 class OPSConfigDialog(QDialog):

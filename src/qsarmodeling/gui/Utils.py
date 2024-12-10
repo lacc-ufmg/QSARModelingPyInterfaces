@@ -1,7 +1,7 @@
 import os
 import sys
 from pathlib import Path
-import logging
+from loguru import logger
 import tempfile
 import shutil
 import subprocess
@@ -78,7 +78,7 @@ def get_config_filename(filename=None) -> Union[Path, None]:
               ]
     for path in LOOKUP:
         if path.resolve().is_file():
-            logging.info(f"Loaded {path.resolve()} as the configuration file.")
+            logger.info(f"Loaded {path.resolve()} as the configuration file.")
             return path
     return None
 

@@ -1,13 +1,11 @@
 import os
+from loguru import logger
 from typing import Type, Union, List
 import pandas
-import qsarmodelingpy.Utils
-import Utils
-import logging
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from Constants import DEBUG_MODE
+
+import qsarmodelingpy
+from qsarmodeling.gui import Utils
+from qsarmodeling.gui.Constants import DEBUG_MODE
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -185,9 +183,9 @@ class Handler(object):
         filename = self.open_file()
         if filename:
             # self.X_matrix = filename
-            logging.debug(f"Selected {filename}.")
+            logger.debug(f"Selected {filename}.")
             self.set_X_matrix(filename)
-            logging.debug(f"Setted {self.get_X_matrix()}.")
+            logger.debug(f"Setted {self.get_X_matrix()}.")
             self.draw_matrices('matrix')
 
     def on_menu_open_vector_activate(self, _) -> None:
@@ -195,9 +193,9 @@ class Handler(object):
         filename = self.open_file()
         if filename:
             # self.y_vector = filename
-            logging.debug(f"Selected {filename}.")
+            logger.debug(f"Selected {filename}.")
             self.set_y_vector(filename)
-            logging.debug(f"Setted {self.get_y_vector()}.")
+            logger.debug(f"Setted {self.get_y_vector()}.")
             self.draw_matrices('vector')
 
     def draw_matrices(self, what_to_draw) -> None:
@@ -326,13 +324,13 @@ class Handler(object):
 
     def files_ok(self) -> bool:
         matp = self.get_X_matrix()
-        logging.debug(f"mat = {matp}")
+        logger.debug(f"mat = {matp}")
         mat = os.path.isfile(matp)
-        logging.debug(f"mat = {mat}")
+        logger.debug(f"mat = {mat}")
         vecp = self.get_y_vector()
-        logging.debug(f"vec = {vecp}")
+        logger.debug(f"vec = {vecp}")
         vec = os.path.isfile(vecp)
-        logging.debug(f"vec = {vec}")
+        logger.debug(f"vec = {vec}")
         return os.path.isfile(self.get_X_matrix()) and os.path.isfile(self.get_y_vector())
 
     @staticmethod

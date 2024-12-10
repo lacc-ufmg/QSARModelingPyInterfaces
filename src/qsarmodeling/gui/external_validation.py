@@ -1,4 +1,3 @@
-
 from PySide6.QtWidgets import QApplication, QDialog, QVBoxLayout, QHBoxLayout, QLabel, QSpinBox, QDoubleSpinBox, QPushButton, QProgressBar, QLineEdit, QComboBox
 
 class ExternalValidationConfigDialog(QDialog):

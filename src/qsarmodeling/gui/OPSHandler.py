@@ -1,15 +1,12 @@
 import logging
 import time
 import os
-import gi
 from multiprocessing import Process
 from threading import Thread
-from Interfaces import ConfigOPSInterface
-from MainHandler import Handler
-from runCalculations import RunCalculations
-from Utils import get_current_time_as_string, set_output_matrix_as_input
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from qsarmodeling.gui.Interfaces import ConfigOPSInterface
+from qsarmodeling.gui.MainHandler import Handler
+from qsarmodeling.gui.runCalculations import RunCalculations
+from qsarmodeling.gui.Utils import get_current_time_as_string, set_output_matrix_as_input
 
 
 class OPSHandler(Handler):

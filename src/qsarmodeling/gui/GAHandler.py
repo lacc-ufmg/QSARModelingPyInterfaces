@@ -1,16 +1,12 @@
 import os
-import gi
 import time
 import logging
 from multiprocessing import Process
 from threading import Thread
-from Interfaces import ConfigGAInterface
-from MainHandler import Handler
-from runCalculations import RunCalculations
-from Utils import set_output_matrix_as_input, get_current_time_as_string
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-
+from qsarmodeling.gui.Interfaces import ConfigGAInterface
+from qsarmodeling.gui.MainHandler import Handler
+from qsarmodeling.gui.runCalculations import RunCalculations
+from qsarmodeling.gui.Utils import set_output_matrix_as_input, get_current_time_as_string
 
 class GAHandler(Handler):
     def __init__(self, builder, handler: Handler):

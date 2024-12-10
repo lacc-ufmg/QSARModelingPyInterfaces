@@ -2,7 +2,7 @@ import numpy as np
 import pandas
 import os
 import json
-import logging
+from loguru import logger
 from qsarmodelingpy.runGa import run as runGA
 from qsarmodelingpy.runOPS import run as runOPS
 from qsarmodelingpy.runExtVal import run as runExtVal
@@ -80,9 +80,9 @@ class RunCalculations:
                                     f'{X_name}_CV_output.csv')
         dfX = load_matrix(X_path).values
         dfy = pandas.read_csv(y_path, header=None).values
-        logging.debug(dfX.shape)
-        logging.debug(dfy.shape)
-        logging.debug(dfy)
+        logger.debug(dfX.shape)
+        logger.debug(dfy.shape)
+        logger.debug(dfy)
         cv = CrossValidation(dfX, dfy)
         if not skipsaving:
             cv.saveParameters(filename)

@@ -1,13 +1,13 @@
 from typing import Callable, Dict
 import numpy as np
-import logging, logger
-from qsarmodelingpy.external_validation import ExternalValidation
-import matplotlib.pyplot as plt  # TODO: add do dependecies
-logger.silence_matplotlib_logger()
+from loguru import logger
+import matplotlib.pyplot as plt
 from abc import ABC, abstractmethod
+
+from qsarmodelingpy.external_validation import ExternalValidation
 from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.yrandomization import YRandomization
-import Utils
+from qsarmodeling.gui import Utils
 
 
 

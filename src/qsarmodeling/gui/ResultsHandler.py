@@ -1,20 +1,16 @@
-from qsarmodelingpy.cross_validation_class import CrossValidation
 import os
 from typing import Dict, Callable, Optional
 try:
     from typing import TypedDict # Python 3.8+
 except ImportError:
     from typing_extensions import TypedDict # Python 3.7-
-import logging
 
+from qsarmodelingpy.cross_validation_class import CrossValidation
 import pandas as pd
-from MainHandler import Handler
-import gi
 
-from Plots import CrossValidationPlots, Plots
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-from gi.overrides import Gtk as Gtk3
+from qsarmodeling.gui.MainHandler import Handler
+from qsarmodeling.gui.Plots import CrossValidationPlots, Plots
+
 
 class ResultWindowTexts(TypedDict):
     toptext: Optional[str]

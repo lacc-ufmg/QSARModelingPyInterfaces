@@ -1,4 +1,3 @@
-
 from PySide6.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel, QSpinBox, QDoubleSpinBox, QPushButton, QProgressBar, QLineEdit, QCheckBox, QApplication
 
 class AutocorrelationCutConfigDialog(QDialog):

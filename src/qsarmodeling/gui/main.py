@@ -1,63 +1,76 @@
 import sys
-import logger, logging
-from os import path
-from ValidationHandler import ValidationHandler
-from FilterHandler import FilterHandler
-from OPSHandler import OPSHandler
-from GAHandler import GAHandler
-from MainHandler import Handler
-from HandlerFinder import HandlerFinder
-from ResultsHandler import ResultsHandler
-from Utils import cleanup_temporary_directory, __DIR__
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from loguru import logger
+
+#from qsarmodeling.gui.ValidationHandler import ValidationHandler
+#from qsarmodeling.gui.FilterHandler import FilterHandler
+#from qsarmodeling.gui.OPSHandler import OPSHandler
+#from qsarmodeling.gui.GAHandler import GAHandler
+#from qsarmodeling.gui.MainHandler import Handler
+#from qsarmodeling.gui.HandlerFinder import HandlerFinder
+#from qsarmodeling.gui.ResultsHandler import ResultsHandler
+#from qsarmodeling.gui.Utils import cleanup_temporary_directory, __DIR__
+
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import QApplication, QMainWindow, QMenu, QMenuBar, QFileDialog, QLabel, QVBoxLayout, QWidget
 
 
-def add_all_from_file(files: list, builder: Gtk.Builder) -> None:
-    for f in files:
-        builder.add_from_file(path.abspath(
-            path.join(__DIR__, "Views", f)))
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("QSARModelingPy Alpha")
+        self.setGeometry(100, 100, 700, 500)
+        
+        # Menu bar
+        menu_bar = QMenuBar(self)
+        self.setMenuBar(menu_bar)
+        
+        # File menu
+        file_menu = QMenu("File", self)
+        menu_bar.addMenu(file_menu)
+        
+        open_action = QAction("Open...", self)
+        open_action.triggered.connect(self.open_file)
+        file_menu.addAction(open_action)
+        
+        quit_action = QAction("Quit", self)
+        quit_action.triggered.connect(self.close)
+        file_menu.addAction(quit_action)
+        
+        # Welcome label
+        welcome_label = QLabel("Welcome to QSARModelingPy Alpha\n\nTo begin, go to File > Open... and open both matrix and vector.\n\nTo generate a model using either OPS or GA, go to Generate and choose the method.\n\nTo perform validation, filter or prediction, use the corresponding menu.", self)
+        welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        # Layout
+        layout = QVBoxLayout()
+        layout.addWidget(welcome_label)
+        
+        container = QWidget()
+        container.setLayout(layout)
+        self.setCentralWidget(container)
+    
+    def open_file(self):
+        file_dialog = QFileDialog(self)
+        file_dialog.setFileMode(QFileDialog.FileMode.ExistingFiles)
+        file_dialog.setNameFilters(["CSV files (*.csv)", "Text files (*.txt)"])
+        if file_dialog.exec():
+            file_paths = file_dialog.selectedFiles()
+            # Handle file paths
 
 
 def main():
-    logger.init()
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication(sys.argv)
+    else:
+        logger.warning("QApplication instance already exists. Reusing the existing instance.")
+    
+    window = MainWindow()
+    window.show()
+    app.exec_()
 
-    builder: Gtk.Builder = Gtk.Builder()
-    add_all_from_file([
-        "main.glade",
-        "about.glade",
-        "ga.glade",
-        "ops.glade",
-        "varcut.glade",
-        "corrcut.glade",
-        "autocorrcut.glade",
-        "cross_validation.glade",
-        "yrlno.glade",
-        "external_validation.glade",
-        "results.glade",
-    ], builder)
-
-
-    handler = Handler(builder)
-
-    # Register handlers
-    handler.register_handler(GAHandler(builder, handler))
-    handler.register_handler(OPSHandler(builder, handler))
-    handler.register_handler(ResultsHandler(builder))
-    handler.register_handler(ValidationHandler(builder, handler))
-    handler.register_handler(FilterHandler(builder, handler))
-
-    handlers = [handler] + handler.get_handlers()
-
-    # Connect signals and launch the GUI
-    builder.connect_signals(HandlerFinder(handlers))
-    window = builder.get_object('main_window')
-    window.show_all()
-    Gtk.main()
-
-    # Cleanup temporary directory when the GUI is closed
-    cleanup_temporary_directory()
+    ## Cleanup temporary directory when the GUI is closed
+    #cleanup_temporary_directory()
 
 if __name__ == '__main__':
     main()

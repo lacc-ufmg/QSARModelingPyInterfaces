@@ -3,7 +3,6 @@ from loguru import logger
 from typing import List
 import pandas as pd
 
-from qsarmodeling.gui.Constants import DEBUG_MODE
 from qsarmodeling.gui.MainHandler import Handler
 from qsarmodeling.gui.ResultsHandler import ResultsHandler, ResultWindowTexts
 from qsarmodeling.gui.runCalculations import RunCalculations

@@ -5,7 +5,6 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QSpinBox,
-    QDoubleSpinBox,
     QPushButton,
     QProgressBar,
     QLineEdit,

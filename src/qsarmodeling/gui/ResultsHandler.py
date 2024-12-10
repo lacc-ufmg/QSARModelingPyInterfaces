@@ -10,7 +10,7 @@ from qsarmodelingpy.cross_validation_class import CrossValidation
 import pandas as pd
 
 from qsarmodeling.gui.MainHandler import Handler
-from qsarmodeling.gui.Plots import CrossValidationPlots, Plots
+from qsarmodeling.gui.Plots import Plots
 
 
 class ResultWindowTexts(TypedDict):

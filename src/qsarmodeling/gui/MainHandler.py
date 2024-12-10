@@ -1,11 +1,10 @@
 import os
 from loguru import logger
-from typing import Type, Union, List
+from typing import Type, List
 import pandas
 
 import qsarmodelingpy
 from qsarmodeling.gui import Utils
-from qsarmodeling.gui.Constants import DEBUG_MODE
 
 import warnings
 

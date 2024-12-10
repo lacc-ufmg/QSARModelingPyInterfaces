@@ -1,7 +1,5 @@
-import numpy as np
 import pandas
 import os
-import json
 from loguru import logger
 from qsarmodelingpy.runGa import run as runGA
 from qsarmodelingpy.runOPS import run as runOPS
@@ -9,12 +7,9 @@ from qsarmodelingpy.runExtVal import run as runExtVal
 from qsarmodelingpy.filter import variance_cut, correlation_cut, autocorrelation_cut
 from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.validate_yr_lno import (
-    validate,
     run_leavenout,
     run_yrandomization,
     ValidateYRLNOResult,
-    YRResult,
-    LNOResult,
 )
 from qsarmodelingpy.Interfaces import (
     ConfigGAInterface,

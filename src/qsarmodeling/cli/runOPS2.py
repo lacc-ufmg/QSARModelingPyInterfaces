@@ -5,7 +5,6 @@ from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.filter import (
     filter_matrix,
 )  # , variance_cut, correlation_cut, autocorrelation_cut
-from qsarmodelingpy import lj_cut as lj
 from qsarmodelingpy.validate_yr_lno import validate
 from qsarmodelingpy import Utils
 import os

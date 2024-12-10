@@ -2,8 +2,6 @@ from sklearn.model_selection import ShuffleSplit
 from sklearn.cross_decomposition import PLSRegression
 from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.calculate_parameters import (
-    ssy,
-    calcPress,
     calcR,
     calcR2,
     calcMAE,

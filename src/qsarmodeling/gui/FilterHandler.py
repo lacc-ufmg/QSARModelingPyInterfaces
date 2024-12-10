@@ -1,7 +1,5 @@
 from MainHandler import Handler
 from runCalculations import RunCalculations
-import pandas
-from gi.repository import Gtk
 import os
 import gi
 

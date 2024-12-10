@@ -6,7 +6,6 @@ from PySide6.QtWidgets import (
     QLabel,
     QDoubleSpinBox,
     QPushButton,
-    QProgressBar,
     QLineEdit,
     QCheckBox,
 )

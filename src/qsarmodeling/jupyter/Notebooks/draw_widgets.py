@@ -1,6 +1,4 @@
 import ipywidgets as widgets
-from ipyfilechooser import FileChooser
-import os
 import numpy as np
 import pandas as pd
 

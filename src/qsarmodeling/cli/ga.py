@@ -8,9 +8,8 @@ import logging
 from deap import base
 from deap import creator
 from deap import tools
-from numpy import zeros, shape, argmax
+from numpy import zeros, shape
 import pandas as pd
-from pandas import read_csv
 from qsarmodelingpy.cross_validation_class import CrossValidation
 
 

@@ -1,14 +1,60 @@
+[project]
+name = "qsarmodeling"
+version = "0.2.5"
+description = "An open-source software to build and validate QSPR/QSAR models."
+readme = "README.md"
+authors = [
+    { name = "Heliton Martins", email = "helitonmrf@gmail.com" },
+    { name = "João Paulo Ataíde Martins", email = "joaopauloam@gmail.com" }
+]
+requires-python = ">=3.10"
+
+dependencies = [
+    "coloredlogs>=15.0.1",
+    "matplotlib>=3.9.3",
+    "pyqt5>=5.15.11",
+    "qsarmodelingpy>=0.3.1",
+    "tornado>=6.4.2",
+    "typing-extensions>=4.12.2",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13.0",
+    "ruff>=0.8.2",
+]
+
+[project.scripts]
+#qsarmodeling = "qsarmodeling:main"
+
+[project.gui-scripts]
+qsarm = "qsarmodeling.gui.__main__:main"
+
+
+#################
+## Build System
+#################
+
+
 [build-system]
-# Minimum requirements for the build system to execute.
-requires = ["setuptools", "wheel"]  # PEP 508 specifications.
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-# [mypy]
-# ignore_missing_imports = True
+[tool.hatch.build.targets.sdist]
+only-include = [
+    "src",
+    "pyproject.toml",
+    "*.md",
+    "LICENSE"
+]
 
-[tool.autopep8]
-# max_line_length = 220
-# ignore = "E501,W6"  # or ["E501", "W6"]
-ignore = ["E402"]
-in-place = true
-recursive = true
-aggressive = 3
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/qsarmodeling",
+    "src/qsarmodeling/cli",
+    "src/qsarmodeling/gui",
+    "src/qsarmodeling/jupyter",
+]
+
+[tool.hatch.build.targets.wheel.sources]
+"src" = ""

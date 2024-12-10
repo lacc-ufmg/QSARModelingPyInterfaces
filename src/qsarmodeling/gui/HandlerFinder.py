@@ -2,8 +2,7 @@ import logging
 
 
 class HandlerFinder(object):
-    """Searches for handler implementations across multiple objects.
-    """
+    """Searches for handler implementations across multiple objects."""
 
     # See <http://stackoverflow.com/questions/4637792> for why this is
     # necessary.
@@ -16,7 +15,9 @@ class HandlerFinder(object):
             if hasattr(o, name):
                 return getattr(o, name)
         else:
-            logging.error("{} not found on any of {}".format(
-                name, self.backing_objects))
-            raise AttributeError("%r not found on any of %r"
-                                 % (name, self.backing_objects))
+            logging.error(
+                "{} not found on any of {}".format(name, self.backing_objects)
+            )
+            raise AttributeError(
+                "%r not found on any of %r" % (name, self.backing_objects)
+            )

@@ -8,12 +8,18 @@ import os
 import argparse
 import logging
 import coloredlogs
-logging_level = logging.INFO
-coloredlogs.DEFAULT_FIELD_STYLES = {'filename': {'color': 'blue'}, 'lineno': {
-    'color': 'blue'}, 'funcName': {'color': 'magenta'}, 'levelname': {'bold': True, 'color': 'black'}}
-coloredlogs.install(
-    fmt="%(filename)s:%(lineno)s %(funcName)s() %(levelname)s  %(message)s", level=logging_level)
 
+logging_level = logging.INFO
+coloredlogs.DEFAULT_FIELD_STYLES = {
+    "filename": {"color": "blue"},
+    "lineno": {"color": "blue"},
+    "funcName": {"color": "magenta"},
+    "levelname": {"bold": True, "color": "black"},
+}
+coloredlogs.install(
+    fmt="%(filename)s:%(lineno)s %(funcName)s() %(levelname)s  %(message)s",
+    level=logging_level,
+)
 
 
 def run(filename):
@@ -39,15 +45,14 @@ def run(filename):
         Xtest_file = dfConf[idx][10]
         ytest_file = dfConf[idx][11]
         autoscale = dfConf[idx][12].upper() == "YES"
-        y = pd.read_csv(os.path.join(directory, yfile),
-                        sep=';', header=None).values
-        dfX = pd.read_csv(os.path.join(directory, Xfile), sep=';', index_col=0)
+        y = pd.read_csv(os.path.join(directory, yfile), sep=";", header=None).values
+        dfX = pd.read_csv(os.path.join(directory, Xfile), sep=";", index_col=0)
         dfX = lj.transform(dfX) if dfConf[idx][13].upper() == "YES" else dfX
         X = dfX.values
         type_ext_val = int(dfConf[idx][14])
         if type_ext_val == 1:  # manual selection
             test_set = dfConf[idx][3]
-            test = [int(i) - 1 for i in test_set.split(',')]
+            test = [int(i) - 1 for i in test_set.split(",")]
             train = [j for j in range(len(y)) if j not in test]
         elif type_ext_val == 2:  # Kennard-Stone
             size_test_set = int(dfConf[idx][3])
@@ -65,23 +70,25 @@ def run(filename):
         cv = CrossValidation(X[train, :], y[train], nLVMax=nLV, scale=True)
         cv.saveParameters(os.path.join(out_directory, cv_file))
         dfXtrain = dfX.loc[dfX.index[train], dfX.columns]
-        dfXtrain.to_csv(os.path.join(out_directory, Xtrain_file), sep=';')
+        dfXtrain.to_csv(os.path.join(out_directory, Xtrain_file), sep=";")
         dfytrain = pd.DataFrame(y[train])
-        dfytrain.to_csv(os.path.join(out_directory, ytrain_file),
-                        sep=',', header=False)
+        dfytrain.to_csv(os.path.join(out_directory, ytrain_file), sep=",", header=False)
         dfXtest = dfX.loc[dfX.index[test], dfX.columns]
-        dfXtest.to_csv(os.path.join(out_directory, Xtest_file), sep=';')
+        dfXtest.to_csv(os.path.join(out_directory, Xtest_file), sep=";")
         dfytest = pd.DataFrame(y[test])
-        dfytest.to_csv(os.path.join(out_directory, ytest_file),
-                       sep=',', header=False)
+        dfytest.to_csv(os.path.join(out_directory, ytest_file), sep=",", header=False)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--filename', '-f', required=True,
-                        metavar='<filename>',
-                        help='Config External Validation file.')
+    parser.add_argument(
+        "--filename",
+        "-f",
+        required=True,
+        metavar="<filename>",
+        help="Config External Validation file.",
+    )
     args = parser.parse_args()
     filename = args.filename
     run(filename)

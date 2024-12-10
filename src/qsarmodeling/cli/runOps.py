@@ -6,7 +6,7 @@ from qsarmodelingpy import lj_cut as lj
 from qsarmodelingpy.validate_yr_lno import validate
 import logging
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     dfConf = pd.read_csv("confOPS.csv", header=None)
     directory = dfConf[1][0]
     xFile = dfConf[1][1]
@@ -25,10 +25,10 @@ if __name__ == '__main__':
     out_matrix = dfConf[1][14]
     out_cv = dfConf[1][15]
     out_models = dfConf[1][16]
-    df = pd.read_csv(directory+"/"+xFile, sep=';', index_col=0)
+    df = pd.read_csv(directory + "/" + xFile, sep=";", index_col=0)
     dfX = lj.transform(df) if dfConf[1][17].upper() == "YES" else df
     autoscale = dfConf[1][18].upper() == "YES"
-    y = pd.read_csv(directory+"/"+yFile, sep=';', header=None).values
+    y = pd.read_csv(directory + "/" + yFile, sep=";", header=None).values
     indVar = variance_cut(dfX.values, var_cut)
     dfVar = dfX.loc[:, dfX.columns[indVar]]
     logging.info(dfVar.shape)
@@ -36,16 +36,18 @@ if __name__ == '__main__':
     dfCorr = dfVar.loc[:, dfVar.columns[indCorr]]
     logging.info(dfCorr.shape)
     X = dfCorr.values
-    ops = OPS(X, y, nLVOPS, nLVModel, opsWindow,
-              opsIncrement, percentage, nModels, True)
+    ops = OPS(
+        X, y, nLVOPS, nLVModel, opsWindow, opsIncrement, percentage, nModels, True
+    )
     ops.runOPS()
-    ops.saveModels(out_directory+"/"+out_models)
+    ops.saveModels(out_directory + "/" + out_models)
     var_sel = validate(
-        X, y, ops.models["var_sel"], ops.models["Q2"], yr_cut=yr_crit, lno_cut=lno_crit)
+        X, y, ops.models["var_sel"], ops.models["Q2"], yr_cut=yr_crit, lno_cut=lno_crit
+    )
     if var_sel != []:
         dfSel = dfCorr.loc[:, dfCorr.columns[var_sel]]
-        dfSel.to_csv(out_directory+"/"+out_matrix, sep=';')
+        dfSel.to_csv(out_directory + "/" + out_matrix, sep=";")
         cv = CrossValidation(dfSel.values, y)
-        cv.saveParameters(out_directory+"/"+out_cv)
+        cv.saveParameters(out_directory + "/" + out_cv)
     else:
         logging.error("y-randomization or LNO failed!")

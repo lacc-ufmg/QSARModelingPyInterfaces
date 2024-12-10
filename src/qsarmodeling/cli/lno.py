@@ -9,11 +9,11 @@ class LNO(object):
         self.X = X
         self.y = y
         if nLV != None:
-            self. nLV = nLV
+            self.nLV = nLV
         else:
-            self. nLV = len(y)/5
+            self.nLV = len(y) / 5
         if n == None:
-            self.n = int(len(y)/4)
+            self.n = int(len(y) / 4)
         else:
             self.n = n
         self.nrepet = nrepet
@@ -23,16 +23,16 @@ class LNO(object):
         pls = PLSRegression(n_components=nLV)
         n_samples = np.shape(X)[0]
         for i in range(self.n):
-            lno = LeaveNout(i+1, n_repeats=self.nrepet)
-            nsplits = int(n_samples/(i+1))
-            if n_samples % (i+1) != 0:
+            lno = LeaveNout(i + 1, n_repeats=self.nrepet)
+            nsplits = int(n_samples / (i + 1))
+            if n_samples % (i + 1) != 0:
                 nsplits += 1
             j = 0
             k = 0
             for train, test in lno.split(X):
                 pls.fit(X[train, :], y[train])
                 ycv[test, :] = pls.predict(X[test, :])
-                j = (j+1) % nsplits
+                j = (j + 1) % nsplits
                 if j == 0:
                     self.Q2[i, k] = cp.calcR2(self.y, ycv)
                     k = k + 1

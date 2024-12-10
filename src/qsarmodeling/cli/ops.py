@@ -7,9 +7,18 @@ import logging
 
 
 class OPS(object):
-
-    def __init__(self, X, y, nLV=None, nLVModel=None, window=2, increment=1, percentage=100,
-                 nModels=100, scale=True):
+    def __init__(
+        self,
+        X,
+        y,
+        nLV=None,
+        nLVModel=None,
+        window=2,
+        increment=1,
+        percentage=100,
+        nModels=100,
+        scale=True,
+    ):
         super(OPS, self).__init__()
         if not scale:
             self.X = X
@@ -22,7 +31,7 @@ class OPS(object):
         else:
             self.nLV = nLV
         if nLVModel == None:
-            self.nLVModel = int(np.shape(X)[0]/5)
+            self.nLVModel = int(np.shape(X)[0] / 5)
         else:
             self.nLVModel = nLVModel
         self.window = window
@@ -33,14 +42,15 @@ class OPS(object):
 
     def vectors(self, X, y, nLV):
         correlogram = abs(
-            np.dot(np.transpose(autoscale(X)), autoscale(y))/(len(y)-1))
+            np.dot(np.transpose(autoscale(X)), autoscale(y)) / (len(y) - 1)
+        )
         pls = PLSBidiag(nLV)
         pls.fit(X, y)
         reg = abs(pls.B)
         vec = abs(np.append(correlogram, reg, axis=1))
         norms = np.linalg.norm(vec, ord=np.inf, axis=0)
         for i in range(len(norms)):
-            vec[:, i] = vec[:, i]/norms[i]
+            vec[:, i] = vec[:, i] / norms[i]
         for i in range(1, len(norms)):
             vec = np.c_[vec, np.multiply(vec[:, 0], vec[:, i])]
         return vec
@@ -53,15 +63,15 @@ class OPS(object):
         nLVModel = self.nLVModel
         m, n = np.shape(X)
         vec = self.vectors(X, y, self.nLV)
-        nVec = 2*self.nLV+1
-        maxVar = self.percentage*n/100
+        nVec = 2 * self.nLV + 1
+        maxVar = self.percentage * n / 100
         models = {}
         models["Q2"] = []
         models["var_sel"] = []
         Q2 = np.zeros(0)
         var_sel = []
         for i in range(nVec):
-            logging.info("Running vector {} of {}".format(i+1, nVec))
+            logging.info("Running vector {} of {}".format(i + 1, nVec))
             # ordenar em ordem decrescente, por isso o -vec
             ind = np.argsort(-vec[:, i])
             Xor = X[:, ind]
@@ -75,8 +85,8 @@ class OPS(object):
             indSort = np.argsort(-Q2).tolist()
             Q2 = Q2[indSort]
             var_sel = [var_sel[k] for k in indSort]
-            Q2 = Q2[0:min(self.nModels, len(Q2))]
-            var_sel = var_sel[0:min(self.nModels, len(var_sel))]
+            Q2 = Q2[0 : min(self.nModels, len(Q2))]
+            var_sel = var_sel[0 : min(self.nModels, len(var_sel))]
         models["Q2"] = Q2.tolist()
         models["var_sel"] = var_sel
         self.models = models
@@ -92,7 +102,10 @@ class OPS(object):
             var_sel1 = self.models["var_sel"][0]
             Q2 = self.models["Q2"][0]
             logging.info(
-                "{} variables were selected in the previous step of OPS run".format(len(var_sel1)))
+                "{} variables were selected in the previous step of OPS run".format(
+                    len(var_sel1)
+                )
+            )
             X = self.X[:, var_sel1]
             self.vars = var_sel1
             # with less than 100 variables we could run OPS with 100 % of variables

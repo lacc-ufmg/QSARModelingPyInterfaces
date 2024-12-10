@@ -1,9 +1,10 @@
 import os
 from typing import Dict, Callable, Optional
+
 try:
-    from typing import TypedDict # Python 3.8+
+    from typing import TypedDict  # Python 3.8+
 except ImportError:
-    from typing_extensions import TypedDict # Python 3.7-
+    from typing_extensions import TypedDict  # Python 3.7-
 
 from qsarmodelingpy.cross_validation_class import CrossValidation
 import pandas as pd
@@ -17,22 +18,25 @@ class ResultWindowTexts(TypedDict):
     title: Optional[str]
     statistics: Optional[str]
 
+
 class ResultsHandler(Handler):
     def __init__(self, builder):
         super().__init__(builder)
         self.builder = builder
-        self.window = self.builder.get_object('results_window')
-        self.window.connect(
-            'delete-event', lambda w, e: w.hide() or True)
+        self.window = self.builder.get_object("results_window")
+        self.window.connect("delete-event", lambda w, e: w.hide() or True)
         # self.window.show_all()
 
         self.plot_type_selector: Gtk3.ComboBox = self.builder.get_object(
-            'plot_selection_combo')
+            "plot_selection_combo"
+        )
 
         # TODO: remove this
         # self.show(self.get_object_for_testing_TODO(), CrossValidationPlots())
 
-    def show(self, dataobject, plotter: Plots, texts: Optional[ResultWindowTexts]=None):
+    def show(
+        self, dataobject, plotter: Plots, texts: Optional[ResultWindowTexts] = None
+    ):
         if texts is None:
             texts = ResultWindowTexts(toptext=None, title=None, statistics=None)
 
@@ -42,15 +46,20 @@ class ResultsHandler(Handler):
         self.set_texts(**texts)
         self.window.show_all()
 
-    def set_texts(self, toptext: Optional[str] = "Your job is done.", statistics: Optional[str] = "", title: Optional[str] = ""):
-        self.builder.get_object('results_statistics_toptext').set_text(toptext)
+    def set_texts(
+        self,
+        toptext: Optional[str] = "Your job is done.",
+        statistics: Optional[str] = "",
+        title: Optional[str] = "",
+    ):
+        self.builder.get_object("results_statistics_toptext").set_text(toptext)
 
         # Set statistics text
-        buffer = self.builder.get_object('results_statistics_textview').get_buffer()
+        buffer = self.builder.get_object("results_statistics_textview").get_buffer()
         buffer.set_text(statistics)
 
         # Set window title
-        if title != "": 
+        if title != "":
             self.window.set_title(title)
 
     def init_selector(self, methods: Dict[str, Callable]):
@@ -77,8 +86,7 @@ class ResultsHandler(Handler):
             return entry.get_text()
 
     def on_plot(self, combobox: Gtk.ComboBox) -> None:
-        self.plotter.get_methods()[self.get_selected_method(
-            combobox)](self.dataobject)
+        self.plotter.get_methods()[self.get_selected_method(combobox)](self.dataobject)
 
     # TODO: remove this
     @staticmethod
@@ -92,10 +100,10 @@ class ResultsHandler(Handler):
         X_matrix_file = "filtered_10_GA_X_sel.csv"
         y_matrix_file = "../atividades.txt"
 
-        df = pd.read_csv(os.path.join(directory, X_matrix_file),
-                         sep=';', index_col=0)
+        df = pd.read_csv(os.path.join(directory, X_matrix_file), sep=";", index_col=0)
         X = df.to_numpy()
-        y = pd.read_csv(os.path.join(directory, y_matrix_file),
-                        sep=';', header=None).values
+        y = pd.read_csv(
+            os.path.join(directory, y_matrix_file), sep=";", header=None
+        ).values
         cv = CrossValidation(X, y)
         return cv

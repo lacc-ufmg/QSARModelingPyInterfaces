@@ -10,9 +10,7 @@ from qsarmodelingpy.yrandomization import YRandomization
 from qsarmodeling.gui import Utils
 
 
-
 class Plots(ABC):
-
     def __init__(self) -> None:
         matplolib_config = Utils.read_config("matplotlib")
         plt.rcParams.update(matplolib_config)
@@ -23,7 +21,6 @@ class Plots(ABC):
 
 
 class CrossValidationPlots(Plots):
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -31,8 +28,8 @@ class CrossValidationPlots(Plots):
         xaxis = range(1, cv.nLVMax + 1)
         y1 = cv.R2()
         y2 = cv.Q2()
-        plt.plot(xaxis, y1, label="R²", marker='o')
-        plt.plot(xaxis, y2, label="Q²", marker='o')
+        plt.plot(xaxis, y1, label="R²", marker="o")
+        plt.plot(xaxis, y2, label="Q²", marker="o")
         plt.legend()
         plt.title("Cross-Validation error - PLS")
         plt.xlabel("nLV")
@@ -45,7 +42,7 @@ class CrossValidationPlots(Plots):
     def y_versus_ŷ_CV(self, cv: CrossValidation):
         nLV = int(cv.returnParameters().loc["nLV"][0])
         xaxis = np.array(cv.y)
-        yaxis = list(cv.ycv[:, nLV-1])
+        yaxis = list(cv.ycv[:, nLV - 1])
         plt.plot(xaxis, xaxis, color="red", linewidth=1, label="y = x line")
         plt.plot(xaxis, yaxis, linestyle="None", marker="o", label="Data")
         plt.title("Cross-Validation prediction")
@@ -56,7 +53,7 @@ class CrossValidationPlots(Plots):
     def y_versus_ŷ_cal(self, cv: CrossValidation):
         nLV = int(cv.returnParameters().loc["nLV"][0])
         xaxis = np.array(cv.y)
-        yaxis = list(cv.ycal[:, nLV-1])
+        yaxis = list(cv.ycal[:, nLV - 1])
         plt.plot(xaxis, xaxis, color="red", linewidth=1, label="y = x line")
         plt.plot(xaxis, yaxis, linestyle="None", marker="o", label="Data")
         plt.title("Calibration prediction")
@@ -71,6 +68,7 @@ class CrossValidationPlots(Plots):
             "Exprimental × Predicted (cross-validation)": self.y_versus_ŷ_CV,
         }
 
+
 class YRandomizationPlots(Plots):
     def __init__(self) -> None:
         super().__init__()
@@ -80,8 +78,8 @@ class YRandomizationPlots(Plots):
         Q2_rand = yr.Q2[:-1]
         R2_best = yr.R2[-1]
         Q2_best = yr.Q2[-1]
-        plt.plot(R2_rand, Q2_rand, linestyle="None", marker='o', label="Randomized")
-        plt.plot(R2_best, Q2_best, linestyle="None", marker='o', label="Best model")
+        plt.plot(R2_rand, Q2_rand, linestyle="None", marker="o", label="Randomized")
+        plt.plot(R2_best, Q2_best, linestyle="None", marker="o", label="Best model")
         plt.title("y-randomization")
         plt.xlabel("R²")
         plt.ylabel("Q²")
@@ -98,21 +96,26 @@ if __name__ == "__main__":
     import os
     import coloredlogs
     import logging
+
     logging_level = logging.DEBUG
     coloredlogs.install(
-        fmt="%(filename)s:%(lineno)s %(funcName)s() %(levelname)s  %(message)s", level=logging_level)
-    coloredlogs.DEFAULT_FIELD_STYLES = {'filename': {'color': 'blue'}, 'lineno': {
-        'color': 'blue'}, 'funcName': {'color': 'magenta'}, 'levelname': {'bold': True, 'color': 'black'}}
+        fmt="%(filename)s:%(lineno)s %(funcName)s() %(levelname)s  %(message)s",
+        level=logging_level,
+    )
+    coloredlogs.DEFAULT_FIELD_STYLES = {
+        "filename": {"color": "blue"},
+        "lineno": {"color": "blue"},
+        "funcName": {"color": "magenta"},
+        "levelname": {"bold": True, "color": "black"},
+    }
 
     directory = "/home/helitonmrf/Documents/QSAR/cancer_prostata/resultados"
     X_matrix_file = "filtered_10_GA_X_sel.csv"
     y_matrix_file = "../atividades.txt"
 
-    df = pd.read_csv(os.path.join(directory, X_matrix_file),
-                     sep=';', index_col=0)
+    df = pd.read_csv(os.path.join(directory, X_matrix_file), sep=";", index_col=0)
     X = df.to_numpy()
-    y = pd.read_csv(os.path.join(directory, y_matrix_file),
-                    sep=';', header=None).values
+    y = pd.read_csv(os.path.join(directory, y_matrix_file), sep=";", header=None).values
     cv = CrossValidation(X, y)
     methods = CrossValidationPlots().get_methods()
     # logging.debug(f"{methods = }")
@@ -121,6 +124,6 @@ if __name__ == "__main__":
     #     methods[method](cv)
     #     break
 
-    yr = YRandomization(X,y,cv.nLVMax)
+    yr = YRandomization(X, y, cv.nLVMax)
     yrp = YRandomizationPlots()
     yrp.Q2_versus_R2(yr)

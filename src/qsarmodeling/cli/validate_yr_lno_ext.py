@@ -65,7 +65,7 @@ def validate_ext(X, y, test, pop, Q2):
     return pop_pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     directory = sys.argv[1]
     # Xfile = sys.argv[2]
     # yfile = sys.argv[3]
@@ -73,11 +73,9 @@ if __name__ == '__main__':
     # df = pd.read_csv(directory+Xfile,sep='\t')
     # X = df.values
     # y = pd.read_csv(directory+yfile,sep=';',header=None).values
-    df = pd.read_csv(os.path.join(
-        directory, sys.argv[2]), sep=';', index_col=0)
+    df = pd.read_csv(os.path.join(directory, sys.argv[2]), sep=";", index_col=0)
     dfX = lj.transform(df)
-    y = pd.read_csv(os.path.join(
-        directory, sys.argv[3]), sep=';', header=None).values
+    y = pd.read_csv(os.path.join(directory, sys.argv[3]), sep=";", header=None).values
     indVar = variance_cut(dfX.values, 0.1)
     dfVar = dfX.loc[:, dfX.columns[indVar]]
     logging.info(dfVar.shape)
@@ -97,7 +95,7 @@ if __name__ == '__main__':
     # dfSel.to_csv(directory+out_file,sep='\t',index = False)
     if var_sel != []:
         dfSel = dfCorr.loc[:, dfCorr.columns[var_sel]]
-        dfSel.to_csv(out_directory + "/XSel.csv", sep=';')
+        dfSel.to_csv(out_directory + "/XSel.csv", sep=";")
         cv = CrossValidation(dfSel.values, y)
         cv.saveParameters(out_directory + "/parameters_cv.csv")
     else:

@@ -1,4 +1,5 @@
 """Variable selection with Genetic Algorithm."""
+
 import random
 import json
 from tqdm import tqdm
@@ -24,17 +25,17 @@ def checkLen(min, max):
             for child in offspring:
                 size = sum(child)
                 indices = returnIndices(child)
-                indicesZeros = [i for i in list(
-                    range(len(child))) if i not in indices]
+                indicesZeros = [i for i in list(range(len(child))) if i not in indices]
                 while size > max:
-                    child[indices[random.randint(0, len(indices)-1)]] = 0
+                    child[indices[random.randint(0, len(indices) - 1)]] = 0
                     size = sum(child)
                 while size < min:
-                    child[indicesZeros[random.randint(
-                        0, len(indicesZeros)-1)]] = 1
+                    child[indicesZeros[random.randint(0, len(indicesZeros) - 1)]] = 1
                     size = sum(child)
             return offspring
+
         return wrapper
+
     return decorator
 
 
@@ -48,8 +49,20 @@ def initIndividual(icls, imin, imax, size):
 
 
 class Ga(object):
-    def __init__(self, X: pd.DataFrame, y: pd.DataFrame, nLV: int = None, scale: bool = True, min_size: int = 5, max_size: int = 25, size_population: int = 200, mig_rate: float = 0.2,
-                 cxpb: float = 0.5, mutpb: float = 0.2, ngen: int = 120):
+    def __init__(
+        self,
+        X: pd.DataFrame,
+        y: pd.DataFrame,
+        nLV: int = None,
+        scale: bool = True,
+        min_size: int = 5,
+        max_size: int = 25,
+        size_population: int = 200,
+        mig_rate: float = 0.2,
+        cxpb: float = 0.5,
+        mutpb: float = 0.2,
+        ngen: int = 120,
+    ):
         """Variable selection with Genetic Algorithm.
 
         Args:
@@ -81,17 +94,16 @@ class Ga(object):
         """Do some hard computing on the individual"""
         indices = [i for i, v in enumerate(individual) if v == 1]
         Xev = self.X[:, indices]
-        cv = CrossValidation(Xev, self.y, min(
-            self.nLV, len(indices)), self.scale)
+        cv = CrossValidation(Xev, self.y, min(self.nLV, len(indices)), self.scale)
         Q2 = max(cv.Q2())
-        #yr = YRandomization(X,y,argmax(cv.Q2())+1,50)
+        # yr = YRandomization(X,y,argmax(cv.Q2())+1,50)
         return (Q2,)
 
     def run(self):
         creator.create("FitnessMax", base.Fitness, weights=(1.0,))
         creator.create("Individual", list, fitness=creator.FitnessMax)
 
-        MIN_SIZE = self. min_size
+        MIN_SIZE = self.min_size
         MAX_SIZE = self.max_size
         IND_SIZE = shape(self.X)[1]
         SIZE_POPULATION = self.size_population
@@ -105,18 +117,23 @@ class Ga(object):
 
         toolbox = base.Toolbox()
 
-        toolbox.register("individual", initIndividual, creator.Individual,
-                         MIN_SIZE, MAX_SIZE, IND_SIZE)
+        toolbox.register(
+            "individual",
+            initIndividual,
+            creator.Individual,
+            MIN_SIZE,
+            MAX_SIZE,
+            IND_SIZE,
+        )
 
-        toolbox.register("population", tools.initRepeat,
-                         list, toolbox.individual)
+        toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
         toolbox.register("mate", tools.cxTwoPoint)
         toolbox.register("mutate", tools.mutFlipBit, indpb=0.2)
         toolbox.decorate("mate", checkLen(MIN_SIZE, MAX_SIZE))
         toolbox.decorate("mutate", checkLen(MIN_SIZE, MAX_SIZE))
         toolbox.register("select", tools.selTournament, tournsize=2)
-        #toolbox.register("select", tools.selBest)
+        # toolbox.register("select", tools.selBest)
         toolbox.register("evaluate", self.evaluate)
 
         pop = toolbox.population(n=SIZE_POPULATION)
@@ -130,7 +147,7 @@ class Ga(object):
         for _ in range(NGEN):
             progress_bar.update()
             # generates migrants to add to the population
-            mig = toolbox.population(n=int(MIG_RATE*SIZE_POPULATION))
+            mig = toolbox.population(n=int(MIG_RATE * SIZE_POPULATION))
             fitnesses = map(toolbox.evaluate, mig)
             for ind, fit in zip(mig, fitnesses):
                 ind.fitness.values = fit

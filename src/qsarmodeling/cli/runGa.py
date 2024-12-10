@@ -1,7 +1,9 @@
 import pandas as pd
 from qsarmodelingpy.ga import Ga
 from qsarmodelingpy.cross_validation_class import CrossValidation
-from qsarmodelingpy.filter import filter_matrix #, variance_cut, correlation_cut, autocorrelation_cut
+from qsarmodelingpy.filter import (
+    filter_matrix,
+)  # , variance_cut, correlation_cut, autocorrelation_cut
 from qsarmodelingpy import lj_cut as lj
 from qsarmodelingpy.validate_yr_lno import validate
 from qsarmodelingpy import Utils
@@ -10,12 +12,18 @@ import os
 import argparse
 import logging
 import coloredlogs
-logging_level = logging.INFO
-coloredlogs.DEFAULT_FIELD_STYLES = {'filename': {'color': 'blue'}, 'lineno': {
-    'color': 'blue'}, 'funcName': {'color': 'magenta'}, 'levelname': {'bold': True, 'color': 'black'}}
-coloredlogs.install(
-    fmt="%(filename)s:%(lineno)s %(funcName)s() %(levelname)s  %(message)s", level=logging_level)
 
+logging_level = logging.INFO
+coloredlogs.DEFAULT_FIELD_STYLES = {
+    "filename": {"color": "blue"},
+    "lineno": {"color": "blue"},
+    "funcName": {"color": "magenta"},
+    "levelname": {"bold": True, "color": "black"},
+}
+coloredlogs.install(
+    fmt="%(filename)s:%(lineno)s %(funcName)s() %(levelname)s  %(message)s",
+    level=logging_level,
+)
 
 
 def run(filename):
@@ -69,38 +77,49 @@ def run(filename):
         # dfRest = dfCorr.loc[:, dfCorr.columns[indAuto]]
         # logging.info("Dimensions of the matrix after auto correlation cut")
         # logging.info(dfRest.shape)
-        dfRest.to_csv(os.path.join(
-            out_directory, "filtered_" + out_matrix))
+        dfRest.to_csv(os.path.join(out_directory, "filtered_" + out_matrix))
         X = dfRest.values
         if nLVModel == None:
             nLVModel = int(dfRest.shape[0] / 5)
-        ga = Ga(X, y, nLVModel, autoscale, min_size, max_size,
-                size_population, mig_rate, cxpb, mutpb, ngen)
+        ga = Ga(
+            X,
+            y,
+            nLVModel,
+            autoscale,
+            min_size,
+            max_size,
+            size_population,
+            mig_rate,
+            cxpb,
+            mutpb,
+            ngen,
+        )
         ga.run()
         ga.saveQ2(os.path.join(out_directory, Q2_file))
         ga.savePop(os.path.join(out_directory, var_sel_file))
         Q2 = ga.Q2
         Q2 = [Q2[i][0] for i, _ in enumerate(Q2)]
-        var_sel = validate(X, y, ga.pop_selected, Q2,
-                           yr_cut=yr_crit, lno_cut=lno_crit)
+        var_sel = validate(X, y, ga.pop_selected, Q2, yr_cut=yr_crit, lno_cut=lno_crit)
         if var_sel != []:
             dfSel = dfRest.loc[:, dfRest.columns[var_sel]]
             dfSel.to_csv(os.path.join(out_directory, out_matrix))
             cv = CrossValidation(dfSel.values, y)
             cv.saveParameters(os.path.join(out_directory, out_cv))
-            save_coefficients(dfSel, y, os.path.join(out_directory, f"{out_matrix}_PLS.csv"))
+            save_coefficients(
+                dfSel, y, os.path.join(out_directory, f"{out_matrix}_PLS.csv")
+            )
             logging.info("Genetic Algorithm Done")
             return True
         else:
             logging.error("y-randomization or LNO failed!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--filename', '-f', required=True,
-                        metavar='<filename>',
-                        help='Config GA file.')
+    parser.add_argument(
+        "--filename", "-f", required=True, metavar="<filename>", help="Config GA file."
+    )
     args = parser.parse_args()
     filename = args.filename
     run(filename)

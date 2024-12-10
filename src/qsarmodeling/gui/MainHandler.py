@@ -8,46 +8,45 @@ from qsarmodeling.gui import Utils
 from qsarmodeling.gui.Constants import DEBUG_MODE
 
 import warnings
+
 warnings.filterwarnings("ignore")
 
-class Handler(object):
 
+class Handler(object):
     __childrens: List[object] = []
 
     def __init__(self, builder):
         self.builder = builder
         # Saving windows
-        self.main_window = builder.get_object('main_window')
-        self.results_window = builder.get_object('results_window')
-        self.config_OPS_window = builder.get_object('config_OPS_window')
-        self.config_GA_window = builder.get_object('config_GA_window')
-        self.about_window = builder.get_object('about_window')
-        self.csv_file_filter = builder.get_object('open_filter')
-        self.main_window_stack = builder.get_object('main_window_stack')
-        self.config_varcut_window = builder.get_object('config_varcut_window')
-        self.config_corrcut_window = builder.get_object(
-            'config_corrcut_window')
-        self.config_autocorrcut_window = builder.get_object(
-            'config_autocorrcut_window')
-        self.config_cv_window = builder.get_object('config_cv_window')
-        self.config_yrlno_window = builder.get_object('config_yrlno_window')
-        self.config_extval_window = builder.get_object('config_extval_window')
+        self.main_window = builder.get_object("main_window")
+        self.results_window = builder.get_object("results_window")
+        self.config_OPS_window = builder.get_object("config_OPS_window")
+        self.config_GA_window = builder.get_object("config_GA_window")
+        self.about_window = builder.get_object("about_window")
+        self.csv_file_filter = builder.get_object("open_filter")
+        self.main_window_stack = builder.get_object("main_window_stack")
+        self.config_varcut_window = builder.get_object("config_varcut_window")
+        self.config_corrcut_window = builder.get_object("config_corrcut_window")
+        self.config_autocorrcut_window = builder.get_object("config_autocorrcut_window")
+        self.config_cv_window = builder.get_object("config_cv_window")
+        self.config_yrlno_window = builder.get_object("config_yrlno_window")
+        self.config_extval_window = builder.get_object("config_extval_window")
 
         # Saving elements
-        self.main_window_pages = [builder.get_object(
-            'main_window_welcome'), builder.get_object('main_window_tables')]
-        self.treeview_X = builder.get_object('treeview_X')
-        self.treeview_y = builder.get_object('treeview_y')
+        self.main_window_pages = [
+            builder.get_object("main_window_welcome"),
+            builder.get_object("main_window_tables"),
+        ]
+        self.treeview_X = builder.get_object("treeview_X")
+        self.treeview_y = builder.get_object("treeview_y")
 
         # connect destroy signal
-        self.main_window.connect('destroy', Gtk.main_quit)
-        self.about_window.connect(
-            'delete-event', lambda w, e: w.hide() or True)
-        self.results_window.connect(
-            'delete-event', lambda w, e: w.hide() or True)
+        self.main_window.connect("destroy", Gtk.main_quit)
+        self.about_window.connect("delete-event", lambda w, e: w.hide() or True)
+        self.results_window.connect("delete-event", lambda w, e: w.hide() or True)
 
         # Setting file filters
-        self.csv_file_filter.set_name('CSV Files (*.csv)')
+        self.csv_file_filter.set_name("CSV Files (*.csv)")
 
         # Handling files
         self.X_matrix = None
@@ -58,16 +57,16 @@ class Handler(object):
         # TODO: remove these stuff
 
     def register_handler(self, handler) -> None:
-        """Register a new handler 
+        """Register a new handler
 
         Args:
             handler (Handler): The handler to be registered
-        """        
+        """
         if handler not in self.__childrens:
             self.__childrens.append(handler)
-    
+
     def get_handlers(self) -> list:
-        """ Get all handlers """
+        """Get all handlers"""
         return self.__childrens
 
     def get_handler(self, _type: Type) -> object:
@@ -77,39 +76,39 @@ class Handler(object):
         raise ValueError(f"No handler of type {_type} found.")
 
     def on_menu_openlog_activate(self, _) -> None:
-        """ Open the log """
+        """Open the log"""
         Utils.open_external(Utils.get_log_file())
 
     def on_menu_ops_model_activate(self, _) -> None:
-        """ Handle menu Generate > OPS """
+        """Handle menu Generate > OPS"""
         self.config_OPS_window.show_all()
 
     def on_menu_ga_model_activate(self, _) -> None:
-        """ Handle menu Generate > GA """
+        """Handle menu Generate > GA"""
         self.config_GA_window.show_all()
 
     def on_menu_varcut_activate(self, _) -> None:
-        """ Handle menu Filter > Variance cut """
+        """Handle menu Filter > Variance cut"""
         self.config_varcut_window.show()
 
     def on_menu_corrcut_activate(self, _) -> None:
-        """ Handle menu Filter > Correlation cut """
+        """Handle menu Filter > Correlation cut"""
         self.config_corrcut_window.show()
 
     def on_menu_autocorrcut_activate(self, _) -> None:
-        """ Handle menu Filter > Autocorrelation cut """
+        """Handle menu Filter > Autocorrelation cut"""
         self.config_autocorrcut_window.show()
 
     def on_menu_cv_activate(self, _) -> None:
-        """ Handle menu Validation > Cross Validation """
+        """Handle menu Validation > Cross Validation"""
         self.config_cv_window.show()
 
     def on_menu_yrlno_activate(self, _) -> None:
-        """ Handle menu Validation > Y-Randomization / Leave-N-Out """
+        """Handle menu Validation > Y-Randomization / Leave-N-Out"""
         self.config_yrlno_window.show()
 
     def on_menu_extval_activate(self, _) -> None:
-        """ Handle menu Validation > External Validation """
+        """Handle menu Validation > External Validation"""
         self.config_extval_window.show()
 
     def open_file(self, use_last_path=True) -> str:
@@ -120,9 +119,11 @@ class Handler(object):
         :return: the selected filename
         """
         file_chooser = Gtk.FileChooserDialog(
-            title="Open...", action=Gtk.FileChooserAction.OPEN)
+            title="Open...", action=Gtk.FileChooserAction.OPEN
+        )
         file_chooser.add_buttons(
-            "Cancel", Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.OK)
+            "Cancel", Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.OK
+        )
         file_chooser.set_default_response(Gtk.ResponseType.OK)
         file_chooser.add_filter(self.csv_file_filter)
         if self.last_opened_path and use_last_path:
@@ -137,9 +138,11 @@ class Handler(object):
 
     def save_file(self) -> str:
         file_chooser = Gtk.FileChooserDialog(
-            title="Save...", action=Gtk.FileChooserAction.SAVE)
+            title="Save...", action=Gtk.FileChooserAction.SAVE
+        )
         file_chooser.add_buttons(
-            "Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.OK)
+            "Cancel", Gtk.ResponseType.CANCEL, "Save", Gtk.ResponseType.OK
+        )
         file_chooser.set_default_response(Gtk.ResponseType.OK)
         file_chooser.add_filter(self.csv_file_filter)
         if self.last_saved_path:
@@ -165,11 +168,11 @@ class Handler(object):
             entry.set_text(filename)
 
     def block_menus_until_file_load(self) -> None:
-        """ Block menus while files is not properly loaded """
+        """Block menus while files is not properly loaded"""
         menus = [
-            self.builder.get_object('menu_generate'),
-            self.builder.get_object('menu_validate'),
-            self.builder.get_object('menu_filter'),
+            self.builder.get_object("menu_generate"),
+            self.builder.get_object("menu_validate"),
+            self.builder.get_object("menu_filter"),
         ]
         if self.X_matrix and self.y_vector:
             for elem in menus:
@@ -179,34 +182,34 @@ class Handler(object):
                 elem.set_sensitive(False)
 
     def on_menu_open_matrix_activate(self, _) -> None:
-        """ Handle menu File > Open... > Open matrix """
+        """Handle menu File > Open... > Open matrix"""
         filename = self.open_file()
         if filename:
             # self.X_matrix = filename
             logger.debug(f"Selected {filename}.")
             self.set_X_matrix(filename)
             logger.debug(f"Setted {self.get_X_matrix()}.")
-            self.draw_matrices('matrix')
+            self.draw_matrices("matrix")
 
     def on_menu_open_vector_activate(self, _) -> None:
-        """ Handle menu File > Open... > Open vector """
+        """Handle menu File > Open... > Open vector"""
         filename = self.open_file()
         if filename:
             # self.y_vector = filename
             logger.debug(f"Selected {filename}.")
             self.set_y_vector(filename)
             logger.debug(f"Setted {self.get_y_vector()}.")
-            self.draw_matrices('vector')
+            self.draw_matrices("vector")
 
     def draw_matrices(self, what_to_draw) -> None:
-        """ Draw a pandas matrix or vector in the main screen.
-            Works like a Factory to draw_pandas_matrix() and draw_pandas_vector(). """
+        """Draw a pandas matrix or vector in the main screen.
+        Works like a Factory to draw_pandas_matrix() and draw_pandas_vector()."""
         show = False
-        if what_to_draw == 'matrix' and self.X_matrix and os.path.isfile(self.X_matrix):
+        if what_to_draw == "matrix" and self.X_matrix and os.path.isfile(self.X_matrix):
             # Draw matrix
             self.draw_pandas_matrix(self.treeview_X, self.X_matrix)
             show = True
-        if what_to_draw == 'vector' and self.y_vector and os.path.isfile(self.y_vector):
+        if what_to_draw == "vector" and self.y_vector and os.path.isfile(self.y_vector):
             # Draw vector
             self.draw_pandas_vector(self.treeview_y, self.y_vector)
             show = True
@@ -219,7 +222,7 @@ class Handler(object):
         self.block_menus_until_file_load()
 
     def draw_pandas_matrix(self, treeview, path, print_index=True) -> None:
-        """ Draws in treeview a pandas matrix from path (csv) """
+        """Draws in treeview a pandas matrix from path (csv)"""
         df = qsarmodelingpy.Utils.load_matrix(path, usecols=list(range(10)))
 
         print_et_cetera_column = False
@@ -227,7 +230,7 @@ class Handler(object):
             df = df.iloc[:, 0:10]
             print_et_cetera_column = True
         liststore_args = [str] if print_index else []
-        liststore_args += [float] * int(df.shape[1]) # type: ignore
+        liststore_args += [float] * int(df.shape[1])  # type: ignore
         if print_et_cetera_column:
             liststore_args += [str]
         liststore = Gtk.ListStore(*liststore_args)
@@ -247,27 +250,25 @@ class Handler(object):
         # Draw index column
         if print_index:
             renderer_text = Gtk.CellRendererText()
-            column_text = Gtk.TreeViewColumn('Molecule', renderer_text, text=0)
+            column_text = Gtk.TreeViewColumn("Molecule", renderer_text, text=0)
             treeview.append_column(column_text)
 
         # Draw data columns
         for i in range(df.shape[1]):
             renderer_text = Gtk.CellRendererText()
             text = i + 1 if print_index else i
-            column_text = Gtk.TreeViewColumn(
-                df.columns[i], renderer_text, text=text)
+            column_text = Gtk.TreeViewColumn(df.columns[i], renderer_text, text=text)
             treeview.append_column(column_text)
 
         # Draw et cetera column
         if print_et_cetera_column:
             renderer_text = Gtk.CellRendererText()
             text = df.shape[1] + 1 if print_index else df.shape[1]
-            column_text = Gtk.TreeViewColumn(
-                '...', renderer_text, text=df.shape[1] + 1)
+            column_text = Gtk.TreeViewColumn("...", renderer_text, text=df.shape[1] + 1)
             treeview.append_column(column_text)
 
     def draw_pandas_vector(self, treeview, path: str) -> None:
-        """ Draws in treeview a pandas vector from path (csv/txt) """
+        """Draws in treeview a pandas vector from path (csv/txt)"""
         df = pandas.read_csv(path, header=None, sep=",")
 
         self.clear_treeview(treeview)
@@ -283,11 +284,11 @@ class Handler(object):
 
         # Draw data column
         renderer_text = Gtk.CellRendererText()
-        column_text = Gtk.TreeViewColumn('Vector', renderer_text, text=0)
+        column_text = Gtk.TreeViewColumn("Vector", renderer_text, text=0)
         treeview.append_column(column_text)
 
     def on_menu_about_activate(self, _) -> None:
-        """ Handle menu About """
+        """Handle menu About"""
 
         self.about_window.run()
 
@@ -331,7 +332,9 @@ class Handler(object):
         logger.debug(f"vec = {vecp}")
         vec = os.path.isfile(vecp)
         logger.debug(f"vec = {vec}")
-        return os.path.isfile(self.get_X_matrix()) and os.path.isfile(self.get_y_vector())
+        return os.path.isfile(self.get_X_matrix()) and os.path.isfile(
+            self.get_y_vector()
+        )
 
     @staticmethod
     def on_close_modal(modal) -> None:

@@ -9,10 +9,11 @@ import time
 import platform
 import configparser
 from typing import Optional, Union
-__DIR__ = Path(getattr(sys, '_MEIPASS', Path(__file__).parent.resolve()))
+
+__DIR__ = Path(getattr(sys, "_MEIPASS", Path(__file__).parent.resolve()))
 
 TMP_DIRECTORY: Optional[str] = None
-LOG_FILE: Optional[str]  = None
+LOG_FILE: Optional[str] = None
 
 
 def __initialize_temporary_file() -> str:
@@ -48,12 +49,12 @@ def open_external(filepath: str) -> None:
     Args:
         filepath (str): The file path to open
     """
-    if platform.system() == 'Darwin':       # macOS
-        subprocess.call(('open', filepath))
-    elif platform.system() == 'Windows':    # Windows
-        os.startfile(filepath) # type: ignore
-    else:                                   # linux variants
-        subprocess.call(('xdg-open', filepath))
+    if platform.system() == "Darwin":  # macOS
+        subprocess.call(("open", filepath))
+    elif platform.system() == "Windows":  # Windows
+        os.startfile(filepath)  # type: ignore
+    else:  # linux variants
+        subprocess.call(("xdg-open", filepath))
 
 
 def get_config_filename(filename=None) -> Union[Path, None]:
@@ -68,14 +69,15 @@ def get_config_filename(filename=None) -> Union[Path, None]:
     if filename is not None and Path(filename).is_file():
         return Path(filename)
 
-    LOOKUP = [Path("./qsarmodelingpy.conf"),
-              Path("~/qsarmodelingpy.conf").expanduser(),
-              Path("~/.qsarmodelingpy.conf").expanduser(),
-              Path("./qsarmodeling.conf"),
-              Path("~/qsarmodeling.conf").expanduser(),
-              Path("~/.qsarmodeling.conf").expanduser(),
-              __DIR__ / "qsarmodelingpy.conf"
-              ]
+    LOOKUP = [
+        Path("./qsarmodelingpy.conf"),
+        Path("~/qsarmodelingpy.conf").expanduser(),
+        Path("~/.qsarmodelingpy.conf").expanduser(),
+        Path("./qsarmodeling.conf"),
+        Path("~/qsarmodeling.conf").expanduser(),
+        Path("~/.qsarmodeling.conf").expanduser(),
+        __DIR__ / "qsarmodelingpy.conf",
+    ]
     for path in LOOKUP:
         if path.resolve().is_file():
             logger.info(f"Loaded {path.resolve()} as the configuration file.")
@@ -83,7 +85,9 @@ def get_config_filename(filename=None) -> Union[Path, None]:
     return None
 
 
-def read_config(section: str = None, key: str = None, filename: Union[Path, str, None] = None) -> Union[str, dict]:
+def read_config(
+    section: str = None, key: str = None, filename: Union[Path, str, None] = None
+) -> Union[str, dict]:
     """Reads a configuration file.
 
     Args:
@@ -119,9 +123,9 @@ def set_output_matrix_as_input(self, config) -> None:
 
     It's particularly useful at the end of a calculation, when you want that the result is shown in the GUI.
     """
-    if os.path.isfile(config['output_matrix']):
-        self.handler.set_X_matrix(config['output_matrix'])
-        self.draw_matrices('matrix')
+    if os.path.isfile(config["output_matrix"]):
+        self.handler.set_X_matrix(config["output_matrix"])
+        self.draw_matrices("matrix")
     if self.running_process is not None:
         self.running_process.terminate()
     self.running_process = None

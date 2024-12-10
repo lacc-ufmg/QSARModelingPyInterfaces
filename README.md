@@ -35,13 +35,40 @@ Executando diretamente o entrypoint.
 $ uv run src/qsarmodeling/gui/main.py
 ```
 
-#### Dev tools
+#### Linting - `ruff check`
 
-Para executar ferramentas como o analisador de tipagem `mypy` ou o linter e formatter `ruff`, utilize:
+Para executar o linter e procurar por erros na base de código, utilize o `ruff check`:
+
+Only find and report errors:
+```bash
+$ uv run ruff check
+```
+
+Find and report errors, and try to fix when possible:
+```bash
+$ uv run ruff check --fix
+```
+
+#### Formatter - `ruff format`
+
+Para executar o formatador de código, utilize o `ruff format`:
+
+Formatar todos os arquivos necessários:
+```bash
+$ uv run ruff format
+```
+
+Use a flag `--check` para apenas reportar, sem alterar nenhum arquivo. Um _exit code_ zero indica que todos os arquivos já estão formatados; um _exit code_ diferente de zero indica que há arquivos que precisam ser formatados.
+```bash
+$ uv run ruff format --check
+
+$ uv run ruff format --diff
+```
+
+#### Analisador Estático de Tipagem: `mypy`
+Para executar o analisador estático `mypy` e encontrar erros potenciais no código-fonte, use:
 ```bash
 $ uv run mypy src/qsarmodeling/gui
-$ uv run ruff check
-$ uv run ruff format
 ```
 
 ---

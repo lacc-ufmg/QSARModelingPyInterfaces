@@ -1,6 +1,50 @@
-# QSARModelingPy
+# QSARModeling
 
-QSARModelingPy is an open-source computational package to generate and validate QSAR models.
+QSARModelingPy is an open-source software to build and validate QSAR models.
+
+## Desenvolvimento (IMPORTANTE LER!)
+
+Este repositório foi desenvolvido há, agora, mais de 5 anos. Na ocasião, passamos por inúmeros problemas de compatibilidade entre o ferramental empregado e as plataformas de destino.
+
+Com o objetivo de modernizar o desenvolvimento do projeto, reduzir o número de incompatibilidades, e melhorar o funcionamento multi-plataforma do software, eu **abandonei** as dependências problemáticas, como `pygobject`, `pycairo` e `gtk3`, em favor de dependências modernas, como o `PySide6` (ou `PyQt6`).
+
+### Configurando o projeto
+
+Após `git clone` este repositório, certifique-se de estar na branch `dev/2024-update-qt`:
+
+```bash
+$ git clone https://github.com/lacc-ufmg/QSARModelingPyInterfaces
+$ cd QSARModelingPyInterfaces
+$ git checkout dev/2024-update-qt
+$ git pull
+ ```
+
+Para executá-lo, é necessário apenas o gerenciador [`uv`](https://github.com/astral-sh/uv). Caso não o tenha, instale-o com `pipx install uv` ou veja as [Instruções de Instalação](https://docs.astral.sh/uv/getting-started/installation/#installation-methods).
+
+#### Running
+
+Com o `uv` instalado, utilize o comando `uv run` para criar um ambiente, baixar as dependências e executar o projeto. Qualquer uma das opções a seguir é válida:
+
+Executando o script `qsarm`, definido em `pyproject.toml`:
+```bash
+$ uv run qsarm
+```
+
+Executando diretamente o entrypoint.
+```bash
+$ uv run src/qsarmodeling/gui/main.py
+```
+
+#### Dev tools
+
+Para executar ferramentas como o analisador de tipagem `mypy` ou o linter e formatter `ruff`, utilize:
+```bash
+$ uv run mypy src/qsarmodeling/gui
+$ uv run ruff check
+$ uv run ruff format
+```
+
+---
 
 [![PyPI](https://img.shields.io/pypi/v/qsarmodelingpy-gui)](https://pypi.org/project/qsarmodelingpy-gui/)
 [![Conda](https://img.shields.io/conda/v/helitonmrf/qsarmodelingpy-gui)](https://anaconda.org/helitonmrf/qsarmodelingpy-gui)

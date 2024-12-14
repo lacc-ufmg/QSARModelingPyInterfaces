@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 from qsarmodelingpy.cross_validation_class import CrossValidation
 from qsarmodelingpy.yrandomization import YRandomization
-from qsarmodeling.gui import Utils
+from qsarmodeling import Utils
 
 
 class Plots(ABC):

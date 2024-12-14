@@ -9,8 +9,8 @@ except ImportError:
 from qsarmodelingpy.cross_validation_class import CrossValidation
 import pandas as pd
 
-from qsarmodeling.gui.MainHandler import Handler
-from qsarmodeling.gui.Plots import Plots
+from qsarmodeling.MainHandler import Handler
+from qsarmodeling.Plots import Plots
 
 
 class ResultWindowTexts(TypedDict):

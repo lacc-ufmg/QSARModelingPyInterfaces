@@ -3,10 +3,10 @@ import time
 import logging
 from multiprocessing import Process
 from threading import Thread
-from qsarmodeling.gui.Interfaces import ConfigGAInterface
-from qsarmodeling.gui.MainHandler import Handler
-from qsarmodeling.gui.runCalculations import RunCalculations
-from qsarmodeling.gui.Utils import (
+from qsarmodeling.Interfaces import ConfigGAInterface
+from qsarmodeling.MainHandler import Handler
+from qsarmodeling.runCalculations import RunCalculations
+from qsarmodeling.Utils import (
     set_output_matrix_as_input,
     get_current_time_as_string,
 )

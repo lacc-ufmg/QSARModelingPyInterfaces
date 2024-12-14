@@ -3,10 +3,10 @@ from loguru import logger
 from typing import List
 import pandas as pd
 
-from qsarmodeling.gui.MainHandler import Handler
-from qsarmodeling.gui.ResultsHandler import ResultsHandler, ResultWindowTexts
-from qsarmodeling.gui.runCalculations import RunCalculations
-from qsarmodeling.gui import Plots
+from qsarmodeling.MainHandler import Handler
+from qsarmodeling.ResultsHandler import ResultsHandler, ResultWindowTexts
+from qsarmodeling.runCalculations import RunCalculations
+from qsarmodeling import Plots
 
 from qsarmodelingpy.Interfaces import ConfigExtValInterface
 from qsarmodelingpy.validate_yr_lno import ValidateYRLNOResult

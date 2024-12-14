@@ -1,14 +1,14 @@
 import sys
 from loguru import logger
 
-# from qsarmodeling.gui.ValidationHandler import ValidationHandler
-# from qsarmodeling.gui.FilterHandler import FilterHandler
-# from qsarmodeling.gui.OPSHandler import OPSHandler
-# from qsarmodeling.gui.GAHandler import GAHandler
-# from qsarmodeling.gui.MainHandler import Handler
-# from qsarmodeling.gui.HandlerFinder import HandlerFinder
-# from qsarmodeling.gui.ResultsHandler import ResultsHandler
-# from qsarmodeling.gui.Utils import cleanup_temporary_directory, __DIR__
+# from qsarmodeling.ValidationHandler import ValidationHandler
+# from qsarmodeling.FilterHandler import FilterHandler
+# from qsarmodeling.OPSHandler import OPSHandler
+# from qsarmodeling.GAHandler import GAHandler
+# from qsarmodeling.MainHandler import Handler
+# from qsarmodeling.HandlerFinder import HandlerFinder
+# from qsarmodeling.ResultsHandler import ResultsHandler
+# from qsarmodeling.Utils import cleanup_temporary_directory, __DIR__
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction

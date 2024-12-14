@@ -4,7 +4,7 @@ from typing import Type, List
 import pandas
 
 import qsarmodelingpy
-from qsarmodeling.gui import Utils
+from qsarmodeling import Utils
 
 import warnings
 

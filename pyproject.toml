@@ -19,8 +19,7 @@ dependencies = [
     "loguru>=0.7.3",
     "matplotlib>=3.9.3",
     "pyside6>=6.8.1",
-    "qsarmodelingpy>=0.3.1",
-    "tornado>=6.4.2",
+    "qsarmodelingpy==0.3.1",
 ]
 
 [dependency-groups]
@@ -30,7 +29,7 @@ dev = ["mypy>=1.13.0", "ruff>=0.8.2", "typing-extensions>=4.12.2"]
 #qsarmodeling = "qsarmodeling:main"
 
 [project.gui-scripts]
-qsarm = "qsarmodeling.gui.main:main"
+qsarm = "qsarmodeling.main:main"
 
 
 #################
@@ -46,12 +45,7 @@ build-backend = "hatchling.build"
 only-include = ["src", "pyproject.toml", "*.md", "LICENSE"]
 
 [tool.hatch.build.targets.wheel]
-packages = [
-    "src/qsarmodeling",
-    "src/qsarmodeling/cli",
-    "src/qsarmodeling/gui",
-    "src/qsarmodeling/jupyter",
-]
+packages = ["src/qsarmodeling"]
 
 [tool.hatch.build.targets.wheel.sources]
 "src" = ""

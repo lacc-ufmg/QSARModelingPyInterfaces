@@ -7,6 +7,11 @@ QSARModelingPy is an open-source computational package to generate and validate 
 [![Conda - Platforms](https://img.shields.io/conda/pn/helitonmrf/qsarmodelingpy-gui)](https://anaconda.org/helitonmrf/qsarmodelingpy-gui)
 ![Conda - License: GPL-3.0](https://img.shields.io/conda/l/helitonmrf/qsarmodelingpy-gui)
 
+> [!WARNING]
+> This project is now archived and should be used only as reference.
+>
+> The development continues at [hellmrf/qsarmodeling](https://github.com/hellmrf/qsarmodeling) (Desktop App) and [hellmrf/QSARModelingPy](https://github.com/hellmrf/QSARModelingPy) (Python library).
+
 **What you _can_ do with QSARModelingPy**
 
 -   Select variables through either OPS or Genetic Algorithm
